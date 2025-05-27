@@ -284,6 +284,11 @@ const getRegionalWeatherTips = (cityName, season) => {
 	if (!city) return {};
 
 	const regionalTips = {
+		Kerala: {
+			monsoon: "Heavy rains expected. Waterproof clothing essential.",
+			summer: "Hot and humid. Light, breathable fabrics recommended.",
+			winter: "Pleasant winters. Light layers sufficient.",
+		},
 		Maharashtra: {
 			monsoon: "Heavy rains expected. Waterproof clothing essential.",
 			summer: "Hot and humid. Light, breathable fabrics recommended.",
@@ -313,6 +318,111 @@ const getRegionalWeatherTips = (cityName, season) => {
 			monsoon: "Light rains. Desert climate persists.",
 			summer: "Extremely hot and dry. Full sun protection needed.",
 			winter: "Cold nights, warm days. Layer-friendly clothing.",
+		},
+		Gujarat: {
+			monsoon: "Moderate rains. Waterproof clothing recommended.",
+			summer: "Very hot. Light, breathable fabrics essential.",
+			winter: "Cool to cold. Light to medium layers needed.",
+		},
+		"Uttar Pradesh": {
+			monsoon: "Heavy rains in some areas. Waterproof clothing essential.",
+			summer: "Hot and humid. Light fabrics recommended.",
+			winter: "Cold winters. Heavy woolens required.",
+		},
+		Punjab: {
+			monsoon: "Moderate rains. Waterproof clothing recommended.",
+			summer: "Hot and dry. Light, breathable fabrics essential.",
+			winter: "Cold winters. Heavy woolens required.",
+		},
+		Bihar: {
+			monsoon: "Heavy rains expected. Waterproof clothing essential.",
+			summer: "Hot and humid. Light, breathable fabrics recommended.",
+			winter: "Cold winters. Heavy woolens required.",
+		},
+		Jharkhand: {
+			monsoon: "Heavy rains expected. Waterproof clothing essential.",
+			summer: "Hot and humid. Light, breathable fabrics recommended.",
+			winter: "Cold winters. Heavy woolens required.",
+		},
+		Telangana: {
+			monsoon: "Moderate rains. Quick-dry fabrics preferred.",
+			summer: "Hot and humid. Light, breathable fabrics recommended.",
+			winter: "Mild winters. Light layers sufficient.",
+		},
+		"Andhra Pradesh": {
+			monsoon: "Moderate rains. Quick-dry fabrics preferred.",
+			summer: "Hot and humid. Light, breathable fabrics recommended.",
+			winter: "Mild winters. Light layers sufficient.",
+		},
+		"Jammu and Kashmir": {
+			monsoon: "Light rains. Cool temperatures.",
+			summer: "Pleasant summers. Light layers recommended.",
+			winter: "Very cold. Heavy woolens required.",
+		},
+		Chhattisgarh: {
+			monsoon: "Heavy rains expected. Waterproof clothing essential.",
+			summer: "Hot and humid. Light, breathable fabrics recommended.",
+			winter: "Cool winters. Light layers sufficient.",
+		},
+		Odisha: {
+			monsoon: "Heavy rains expected. Waterproof clothing essential.",
+			summer: "Hot and humid. Light, breathable fabrics recommended.",
+			winter: "Pleasant winters. Light layers sufficient.",
+		},
+		Uttarakhand: {
+			monsoon: "Heavy rains expected. Waterproof clothing essential.",
+			summer: "Pleasant in hills, hot in plains. Layering recommended.",
+			winter: "Cold in hills, mild in plains. Heavy woolens needed in hills.",
+		},
+		Haryana: {
+			monsoon: "Moderate rains. Waterproof clothing recommended.",
+			summer: "Hot and dry. Light, breathable fabrics essential.",
+			winter: "Cold winters. Heavy woolens required.",
+		},
+		"Himachal Pradesh": {
+			monsoon: "Heavy rains in some areas. Waterproof clothing essential.",
+			summer: "Pleasant in hills, hot in plains. Layering recommended.",
+			winter: "Cold in hills, mild in plains. Heavy woolens needed in hills.",
+		},
+		Goa: {
+			monsoon: "Heavy rains expected. Waterproof clothing essential.",
+			summer: "Hot and humid. Light, breathable fabrics recommended.",
+			winter: "Pleasant winters. Light layers sufficient.",
+		},
+		Assam: {
+			monsoon: "Heavy rains expected. Waterproof clothing essential.",
+			summer: "Hot and humid. Light, breathable fabrics recommended.",
+			winter: "Cool winters. Light layers sufficient.",
+		},
+		Meghalaya: {
+			monsoon: "Very heavy rains expected. Waterproof clothing essential.",
+			summer: "Cool and pleasant. Light layers recommended.",
+			winter: "Cold in some areas. Medium layers needed.",
+		},
+		Nagaland: {
+			monsoon: "Heavy rains expected. Waterproof clothing essential.",
+			summer: "Pleasant summers. Light layers recommended.",
+			winter: "Cool to cold. Medium layers needed.",
+		},
+		Tripura: {
+			monsoon: "Heavy rains expected. Waterproof clothing essential.",
+			summer: "Hot and humid. Light, breathable fabrics recommended.",
+			winter: "Cool winters. Light layers sufficient.",
+		},
+		Mizoram: {
+			monsoon: "Heavy rains expected. Waterproof clothing essential.",
+			summer: "Pleasant summers. Light layers recommended.",
+			winter: "Cool to cold. Medium layers needed.",
+		},
+		"Arunachal Pradesh": {
+			monsoon: "Heavy rains expected. Waterproof clothing essential.",
+			summer: "Pleasant summers. Light layers recommended.",
+			winter: "Cold in most areas. Heavy woolens required.",
+		},
+		Sikkim: {
+			monsoon: "Heavy rains expected. Waterproof clothing essential.",
+			summer: "Pleasant summers. Light layers recommended.",
+			winter: "Cold in most areas. Heavy woolens required.",
 		},
 	};
 
