@@ -3,6 +3,8 @@ const axios = require("axios"); // npm install axios
 
 // Indian cities with their coordinates for weather API
 const INDIAN_CITIES = {
+	// Format: cityName: { lat: latitude, lon: longitude, state: "State Name" }
+	kochi: { lat: 9.9312, lon: 76.2673, state: "Kerala" },
 	mumbai: { lat: 19.076, lon: 72.8777, state: "Maharashtra" },
 	delhi: { lat: 28.7041, lon: 77.1025, state: "Delhi" },
 	bangalore: { lat: 12.9716, lon: 77.5946, state: "Karnataka" },
@@ -47,8 +49,8 @@ const INDIAN_CITIES = {
 };
 
 // Weather API configuration (using OpenWeatherMap as example)
-const WEATHER_API_KEY = process.env.WEATHER_API_KEY || "your_api_key_here";
-const WEATHER_API_BASE = "https://api.openweathermap.org/data/2.5";
+const WEATHER_API_KEY = process.env.WEATHER_API_KEY || "";
+const WEATHER_API_BASE = "https://api.openweathermap.org/data/3.0";
 
 // Get current weather for Indian city
 const getCurrentWeather = async (cityName) => {
