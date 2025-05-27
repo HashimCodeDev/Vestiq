@@ -32,7 +32,8 @@
 		"morgan": "^1.10.0",
 		"multer": "^2.0.0",
 		"node-cron": "^4.0.7",
-		"razorpay": "^2.9.6"
+		"razorpay": "^2.9.6",
+		"sharp": "^0.34.2"
 	},
 	"devDependencies": {
 		"eslint": "^9.27.0",
