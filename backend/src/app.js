@@ -6,15 +6,15 @@ const rateLimit = require("express-rate-limit");
 require("dotenv").config();
 
 // Import routes
-const authRoutes = require("./routes/auth");
-const userRoutes = require("./routes/users");
-const outfitRoutes = require("./routes/outfits");
-const recommendationRoutes = require("./routes/recommendations");
-const regionalRoutes = require("./routes/regional");
+const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
+const outfitRoutes = require("./routes/outfitsRoutes");
+//const recommendationRoutes = require("./routes/recommendations");
+//const regionalRoutes = require("./routes/regional");
 
 // Import middleware
 const errorHandler = require("./middleware/errorHandler");
-const notFound = require("./middleware/notFound");
+//const notFound = require("./middleware/notFound");
 
 const app = express();
 
@@ -82,11 +82,11 @@ app.get("/health", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/outfits", outfitRoutes);
-app.use("/api/recommendations", recommendationRoutes);
-app.use("/api/regional", regionalRoutes);
+//app.use("/api/recommendations", recommendationRoutes);
+//app.use("/api/regional", regionalRoutes);
 
 // Error handling middleware
-app.use(notFound);
-app.use(errorHandler);
+//app.use(notFound);
+//app.use(errorHandler);
 
 module.exports = app;

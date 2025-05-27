@@ -92,4 +92,43 @@ const optionalAuth = async (req, res, next) => {
 	}
 };
 
-module.exports = { authenticate, optionalAuth };
+const verifyFirebaseToken = async (req, res, next) => {
+	if (!req.user) {
+		return res.status(401).json({
+			success: false,
+			message: "Unauthorized access. Please login.",
+		});
+	}
+
+	next();
+};
+
+const getUser = async (req, res, next) => {
+	if (!req.user) {
+		return res.status(401).json({
+			success: false,
+			message: "Unauthorized access. Please login.",
+		});
+	}
+
+	try {
+		const user = await User.findById(req.user.id).select("-password -__v");
+		if (!user) {
+			return res.status(404).json({
+				success: false,
+				message: "User not found.",
+			});
+		}
+
+		req.user = user;
+		next();
+	} catch (error) {
+		console.error("Get user error:", error);
+		return res.status(500).json({
+			success: false,
+			message: "Internal server error.",
+		});
+	}
+};
+
+module.exports = { authenticate, optionalAuth, verifyFirebaseToken, getUser };
