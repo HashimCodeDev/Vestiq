@@ -7,23 +7,16 @@ import WelcomeCard from './components/WelcomeCard';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
-      <div className="max-w-md mx-auto bg-white min-h-screen">
-        {/* Main Content */}
-        <div className="h-full p-10 space-y-6">
-          <WelcomeCard />
-          {/* <WardrobeSection />
-           <TrendingSection /> */}
-        </div>
-
-        {/* Clothing Grid */}
-        <div className="p-4">
-          {/* <Suspense
-            fallback={<div className="text-center py-8">Loading...</div>}
-          >
-            <ClothingGrid />
-          </Suspense> */}
-        </div>
+    <div>
+      <div className="block max-w-md h-[7.5rem] p-0 mask-origin-border bg-[#C78E58] rounded-xl shadow-sm">
+        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+          Hi ✋ Olivia Bennett,
+          <br />
+          Welcome!{' '}
+        </h5>
+        <p className="font-normal text-white ">
+          Discover new outfits and trends today{' '}
+        </p>
       </div>
     </div>
   );
