@@ -115,9 +115,6 @@ body {
   .text-shadow-neon {
     text-shadow: var(--shadow-neon);
   }
-  .font-jakarta {
-    font-family: var(--font-jakarta);
-  }
 }
 
 .dark {

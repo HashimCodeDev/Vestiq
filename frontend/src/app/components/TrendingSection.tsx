@@ -6,6 +6,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
+import Image from 'next/image';
 
 export default function TrendingSection() {
   const carouselItems = [
@@ -27,9 +28,11 @@ export default function TrendingSection() {
                 <Card>
                   <CardContent className="flex aspect-square items-center justify-center">
                     <span className="text-2xl font-semibold">
-                      <img
+                      <Image
                         src={item}
                         alt={`Wardrobe item ${index + 1}`}
+                        width={200}
+                        height={400}
                         className="w-full h-full object-cover rounded-lg"
                       />
                     </span>
