@@ -6,6 +6,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
+import Image from 'next/image';
 
 export default function WardrobeSection() {
   const carouselItems = [
@@ -27,8 +28,10 @@ export default function WardrobeSection() {
                 <Card>
                   <CardContent className="flex aspect-square items-center justify-center">
                     <span className="text-2xl font-semibold">
-                      <img
+                      <Image
                         src={item}
+                        width={200}
+                        height={400}
                         alt={`Wardrobe item ${index + 1}`}
                         className="w-full h-full object-cover rounded-lg"
                       />

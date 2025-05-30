@@ -7,8 +7,8 @@ export default function WelcomeCard() {
           <br />
           Welcome!{' '}
         </h5>
-        <p className="font-normal text-white font-jakarta py-2">
-          Discover new outfits and trends today{' '}
+        <p className=" font-normal text-white font-jakarta py-2">
+          Discover new outfits and trends today
         </p>
       </div>
     </>
