@@ -19,7 +19,7 @@ export default function WardrobeSection() {
 
   return (
     <div className="max-w-md mx-auto mt-8 p-4">
-      <h2 className="text-2xl font-bold mb-4">My Wardrobe</h2>
+      <h2 className="text-1xl font-bold mb-4">My Wardrobe</h2>
       <Carousel className="w-full max-w-sm">
         <CarouselContent className="-ml-1">
           {carouselItems.map((item, index) => (

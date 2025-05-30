@@ -16,7 +16,7 @@ export default function Header() {
   const title = titles[pathname] || 'Wearzy';
 
   return (
-    <div className="relative w-full h-16 flex items-center bg-white border-b border-gray-200 px-4">
+    <div className="relative w-full h-16 flex items-center bg-background px-4">
       {/* CENTERED TITLE */}
       <h1 className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-xl font-semibold">
         {title}

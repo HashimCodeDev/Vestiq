@@ -23,7 +23,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="fixed w-full bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 py-3 mb-8">
+      <div className="fixed w-full bottom-0 left-0 right-0 bg-background border-t z-50 py-3 mb-8">
         <div className="max-w-md mx-auto">
           <div className="flex justify-around items-center">
             {navItems.map((item) => {
@@ -36,11 +36,11 @@ export default function Navbar() {
                   href={item.href}
                   className={`flex flex-col items-center justify-center p-2 rounded-lg transition-colors ${
                     isActive
-                      ? 'text-blue-600 bg-blue-50'
+                      ? 'text-blue-600 bg-blue-50 stroke-3'
                       : 'text-gray-600 hover:text-gray-800'
                   }`}
                 >
-                  <Icon size={24} />
+                  <Icon color={isActive ? 'black' : 'gray'} size={24} />
                 </Link>
               );
             })}
