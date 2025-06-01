@@ -38,6 +38,7 @@ export default function LoginPage() {
       router.push('/'); // Redirect to home page after successful login
     } catch (error: any) {
       setError(error.message || 'Failed to sign in with Google');
+      console.error('Google sign-in error:', error.message);
     } finally {
       setIsLoading(false);
     }

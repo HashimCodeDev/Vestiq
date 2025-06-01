@@ -2,6 +2,7 @@ import { Geist, Geist_Mono, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import Navbar from './components/NavBar';
 import Header from './components/Header';
+import { AuthProvider } from './context/AuthContext';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -38,7 +39,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${jakarta.variable} antialiased`}
       >
         <Header />
-        <div className="flex flex-col min-h-screen px-4">{children}</div>
+        <AuthProvider>
+          <div className="flex flex-col min-h-screen px-4">{children}</div>
+        </AuthProvider>
         <Navbar />
         <div className="h-16" /> {/* Spacer for fixed navbar */}
       </body>
