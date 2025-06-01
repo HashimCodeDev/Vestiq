@@ -22,30 +22,52 @@ export default function LoginPage() {
     try {
       await signIn(email, password);
       router.push('/'); // Redirect to home page after successful login
-    } catch (error: any) {
-      switch (error.code) {
-        case 'auth/invalid-credential':
-          setError('Invalid credentials. Please try again.');
-          break;
-        case 'auth/invalid-email':
-          setError('Invalid email format.');
-          break;
-        case 'auth/user-not-found':
-          setError('No account found with this email.');
-          break;
-        case 'auth/wrong-password':
-          setError('Wrong password. Try again.');
-          break;
-        case 'auth/too-many-requests':
-          setError(
-            'Too many failed attempts. Please wait and try again later.',
-          );
-          break;
-        default:
-          setError('Login failed. Please try again.');
-          break;
+    } catch (error: unknown) {
+      let errorMessage = 'Login failed. Please try again.';
+
+      if (
+        typeof error === 'object' &&
+        error !== null &&
+        'code' in error &&
+        typeof (error as { code: string }).code === 'string'
+      ) {
+        const errorCode = (error as { code: string }).code;
+
+        switch (errorCode) {
+          case 'auth/invalid-credential':
+            errorMessage = 'Invalid credentials. Please try again.';
+            break;
+          case 'auth/invalid-email':
+            errorMessage = 'Invalid email format.';
+            break;
+          case 'auth/user-not-found':
+            errorMessage = 'No account found with this email.';
+            break;
+          case 'auth/wrong-password':
+            errorMessage = 'Wrong password. Try again.';
+            break;
+          case 'auth/too-many-requests':
+            errorMessage =
+              'Too many failed attempts. Please wait and try again later.';
+            break;
+          default:
+            errorMessage = 'Login failed. Please try again.';
+            break;
+        }
       }
-      console.error('Login error:', error.message);
+
+      setError(errorMessage);
+
+      if (
+        typeof error === 'object' &&
+        error !== null &&
+        'message' in error &&
+        typeof (error as { message: string }).message === 'string'
+      ) {
+        console.error('Login error:', (error as { message: string }).message);
+      } else {
+        console.error('Unknown login error:', error);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -58,11 +80,17 @@ export default function LoginPage() {
     try {
       await signInWithGoogle();
       router.push('/'); // Redirect to home page after successful login
-    } catch (error: any) {
-      setError(error.message || 'Failed to sign in with Google');
-      console.error('Google sign-in error:', error.message);
-    } finally {
-      setIsLoading(false);
+    } catch (error: unknown) {
+      let errorMessage = 'Failed to sign in with Google';
+
+      if (error instanceof Error) {
+        errorMessage = error.message;
+        console.error('Google sign-in error:', error.message);
+      } else {
+        console.error('Unknown error during Google sign-in:', error);
+      }
+
+      setError(errorMessage);
     }
   };
 

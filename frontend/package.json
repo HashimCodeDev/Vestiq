@@ -17,25 +17,25 @@
     "embla-carousel-react": "^8.6.0",
     "firebase": "^11.8.1",
     "lucide-react": "^0.511.0",
-    "next": "15.3.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "shadcn": "^2.5.0",
+    "next": "15.3.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "shadcn": "^2.6.0",
     "tailwind-merge": "^3.3.0"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
+    "@eslint/eslintrc": "^3.3.1",
+    "@tailwindcss/postcss": "^4.1.8",
+    "@types/node": "^20.17.57",
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.5",
+    "eslint": "^9.28.0",
     "eslint-config-next": "15.3.2",
     "prettier": "^3.5.3",
-    "tailwindcss": "^4",
+    "tailwindcss": "^4.1.8",
     "tailwindcss-animate": "^1.0.7",
-    "tw-animate-css": "^1.3.2",
-    "typescript": "^5"
+    "tw-animate-css": "^1.3.3",
+    "typescript": "^5.8.3"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
