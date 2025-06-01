@@ -17,6 +17,9 @@ const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-jakarta',
+  display: 'swap',
+  preload: true,
+  fallback: ['system-ui', 'sans-serif'],
 });
 
 export const metadata = {
@@ -35,10 +38,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${jakarta.variable} antialiased`}
       >
         <Header />
-        <div className="flex flex-col min-h-screen px-4">
-          {children}
-          <Navbar />
-        </div>
+        <div className="flex flex-col min-h-screen px-4">{children}</div>
+        <Navbar />
+        <div className="h-16" /> {/* Spacer for fixed navbar */}
       </body>
     </html>
   );

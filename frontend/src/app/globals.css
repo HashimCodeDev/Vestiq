@@ -131,6 +131,24 @@ body {
     sans-serif;
 }
 
+/* In your globals.css or equivalent */
+html,
+body {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+/* For better mobile support */
+@supports (padding: max(0px)) {
+  .safe-area-inset-bottom {
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+  }
+
+  .pb-safe {
+    padding-bottom: max(64px, calc(64px + env(safe-area-inset-bottom)));
+  }
+}
+
 @layer utilities {
   .text-shadow-sm {
     text-shadow: var(--shadow-sm);
