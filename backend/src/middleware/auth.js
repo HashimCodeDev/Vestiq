@@ -1,134 +1,89 @@
-const { auth } = require("../config/firebase");
-const User = require("../models/User");
+// middleware/auth.js
+const { auth } = require("../config/firebase-admin");
 
-const authenticate = async (req, res, next) => {
+const authenticateToken = async (req, res, next) => {
 	try {
 		const authHeader = req.headers.authorization;
+		const token = authHeader && authHeader.split(" ")[1]; // Bearer TOKEN
 
-		if (!authHeader || !authHeader.startsWith("Bearer ")) {
+		if (!token) {
 			return res.status(401).json({
-				success: false,
-				message: "Access denied. No token provided.",
+				error: "Access token required",
+				code: "TOKEN_REQUIRED",
 			});
 		}
 
-		const token = authHeader.split(" ")[1];
-
-		// Verify Firebase token
+		// Verify the ID token
 		const decodedToken = await auth.verifyIdToken(token);
 
-		// Find user in our database
-		const user = await User.findOne({ firebaseUid: decodedToken.uid });
-
-		if (!user) {
-			return res.status(401).json({
-				success: false,
-				message: "User not found. Please register first.",
-			});
-		}
-
-		if (!user.isActive) {
-			return res.status(401).json({
-				success: false,
-				message: "Account has been deactivated.",
-			});
-		}
-
-		// Add user info to request
+		// Add user info to request object
 		req.user = {
-			id: user._id,
-			firebaseUid: user.firebaseUid,
-			email: user.email,
-			displayName: user.displayName,
+			uid: decodedToken.uid,
+			email: decodedToken.email,
+			name: decodedToken.name,
+			picture: decodedToken.picture,
+			email_verified: decodedToken.email_verified,
+			firebase: decodedToken,
 		};
 
 		next();
 	} catch (error) {
-		console.error("Authentication error:", error);
+		console.error("Token verification error:", error);
 
 		if (error.code === "auth/id-token-expired") {
 			return res.status(401).json({
-				success: false,
-				message: "Token expired. Please login again.",
+				error: "Token expired",
 				code: "TOKEN_EXPIRED",
 			});
 		}
 
-		return res.status(401).json({
-			success: false,
-			message: "Invalid token.",
-		});
-	}
-};
-
-// Optional authentication (for routes that work with or without auth)
-const optionalAuth = async (req, res, next) => {
-	try {
-		const authHeader = req.headers.authorization;
-
-		if (!authHeader || !authHeader.startsWith("Bearer ")) {
-			req.user = null;
-			return next();
-		}
-
-		const token = authHeader.split(" ")[1];
-		const decodedToken = await auth.verifyIdToken(token);
-		const user = await User.findOne({ firebaseUid: decodedToken.uid });
-
-		req.user =
-			user ?
-				{
-					id: user._id,
-					firebaseUid: user.firebaseUid,
-					email: user.email,
-					displayName: user.displayName,
-				}
-			:	null;
-
-		next();
-	} catch (error) {
-		req.user = null;
-		next();
-	}
-};
-
-const verifyFirebaseToken = async (req, res, next) => {
-	if (!req.user) {
-		return res.status(401).json({
-			success: false,
-			message: "Unauthorized access. Please login.",
-		});
-	}
-
-	next();
-};
-
-const getUser = async (req, res, next) => {
-	if (!req.user) {
-		return res.status(401).json({
-			success: false,
-			message: "Unauthorized access. Please login.",
-		});
-	}
-
-	try {
-		const user = await User.findById(req.user.id).select("-password -__v");
-		if (!user) {
-			return res.status(404).json({
-				success: false,
-				message: "User not found.",
+		if (error.code === "auth/id-token-revoked") {
+			return res.status(401).json({
+				error: "Token revoked",
+				code: "TOKEN_REVOKED",
 			});
 		}
 
-		req.user = user;
-		next();
-	} catch (error) {
-		console.error("Get user error:", error);
-		return res.status(500).json({
-			success: false,
-			message: "Internal server error.",
+		return res.status(401).json({
+			error: "Invalid token",
+			code: "INVALID_TOKEN",
 		});
 	}
 };
 
-module.exports = { authenticate, optionalAuth, verifyFirebaseToken, getUser };
+// Optional middleware - doesn't fail if no token provided
+const optionalAuth = async (req, res, next) => {
+	try {
+		const authHeader = req.headers.authorization;
+		const token = authHeader && authHeader.split(" ")[1];
+
+		if (token) {
+			const decodedToken = await auth.verifyIdToken(token);
+			req.user = {
+				uid: decodedToken.uid,
+				email: decodedToken.email,
+				name: decodedToken.name,
+				picture: decodedToken.picture,
+				email_verified: decodedToken.email_verified,
+				firebase: decodedToken,
+			};
+		}
+
+		next();
+	} catch (error) {
+		// Continue without user info if token is invalid
+		next();
+	}
+};
+
+const getUser = (req, res, next) => {
+	if (!req.user) {
+		return res.status(401).json({
+			error: "User not authenticated",
+			code: "USER_NOT_AUTHENTICATED",
+		});
+	}
+	next();
+};
+
+module.exports = { authenticateToken, optionalAuth, getUser };

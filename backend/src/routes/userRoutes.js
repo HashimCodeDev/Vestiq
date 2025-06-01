@@ -6,7 +6,7 @@ const {
 	deleteUserAccount,
 } = require("../controllers/userController.js");
 
-const { verifyFirebaseToken, getUser } = require("../middleware/auth");
+const { authenticateToken, getUser } = require("../middleware/auth");
 const { validateProfileUpdate } = require("../middleware/validation");
 
 /**
@@ -14,7 +14,7 @@ const { validateProfileUpdate } = require("../middleware/validation");
  * @desc    Get user profile
  * @access  Private
  */
-router.get("/profile", verifyFirebaseToken, getUser, getUserProfile);
+router.get("/profile", authenticateToken, getUser, getUserProfile);
 
 /**
  * @route   PUT /api/users/profile
@@ -23,7 +23,7 @@ router.get("/profile", verifyFirebaseToken, getUser, getUserProfile);
  */
 router.put(
 	"/profile",
-	verifyFirebaseToken,
+	authenticateToken,
 	getUser,
 	validateProfileUpdate,
 	updateUserProfile
@@ -34,6 +34,6 @@ router.put(
  * @desc    Delete user account
  * @access  Private
  */
-router.delete("/profile", verifyFirebaseToken, getUser, deleteUserAccount);
+router.delete("/profile", authenticateToken, getUser, deleteUserAccount);
 
 module.exports = router;
