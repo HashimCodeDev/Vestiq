@@ -6,7 +6,10 @@ import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import { Input } from '@/components/ui/input';
 import { Alert, AlertTitle } from '@/components/ui/alert';
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import { WarningCircleIcon } from '@phosphor-icons/react';
+import { Button } from '@/components/ui/button';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -152,19 +155,13 @@ export default function LoginPage() {
         </div>
 
         <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <input
+          <div className="flex items-center gap-1">
+            <Checkbox
               id="remember-me"
               name="remember-me"
-              type="checkbox"
-              className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+              disabled={isLoading}
             />
-            <label
-              htmlFor="remember-me"
-              className="ml-2 block text-sm text-gray-900"
-            >
-              Remember me
-            </label>
+            <Label htmlFor="remember-me">Remember me</Label>
           </div>
 
           <div className="text-sm">
@@ -178,13 +175,13 @@ export default function LoginPage() {
         </div>
 
         <div>
-          <button
+          <Button
             type="submit"
             disabled={isLoading}
             className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? 'Signing in...' : 'Sign in'}
-          </button>
+          </Button>
         </div>
 
         <div className="mt-6">
@@ -193,18 +190,18 @@ export default function LoginPage() {
               <div className="w-full border-t border-gray-300" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">
+              <span className="px-2 bg-background text-gray-500">
                 Or continue with
               </span>
             </div>
           </div>
 
           <div className="mt-6">
-            <button
+            <Button
               type="button"
               onClick={handleGoogleSignIn}
               disabled={isLoading}
-              className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-background text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                 <path
@@ -225,7 +222,7 @@ export default function LoginPage() {
                 />
               </svg>
               Sign in with Google
-            </button>
+            </Button>
           </div>
         </div>
       </form>
