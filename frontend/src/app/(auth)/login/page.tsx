@@ -4,6 +4,9 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
+import { Input } from '@/components/ui/input';
+import { Alert, AlertTitle } from '@/components/ui/alert';
+import { WarningCircleIcon } from '@phosphor-icons/react';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -95,9 +98,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-md overflow-hidden">
+    <div className="max-w-md w-full space-y-8 p-8 bg-background rounded-lg shadow-md overflow-hidden">
       <div>
-        <h2 className="text-center text-3xl font-bold text-gray-900">
+        <h2 className="text-center text-3xl font-bold text-foreground">
           Sign in to Wearzy
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
@@ -106,9 +109,10 @@ export default function LoginPage() {
       </div>
 
       {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
-          {error}
-        </div>
+        <Alert variant="destructive" className="my-4">
+          <WarningCircleIcon className="h-4 w-4" />
+          <AlertTitle>{error}</AlertTitle>
+        </Alert>
       )}
 
       <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -117,13 +121,12 @@ export default function LoginPage() {
             <label htmlFor="email" className="sr-only">
               Email address
             </label>
-            <input
+            <Input
               id="email"
               name="email"
               type="email"
               autoComplete="email"
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               placeholder="Email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -134,13 +137,12 @@ export default function LoginPage() {
             <label htmlFor="password" className="sr-only">
               Password
             </label>
-            <input
+            <Input
               id="password"
               name="password"
               type="password"
               autoComplete="current-password"
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
