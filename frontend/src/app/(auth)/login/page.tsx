@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '@/context/AuthContext';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -23,7 +23,29 @@ export default function LoginPage() {
       await signIn(email, password);
       router.push('/'); // Redirect to home page after successful login
     } catch (error: any) {
-      setError(error.message || 'Failed to sign in');
+      switch (error.code) {
+        case 'auth/invalid-credential':
+          setError('Invalid credentials. Please try again.');
+          break;
+        case 'auth/invalid-email':
+          setError('Invalid email format.');
+          break;
+        case 'auth/user-not-found':
+          setError('No account found with this email.');
+          break;
+        case 'auth/wrong-password':
+          setError('Wrong password. Try again.');
+          break;
+        case 'auth/too-many-requests':
+          setError(
+            'Too many failed attempts. Please wait and try again later.',
+          );
+          break;
+        default:
+          setError('Login failed. Please try again.');
+          break;
+      }
+      console.error('Login error:', error.message);
     } finally {
       setIsLoading(false);
     }

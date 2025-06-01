@@ -30,12 +30,7 @@ app.use(
 
 // CORS configuration for Indian domains
 const corsOptions = {
-	origin: [
-		"http://localhost:3000",
-		"https://outfitly.vercel.app",
-		"https://outfitly.in",
-		"https://www.outfitly.in",
-	],
+	origin: ["http://localhost:3000", "https://outfitly.vercel.app"],
 	credentials: true,
 	optionsSuccessStatus: 200,
 };
