@@ -3,10 +3,7 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from '@/components/ui/carousel';
-import { Car } from 'lucide-react';
 import Image from 'next/image';
 
 export default function WardrobeSection() {
