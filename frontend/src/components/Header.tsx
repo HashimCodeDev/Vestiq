@@ -2,7 +2,14 @@
 
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer';
 import { ListIcon, UserIcon } from '@phosphor-icons/react';
 
 const titles: Record<string, string> = {
@@ -23,13 +30,20 @@ export default function Header() {
       <div className="mr-auto absolute left-4">
         <Drawer direction="left">
           <DrawerTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <ListIcon size={50} />
+            <Button variant="ghost" size="icon" asChild>
+              <ListIcon size={10} />
             </Button>
           </DrawerTrigger>
-          <DrawerContent className="p-4">
-            <div className="text-lg font-semibold mb-4">Menu</div>
-            <ul className="space-y-2">
+          <DrawerContent className="p-4 max-w-1/2">
+            <DrawerHeader
+              className="text-left"
+              aria-description="Drawer Header"
+              aria-describedby={undefined}
+            >
+              <DrawerTitle>Wearzy</DrawerTitle>
+              <DrawerDescription></DrawerDescription>
+            </DrawerHeader>
+            <ul className="mt-4 ml-4 space-y-2">
               {Object.entries(titles).map(([path, name]) => (
                 <li key={path}>
                   <a
@@ -52,8 +66,8 @@ export default function Header() {
 
       {/* RIGHT ICON */}
       <div className="ml-auto absolute right-4">
-        <Button variant="ghost" size="icon">
-          <UserIcon size={50} />
+        <Button variant="ghost" size="icon" asChild>
+          <UserIcon size={28} />
         </Button>
       </div>
     </div>
