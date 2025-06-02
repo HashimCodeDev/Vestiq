@@ -2,6 +2,7 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { UserIcon } from '@phosphor-icons/react';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 interface ClothingItem {
   id: number;
@@ -153,15 +154,17 @@ const ClothingCard: React.FC<{ item: ClothingItem }> = ({ item }) => {
 
 export default function ShoppingPage() {
   return (
-    <div className="min-h-screen bg-background">
-      {/* Clothing Grid */}
-      <div className="max-w-md mx-auto px-4 pb-20">
-        <div className="grid grid-cols-2 gap-4">
-          {clothingItems.map((item) => (
-            <ClothingCard key={item.id} item={item} />
-          ))}
+    <ProtectedRoute>
+      <div className="min-h-screen bg-background">
+        {/* Clothing Grid */}
+        <div className="max-w-md mx-auto px-4 pb-20">
+          <div className="grid grid-cols-2 gap-4">
+            {clothingItems.map((item) => (
+              <ClothingCard key={item.id} item={item} />
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </ProtectedRoute>
   );
 }

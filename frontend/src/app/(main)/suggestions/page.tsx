@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { ThumbsUpIcon, ThumbsDownIcon } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 interface OutfitItem {
   id: string;
@@ -161,105 +162,109 @@ const SuggestionsPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="bg-background shadow-sm border-b">
-        <div className="max-w-md mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-lg font-semibold text-foreground">
-              Good Evening, Olivia
-            </h1>
-            <div className="w-8 h-8 bg-orange-400 rounded-full flex items-center justify-center">
-              <span className="text-foreground text-sm font-medium">O</span>
+    <ProtectedRoute>
+      <div className="min-h-screen bg-background">
+        {/* Header */}
+        <div className="bg-background shadow-sm border-b">
+          <div className="max-w-md mx-auto px-4 py-4">
+            <div className="flex items-center justify-between">
+              <h1 className="text-lg font-semibold text-foreground">
+                Good Evening, Olivia
+              </h1>
+              <div className="w-8 h-8 bg-orange-400 rounded-full flex items-center justify-center">
+                <span className="text-foreground text-sm font-medium">O</span>
+              </div>
             </div>
+            <p className="text-foreground text-sm mt-1">
+              Picks Based on Your Style
+            </p>
           </div>
-          <p className="text-foreground text-sm mt-1">
-            Picks Based on Your Style
-          </p>
+        </div>
+
+        {/* Suggestions */}
+        <div className="max-w-md mx-auto px-4 py-6 space-y-8">
+          {suggestions.map((suggestion) => (
+            <div
+              key={suggestion.id}
+              className="bg-background rounded-2xl shadow-sm overflow-hidden"
+            >
+              {/* Outfit Grid */}
+              <div className="p-6">
+                <div className="grid grid-cols-3 gap-4 mb-4">
+                  {suggestion.items.map((item) => (
+                    <div
+                      key={item.id}
+                      className="aspect-square bg-background rounded-lg overflow-hidden"
+                    >
+                      <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                        <Image
+                          src={item.image}
+                          alt={item.alt}
+                          width={120}
+                          height={120}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Title and Subtitle */}
+                <div className="mb-4">
+                  <h3 className="text-xl font-semibold text-foreground mb-1">
+                    {suggestion.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm">{suggestion.subtitle}</p>
+                </div>
+
+                {/* View Button */}
+                <button className="w-full bg-blue-500 hover:bg-blue-600 text-foreground font-medium py-3 px-4 rounded-lg transition-colors">
+                  View
+                </button>
+              </div>
+
+              {/* Interaction Bar */}
+              <div className="flex items-center justify-between px-6 py-4 bg-background border-t">
+                <Button
+                  variant="ghost"
+                  className={`flex items-center space-x-2 ${
+                    likedSuggestions[suggestion.id]
+                      ? 'text-red-500'
+                      : 'text-foreground'
+                  } hover:text-red-500 transition-colors`}
+                  onClick={() => handleLike(suggestion.id)}
+                >
+                  <ThumbsUpIcon
+                    className="w-5 h-5"
+                    weight={
+                      likedSuggestions[suggestion.id] ? 'fill' : 'regular'
+                    }
+                  />
+                  <span className="text-sm">{suggestion.likes}</span>
+                </Button>
+
+                <Button
+                  variant="ghost"
+                  className={`flex items-center space-x-2 ${
+                    dislikedSuggestions[suggestion.id]
+                      ? 'text-red-500'
+                      : 'text-foreground'
+                  } hover:text-red-500 transition-colors`}
+                  onClick={() => handleDislike(suggestion.id)}
+                >
+                  <ThumbsDownIcon
+                    className="w-5 h-5"
+                    weight={
+                      dislikedSuggestions[suggestion.id] ? 'fill' : 'regular'
+                    }
+                  />
+                  <span className="text-sm">{suggestion.dislikes}</span>
+                </Button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-
-      {/* Suggestions */}
-      <div className="max-w-md mx-auto px-4 py-6 space-y-8">
-        {suggestions.map((suggestion) => (
-          <div
-            key={suggestion.id}
-            className="bg-background rounded-2xl shadow-sm overflow-hidden"
-          >
-            {/* Outfit Grid */}
-            <div className="p-6">
-              <div className="grid grid-cols-3 gap-4 mb-4">
-                {suggestion.items.map((item) => (
-                  <div
-                    key={item.id}
-                    className="aspect-square bg-background rounded-lg overflow-hidden"
-                  >
-                    <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
-                      <Image
-                        src={item.image}
-                        alt={item.alt}
-                        width={120}
-                        height={120}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Title and Subtitle */}
-              <div className="mb-4">
-                <h3 className="text-xl font-semibold text-foreground mb-1">
-                  {suggestion.title}
-                </h3>
-                <p className="text-gray-600 text-sm">{suggestion.subtitle}</p>
-              </div>
-
-              {/* View Button */}
-              <button className="w-full bg-blue-500 hover:bg-blue-600 text-foreground font-medium py-3 px-4 rounded-lg transition-colors">
-                View
-              </button>
-            </div>
-
-            {/* Interaction Bar */}
-            <div className="flex items-center justify-between px-6 py-4 bg-background border-t">
-              <Button
-                variant="ghost"
-                className={`flex items-center space-x-2 ${
-                  likedSuggestions[suggestion.id]
-                    ? 'text-red-500'
-                    : 'text-foreground'
-                } hover:text-red-500 transition-colors`}
-                onClick={() => handleLike(suggestion.id)}
-              >
-                <ThumbsUpIcon
-                  className="w-5 h-5"
-                  weight={likedSuggestions[suggestion.id] ? 'fill' : 'regular'}
-                />
-                <span className="text-sm">{suggestion.likes}</span>
-              </Button>
-
-              <Button
-                variant="ghost"
-                className={`flex items-center space-x-2 ${
-                  dislikedSuggestions[suggestion.id]
-                    ? 'text-red-500'
-                    : 'text-foreground'
-                } hover:text-red-500 transition-colors`}
-                onClick={() => handleDislike(suggestion.id)}
-              >
-                <ThumbsDownIcon
-                  className="w-5 h-5"
-                  weight={
-                    dislikedSuggestions[suggestion.id] ? 'fill' : 'regular'
-                  }
-                />
-                <span className="text-sm">{suggestion.dislikes}</span>
-              </Button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+    </ProtectedRoute>
   );
 };
 

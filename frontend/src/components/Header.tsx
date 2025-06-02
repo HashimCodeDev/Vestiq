@@ -1,7 +1,9 @@
 'use client';
 
-import { User } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
+import { ListIcon, UserIcon } from '@phosphor-icons/react';
 
 const titles: Record<string, string> = {
   '/': 'Wearzy',
@@ -17,16 +19,42 @@ export default function Header() {
 
   return (
     <div className="relative w-full h-16 flex items-center bg-background px-4">
-      {/* CENTERED TITLE */}
+      {/* LEFT ICON - Drawer Trigger */}
+      <div className="mr-auto absolute left-4">
+        <Drawer direction="left">
+          <DrawerTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <ListIcon size={50} />
+            </Button>
+          </DrawerTrigger>
+          <DrawerContent className="p-4">
+            <div className="text-lg font-semibold mb-4">Menu</div>
+            <ul className="space-y-2">
+              {Object.entries(titles).map(([path, name]) => (
+                <li key={path}>
+                  <a
+                    href={path}
+                    className="block text-sm hover:underline transition"
+                  >
+                    {name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </DrawerContent>
+        </Drawer>
+      </div>
+
+      {/* CENTER TITLE */}
       <h1 className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-xl font-semibold">
         {title}
       </h1>
 
       {/* RIGHT ICON */}
       <div className="ml-auto absolute right-4">
-        <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
-          <User size={30} />
-        </button>
+        <Button variant="ghost" size="icon">
+          <UserIcon size={50} />
+        </Button>
       </div>
     </div>
   );
