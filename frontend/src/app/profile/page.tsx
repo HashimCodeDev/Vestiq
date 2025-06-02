@@ -11,6 +11,7 @@ import {
   QuestionIcon,
   SignOutIcon,
   UserIcon,
+  Icon,
 } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -87,7 +88,7 @@ export default function SettingsPage() {
   );
 }
 
-function SettingItem({ icon: Icon, label }: { icon: any; label: string }) {
+function SettingItem({ icon: Icon, label }: { icon: Icon; label: string }) {
   return (
     <div className="flex items-center justify-between py-3 border-b cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 px-2 rounded-md">
       <div className="flex items-center gap-3">
