@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const winston = require("winston");
 
-// Logger setup
+// Setup winston logger
 const logger = winston.createLogger({
 	level: "info",
 	format: winston.format.combine(
@@ -15,44 +15,37 @@ const logger = winston.createLogger({
 });
 
 const connectDB = async () => {
-	try {
-		const mongoURI =
-			process.env.NODE_ENV === "production" ?
-				process.env.MONGODB_URI_PROD
-			:	process.env.MONGODB_URI;
+	const mongoURI =
+		process.env.NODE_ENV === "production" ?
+			process.env.MONGODB_URI_PROD
+		:	process.env.MONGODB_URI;
 
-		const options = {
-			useNewUrlParser: true,
-			useUnifiedTopology: true,
+	try {
+		await mongoose.connect(mongoURI, {
+			// Only include options that are actually supported in v7+
 			maxPoolSize: 20,
-			serverSelectionTimeoutMS: 20000,
+			serverSelectionTimeoutMS: 5000,
 			socketTimeoutMS: 45000,
 			connectTimeoutMS: 10000,
-			autoReconnect: true,
-		};
+		});
 
-		await mongoose.connect(mongoURI, options);
-		logger.info(`MongoDB Connected: ${mongoose.connection.host}`);
+		logger.info(`MongoDB connected: ${mongoose.connection.host}`);
 	} catch (error) {
-		logger.error(`Initial DB connection failed: ${error.message}`);
-		process.exit(1); // Exit with failure
+		logger.error(`MongoDB initial connection error: ${error.message}`);
+		process.exit(1);
 	}
 
-	// Additional connection event handling
+	// Connection events
 	mongoose.connection.on("error", (err) => {
 		logger.error(`MongoDB error: ${err}`);
 	});
 
 	mongoose.connection.on("disconnected", () => {
-		logger.warn("MongoDB disconnected. Trying to reconnect...");
+		logger.warn("MongoDB disconnected. Attempting reconnection...");
 	});
 
 	mongoose.connection.on("reconnected", () => {
-		logger.info("MongoDB reconnected successfully");
-	});
-
-	mongoose.connection.on("connected", () => {
-		logger.info("MongoDB connected");
+		logger.info("MongoDB reconnected");
 	});
 };
 

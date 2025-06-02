@@ -4,8 +4,8 @@
 	"description": "",
 	"main": "src/server.js",
 	"scripts": {
-		"start": "node src/server.js",
-		"dev": "nodemon src/server.js",
+		"start": "node --trace-warnings src/server.js",
+		"dev": "nodemon --trace-warnings src/server.js",
 		"test": "jest",
 		"test:watch": "jest --watch",
 		"lint": "eslint src/",
