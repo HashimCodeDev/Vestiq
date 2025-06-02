@@ -30,7 +30,6 @@ admin.initializeApp({
 	projectId: process.env.FIREBASE_PROJECT_ID,
 });
 
-const db = admin.firestore();
 const auth = admin.auth();
 
-module.exports = { admin, db, auth };
+module.exports = { admin, auth };
