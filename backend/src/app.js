@@ -28,9 +28,9 @@ app.use(
 	})
 );
 
-// CORS configuration for Indian domains
+// CORS configuration for domains
 const corsOptions = {
-	origin: ["http://localhost:3000", "https://outfitly.vercel.app"],
+	origin: process.env.CLIENT_URL,
 	credentials: true,
 	optionsSuccessStatus: 200,
 };
