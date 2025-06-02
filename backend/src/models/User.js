@@ -26,6 +26,22 @@ const UserSchema = new mongoose.Schema(
 			type: String,
 			default: null,
 		},
+		createdAt: {
+			type: Date,
+			default: Date.now,
+		},
+		updatedAt: {
+			type: Date,
+			default: Date.now,
+		},
+		lastLogin: {
+			type: Date,
+			default: Date.now,
+		},
+		isNewUser: {
+			type: Boolean,
+			default: true,
+		},
 		preferences: {
 			bodyType: {
 				type: String,

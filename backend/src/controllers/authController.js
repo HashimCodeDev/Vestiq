@@ -1,97 +1,98 @@
+const { auth } = require("../config/firebase-admin");
 const User = require("../models/User");
 const logger = require("../utils/logger");
 
-const register = async (req, res) => {
+const verifyUser = async (req, res) => {
 	try {
-		const { email, displayName, firebaseUid } = req.body;
+		const { uid, email, displayName, photoURL } = req.body;
 
-		// Check if user already exists
-		const existingUser = await User.findOne({
-			$or: [{ email }, { firebaseUid }],
-		});
+		const userData = {
+			email,
+			displayName: displayName || null,
+			photoURL: photoURL || null,
+			lastLogin: new Date(),
+			updatedAt: new Date(),
+		};
 
-		if (existingUser) {
-			return res.status(400).json({
-				success: false,
-				message: "User already exists",
+		let user = await User.findOne({ firebaseUid: uid });
+
+		if (!user) {
+			user = await User.create({
+				firebaseUid: uid,
+				...userData,
+			});
+
+			return res.status(200).json({
+				message: "User verified successfully",
+				user,
+				isNewUser: true,
+			});
+		} else {
+			await User.updateOne({ firebaseUid: uid }, { $set: userData });
+			const updatedUser = await User.findOne({ firebaseUid: uid });
+
+			return res.status(200).json({
+				message: "User verified successfully",
+				user: updatedUser,
+				isNewUser: false,
 			});
 		}
-
-		// Create new user
-		const user = new User({
-			email,
-			displayName,
-			firebaseUid,
-			registrationDate: new Date(),
-		});
-
-		await user.save();
-
-		res.status(201).json({
-			success: true,
-			message: "User registered successfully",
-			data: {
-				id: user._id,
-				email: user.email,
-				displayName: user.displayName,
-			},
-		});
 	} catch (error) {
-		logger.error("Registration error:", error);
+		logger.error("Error verifying user:", error);
 		res.status(500).json({
-			success: false,
-			message: "Registration failed",
+			error: "Failed to verify user",
+			details: error.message,
 		});
 	}
 };
 
 const getProfile = async (req, res) => {
 	try {
-		res.json({
-			success: true,
-			data: {
-				id: req.user._id,
-				email: req.user.email,
-				displayName: req.user.displayName,
-				preferences: req.user.preferences,
-				avatar: req.user.avatar,
-				registrationDate: req.user.registrationDate,
-			},
-		});
+		const user = await User.findOne({ firebaseUid: req.user.uid });
+		res.json(user);
 	} catch (error) {
-		logger.error("Get profile error:", error);
+		logger.error("Error fetching user profile:", error);
 		res.status(500).json({
-			success: false,
-			message: "Failed to get profile",
+			error: "Failed to fetch user profile",
+			details: error.message,
 		});
 	}
 };
 
 const updateProfile = async (req, res) => {
 	try {
-		const updates = req.body;
-		const user = await User.findByIdAndUpdate(
-			req.user._id,
-			{ $set: updates },
-			{ new: true, runValidators: true }
+		const { displayName, photoURL } = req.body;
+		await User.updateOne(
+			{ firebaseUid: req.user.uid },
+			{ $set: { displayName, photoURL, updatedAt: new Date() } }
 		);
-
-		res.json({
-			success: true,
-			message: "Profile updated successfully",
-			data: user,
-		});
+		res.json({ message: "Profile updated successfully" });
 	} catch (error) {
-		logger.error("Update profile error:", error);
+		logger.error("Error updating user profile:", error);
 		res.status(500).json({
-			success: false,
-			message: "Failed to update profile",
+			error: "Failed to update profile",
+			details: error.message,
+		});
+	}
+};
+
+const deleteAccount = async (req, res) => {
+	try {
+		await auth.deleteUser(req.user.uid);
+		await User.deleteOne({ firebaseUid: req.user.uid });
+		res.json({ message: "Account deleted successfully" });
+	} catch (error) {
+		logger.error("Error deleting user account:", error);
+		res.status(500).json({
+			error: "Failed to delete account",
+			details: error.message,
 		});
 	}
 };
 
 module.exports = {
-	register,
+	verifyUser,
 	getProfile,
 	updateProfile,
+	deleteAccount,
 };
