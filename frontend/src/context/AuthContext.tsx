@@ -85,7 +85,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     });
 
     return unsubscribe;
-  }, []);
+  }, [router]);
 
   // Refresh token every 50 minutes (tokens expire after 1 hour)
   useEffect(() => {
