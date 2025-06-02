@@ -14,6 +14,7 @@ const UserSchema = new mongoose.Schema(
 			unique: true,
 			lowercase: true,
 			trim: true,
+			index: true,
 		},
 		displayName: {
 			type: String,
@@ -203,7 +204,6 @@ const UserSchema = new mongoose.Schema(
 );
 
 // Indexes for better query performance
-UserSchema.index({ email: 1 });
 UserSchema.index({ "location.city": 1 });
 UserSchema.index({
 	"preferences.budgetRange.min": 1,
