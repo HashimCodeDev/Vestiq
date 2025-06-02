@@ -11,6 +11,7 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer';
 import { ListIcon, UserIcon } from '@phosphor-icons/react';
+import { useRouter } from 'next/navigation';
 
 const titles: Record<string, string> = {
   '/': 'Wearzy',
@@ -23,6 +24,7 @@ const titles: Record<string, string> = {
 export default function Header() {
   const pathname = usePathname();
   const title = titles[pathname] || 'Wearzy';
+  const router = useRouter();
 
   return (
     <div className="relative w-full h-16 flex items-center bg-background px-4">
@@ -30,7 +32,7 @@ export default function Header() {
       <div className="mr-auto absolute left-4">
         <Drawer direction="left">
           <DrawerTrigger asChild>
-            <Button variant="ghost" size="icon" asChild>
+            <Button className="size-8" variant="ghost" size="icon" asChild>
               <ListIcon size={10} />
             </Button>
           </DrawerTrigger>
@@ -66,7 +68,13 @@ export default function Header() {
 
       {/* RIGHT ICON */}
       <div className="ml-auto absolute right-4">
-        <Button variant="ghost" size="icon" asChild>
+        <Button
+          className="cursor-pointer size-8"
+          variant="ghost"
+          size="icon"
+          asChild
+          onClick={() => router.push('/profile')}
+        >
           <UserIcon size={28} />
         </Button>
       </div>
