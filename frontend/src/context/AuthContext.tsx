@@ -17,6 +17,7 @@ import {
   signInWithPopup,
 } from 'firebase/auth';
 import { auth } from '../lib/firebase';
+import { useRouter } from 'next/navigation';
 
 interface AuthContextType {
   user: User | null;
@@ -46,6 +47,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -73,6 +75,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           });
         } catch (error) {
           console.error('Error verifying user with backend:', error);
+          router.push('/login');
         }
       } else {
         setToken(null);
