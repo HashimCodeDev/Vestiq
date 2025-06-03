@@ -109,9 +109,9 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-background">
+    <div className="flex flex-col h-[calc(100vh-64px)] bg-background">
       {/* Chat Messages */}
-      <ScrollArea className="flex-1 p-4">
+      <ScrollArea className="flex-1 p-4 pb-50">
         <div className="max-w-4xl mx-auto space-y-4">
           {messages.map((message, index) => (
             <div
@@ -187,7 +187,7 @@ export default function ChatPage() {
       </ScrollArea>
 
       {/* Input Form */}
-      <div className="p-4 bg-card rounded-2xl shadow-sm mb-5 border">
+      <div className="fixed bottom-15 left-0 right-0 mx-4 p-4 bg-card rounded-2xl shadow-sm mb-5 border z-10">
         <form
           onSubmit={handleSubmit}
           className="flex items-end gap-3 max-w-4xl mx-auto"
