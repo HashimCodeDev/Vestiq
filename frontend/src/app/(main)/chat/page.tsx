@@ -10,6 +10,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Send, Bot, User, Loader2, MessageSquare } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
+import ReactMarkdown from 'react-markdown';
 
 interface Message {
   id: string;
@@ -148,7 +149,7 @@ export default function ChatPage() {
                     }`}
                   >
                     <p className="text-sm whitespace-pre-wrap">
-                      {message.content}
+                      <ReactMarkdown>{message.content}</ReactMarkdown>
                     </p>
                   </Card>
                 )}
