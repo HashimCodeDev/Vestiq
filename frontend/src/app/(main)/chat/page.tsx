@@ -1,13 +1,19 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  FormEvent,
+  KeyboardEvent,
+} from 'react';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Send, Bot, User, Loader2, MessageSquare } from 'lucide-react';
+import { Send, Bot, User, Loader2 } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import ReactMarkdown from 'react-markdown';
@@ -61,8 +67,8 @@ export default function ChatPage() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e?: FormEvent) => {
+    if (e) e.preventDefault();
     if (!input.trim() || isLoading) return;
 
     const userMessage: Message = {
@@ -88,6 +94,7 @@ export default function ChatPage() {
 
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
+      console.error('Chat API error:', error);
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         content:
@@ -102,10 +109,10 @@ export default function ChatPage() {
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyPress = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      handleSubmit(e as any);
+      handleSubmit(); // Removed the wrong cast
     }
   };
 
@@ -114,7 +121,7 @@ export default function ChatPage() {
       {/* Chat Messages */}
       <ScrollArea className="flex-1 p-4 pb-50">
         <div className="max-w-4xl mx-auto space-y-4">
-          {messages.map((message, index) => (
+          {messages.map((message) => (
             <div
               key={message.id}
               className={`flex space-x-3 ${
