@@ -33,7 +33,11 @@ export async function POST(req: NextRequest) {
     const aiMessage =
       chatCompletion.choices[0].message?.content || 'No response from model';
 
-    return NextResponse.json({ message: aiMessage });
+    const cleanedMessage = aiMessage
+      .replace(/<think>[\s\S]*?<\/think>/g, '')
+      .trim();
+
+    return NextResponse.json({ message: cleanedMessage });
   } catch (error) {
     console.error('[CHAT_API_ERROR]', error);
     return NextResponse.json(
