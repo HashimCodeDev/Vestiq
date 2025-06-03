@@ -9,9 +9,8 @@ export default function MainLayout({
   return (
     <>
       <Header />
-      <div className="flex flex-col min-h-screen px-4">{children}</div>
+      <div className="flex flex-col h-[85vh] px-4">{children}</div>
       <Navbar />
-      <div className="h-16" /> {/* Spacer for fixed navbar */}
     </>
   );
 }

@@ -1,61 +1,232 @@
-// app/chat/page.tsx
 'use client';
-import { useState } from 'react';
+
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  FormEvent,
+  KeyboardEvent,
+} from 'react';
+import axios from 'axios';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Send, Bot, User, Loader2 } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
-import ProtectedRoute from '@/components/ProtectedRoute';
+import { cn } from '@/lib/utils';
+import ReactMarkdown from 'react-markdown';
+
+interface Message {
+  id: string;
+  content: string;
+  role: 'user' | 'assistant';
+  timestamp: Date;
+  isError?: boolean;
+}
 
 export default function ChatPage() {
-  const [messages, setMessages] = useState([
-    { role: 'assistant', content: 'Hey there! Ask me anything.' },
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: '1',
+      content: "Hello! I'm your AI assistant. How can I help you today?",
+      role: 'assistant',
+      timestamp: new Date(),
+    },
   ]);
   const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-  const sendMessage = async () => {
-    if (!input.trim()) return;
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
-    const userMessage = { role: 'user', content: input };
-    setMessages([...messages, userMessage]);
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const sendMessage = async (content: string) => {
+    try {
+      const response = await axios.post('/api/chat', {
+        message: content,
+        messages: messages
+          .filter((m) => !m.isError)
+          .map((m) => ({
+            role: m.role,
+            content: m.content,
+          })),
+      });
+
+      return response.data.message;
+    } catch (error) {
+      console.error('Chat API error:', error);
+      throw new Error('Failed to get response from AI');
+    }
+  };
+
+  const handleSubmit = async (e?: FormEvent) => {
+    if (e) e.preventDefault();
+    if (!input.trim() || isLoading) return;
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      content: input.trim(),
+      role: 'user',
+      timestamp: new Date(),
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
     setInput('');
+    setIsLoading(true);
 
-    const res = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: [...messages, userMessage] }),
-    });
-    const data = await res.json();
-    setMessages((prev) => [
-      ...prev,
-      { role: 'assistant', content: data.reply },
-    ]);
+    try {
+      const aiResponse = await sendMessage(input.trim());
+
+      const assistantMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        content: aiResponse,
+        role: 'assistant',
+        timestamp: new Date(),
+      };
+
+      setMessages((prev) => [...prev, assistantMessage]);
+    } catch (error) {
+      console.error('Chat API error:', error);
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        content:
+          "Sorry, I'm having trouble connecting right now. Please try again.",
+        role: 'assistant',
+        timestamp: new Date(),
+        isError: true,
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleKeyPress = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(); // Removed the wrong cast
+    }
   };
 
   return (
-    <ProtectedRoute>
-      <div className="max-w-2xl mx-auto mt-10 p-4 space-y-4">
-        <div className="space-y-2 border rounded p-4 h-[400px] overflow-y-auto bg-muted">
-          {messages.map((msg, idx) => (
+    <div className="flex flex-col h-[calc(100vh-64px)] bg-background">
+      {/* Chat Messages */}
+      <ScrollArea className="flex-1 p-4 pb-50">
+        <div className="max-w-4xl mx-auto space-y-4">
+          {messages.map((message) => (
             <div
-              key={idx}
-              className={msg.role === 'user' ? 'text-right' : 'text-left'}
+              key={message.id}
+              className={`flex space-x-3 ${
+                message.role === 'user' ? 'justify-end' : 'justify-start'
+              }`}
             >
-              <div className="inline-block rounded px-3 py-2 bg-background shadow text-sm">
-                <b>{msg.role === 'user' ? 'You' : 'AI'}:</b> {msg.content}
+              {message.role === 'assistant' && (
+                <Avatar className="h-8 w-8 mt-1">
+                  <AvatarFallback
+                    className={`${
+                      message.isError ? 'bg-destructive' : 'bg-primary'
+                    } text-primary-foreground`}
+                  >
+                    <Bot className="h-4 w-4" />
+                  </AvatarFallback>
+                </Avatar>
+              )}
+
+              <div
+                className={`max-w-[70%] ${message.role === 'user' ? 'order-first' : ''}`}
+              >
+                {message.isError ? (
+                  <Alert className="border-destructive">
+                    <AlertDescription>{message.content}</AlertDescription>
+                  </Alert>
+                ) : (
+                  <Card
+                    className={`p-3 ${
+                      message.role === 'user'
+                        ? 'bg-primary text-primary-foreground ml-auto'
+                        : 'bg-muted'
+                    }`}
+                  >
+                    <p className="text-sm whitespace-pre-wrap">
+                      <ReactMarkdown>{message.content}</ReactMarkdown>
+                    </p>
+                  </Card>
+                )}
               </div>
+
+              {message.role === 'user' && (
+                <Avatar className="h-8 w-8 mt-1">
+                  <AvatarFallback className="bg-secondary text-secondary-foreground">
+                    <User className="h-4 w-4" />
+                  </AvatarFallback>
+                </Avatar>
+              )}
             </div>
           ))}
+
+          {isLoading && (
+            <div className="flex space-x-3 justify-start">
+              <Avatar className="h-8 w-8 mt-1">
+                <AvatarFallback className="bg-primary text-primary-foreground">
+                  <Bot className="h-4 w-4" />
+                </AvatarFallback>
+              </Avatar>
+              <Card className="p-3 bg-muted">
+                <div className="flex items-center space-x-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span className="text-sm text-muted-foreground">
+                    Thinking...
+                  </span>
+                </div>
+              </Card>
+            </div>
+          )}
+
+          <div ref={messagesEndRef} />
         </div>
-        <div className="flex gap-2">
+      </ScrollArea>
+
+      {/* Input Form */}
+      <div className="fixed bottom-15 left-0 right-0 mx-4 p-4 bg-card rounded-2xl shadow-sm mb-5 border z-10">
+        <form
+          onSubmit={handleSubmit}
+          className="flex items-end gap-3 max-w-4xl mx-auto"
+        >
           <Textarea
+            ref={textAreaRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Type your message..."
-            className="flex-1 resize-none"
+            onKeyDown={handleKeyPress}
+            placeholder="Type your message…"
+            disabled={isLoading}
+            rows={1}
+            className={cn(
+              'flex-1 resize-none text-sm',
+              isLoading && 'opacity-70 cursor-not-allowed',
+            )}
           />
-
-          <Button onClick={sendMessage}>Send</Button>
-        </div>
+          <Button
+            type="submit"
+            size="icon"
+            disabled={!input.trim() || isLoading}
+            className="shrink-0"
+          >
+            {isLoading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Send className="h-4 w-4" />
+            )}
+          </Button>
+        </form>
       </div>
-    </ProtectedRoute>
+    </div>
   );
 }
