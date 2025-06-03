@@ -18,29 +18,29 @@ export default function WardrobeSection() {
   const carouselItems = [
     {
       src: 'https://i.pinimg.com/736x/92/f2/6e/92f26ef8411fdfb284e2b0fa773ee13e.jpg',
-      title: 'Wardrobe item 1',
+      title: 'Item 1',
     },
     {
       src: 'https://i.pinimg.com/736x/86/b2/ba/86b2ba24874a08a00ac0b01a518bd56b.jpg',
-      title: 'Wardrobe item 2',
+      title: 'Item 2',
     },
     {
       src: 'https://i.pinimg.com/736x/cf/64/ff/cf64ff0d45268609266ed17244f53c80.jpg',
-      title: 'Wardrobe item 3',
+      title: 'Item 3',
     },
     {
       src: 'https://i.pinimg.com/736x/85/98/69/859869086499cde08c6633d1d26b5a42.jpg',
-      title: 'Wardrobe item 4',
+      title: 'Item 4',
     },
     {
       src: 'https://i.pinimg.com/736x/09/de/98/09de9831f16476cafa75c3cc9ea5047b.jpg',
-      title: 'Wardrobe item 5',
+      title: 'Item 5',
     },
   ];
 
   return (
     <div className="max-w-md mx-auto mt-8 p-4">
-      <h2 className="text-1xl font-bold mb-4">Outfit Gallery</h2>
+      <h2 className="text-2xl font-bold mb-4">Outfit Gallery</h2>
       <Carousel className="w-full max-w-sm mb-4">
         <CarouselContent className="ml-5 mr-5 gap-10">
           {['Top', 'Shirt', 'Pants', 'Bottom', 'Accessories'].map(
@@ -88,7 +88,7 @@ export default function WardrobeSection() {
                     />
                   </CardContent>
                 </Card>
-                <div className="mt-2 text-center text-black dark:text-white font-jakarta font-thin">
+                <div className="mt-2 text-center text-xs text-black dark:text-white font-jakarta font-thin">
                   {item.title}
                 </div>
               </div>

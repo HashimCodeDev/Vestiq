@@ -35,8 +35,8 @@ export default function TrendingSection() {
   ];
 
   return (
-    <div className="max-w-md mx-auto mt-8 p-4">
-      <h2 className="font-bold mb-4">Curated Styles For You</h2>
+    <div className="max-w-md mx-auto mt-8 p-4 mb-20">
+      <h2 className="text-2xl font-bold mb-4">Curated Styles For You</h2>
       <Carousel className="w-full max-w-sm">
         <CarouselContent className="m-0">
           {carouselItems.map((item, index) => (
@@ -53,7 +53,7 @@ export default function TrendingSection() {
                     />
                   </CardContent>
                 </Card>
-                <div className="mt-2 text-center text-black dark:text-white font-jakarta font-thin">
+                <div className="mt-2 text-center text-xs text-black dark:text-white font-jakarta font-thin">
                   {item.title}
                 </div>
               </div>
