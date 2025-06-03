@@ -57,11 +57,12 @@ export default function WardrobeSection() {
                 }
               >
                 <Badge
-                  className={`w-20 font-light transition-colors${
+                  className={`w-20 font-light transition-all ${
                     activeIndex === index
-                      ? 'bg-black text-white dark:bg-white dark:text-black'
-                      : 'bg-gray-200 text-black dark:bg-black/70 dark:text-white'
+                      ? 'bg-gray-200 text-black dark:bg-black dark:text-white'
+                      : 'bg-gray-50 text-black dark:bg-black/30 dark:text-white'
                   }`}
+                  variant="default"
                 >
                   {item}
                 </Badge>
