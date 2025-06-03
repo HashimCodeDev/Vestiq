@@ -1,18 +1,20 @@
 import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/carousel';
 import Image from 'next/image';
-import { title } from 'process';
-import { useEffect } from 'react';
-import { Button } from './ui/button';
+import { useState } from 'react';
 import { ArrowRightIcon } from '@phosphor-icons/react';
 import { useRouter } from 'next/navigation';
 
 export default function WardrobeSection() {
   const router = useRouter();
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
   const carouselItems = [
     {
       src: 'https://i.pinimg.com/736x/92/f2/6e/92f26ef8411fdfb284e2b0fa773ee13e.jpg',
@@ -39,6 +41,36 @@ export default function WardrobeSection() {
   return (
     <div className="max-w-md mx-auto mt-8 p-4">
       <h2 className="text-1xl font-bold mb-4">My Wardrobe</h2>
+      <Carousel className="w-full max-w-sm mb-4">
+        <CarouselContent className="ml-5 mr-5 gap-10">
+          {['Top', 'Shirt', 'Pants', 'Bottom', 'Accessories'].map(
+            (item, index) => (
+              <CarouselItem
+                key={index}
+                className={`pl-1 basis-1/5 flex justify-center ${
+                  activeIndex === index ? 'scale-110' : 'opacity-70'
+                }`}
+                onClick={() =>
+                  setActiveIndex((prevIndex) =>
+                    prevIndex === index ? null : index,
+                  )
+                }
+              >
+                <Badge
+                  className={`w-20 font-light transition-colors${
+                    activeIndex === index
+                      ? 'bg-black text-white dark:bg-white dark:text-black'
+                      : 'bg-gray-200 text-black dark:bg-black/70 dark:text-white'
+                  }`}
+                >
+                  {item}
+                </Badge>
+              </CarouselItem>
+            ),
+          )}
+        </CarouselContent>
+      </Carousel>
+
       <Carousel className="w-full max-w-sm">
         <CarouselContent className="-ml-1">
           {carouselItems.map((item, index) => (
@@ -55,7 +87,7 @@ export default function WardrobeSection() {
                     />
                   </CardContent>
                 </Card>
-                <div className="mt-2 text-center font-medium text-black dark:text-white font-jakarta font-thin">
+                <div className="mt-2 text-center text-black dark:text-white font-jakarta font-thin">
                   {item.title}
                 </div>
               </div>
@@ -66,7 +98,7 @@ export default function WardrobeSection() {
 
       <div className="flex justify-center">
         <Button
-          className="mt-4 bg-gray-200 text-black dark:bg-black dark:text-white"
+          className="mt-4 bg-gray-200 text-black dark:bg-black/70 dark:text-white"
           onClick={() => {
             router.push('/wardrobe');
           }}
