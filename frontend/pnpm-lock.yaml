@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@huggingface/inference':
+        specifier: ^4.0.0
+        version: 4.0.0
       '@phosphor-icons/react':
         specifier: ^2.1.10
         version: 2.1.10(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -510,6 +513,17 @@ packages:
     resolution: {integrity: sha512-tMXdRCfYVixjuFK+Hk0Q1s38gV9zDiDJfWL3h1rv4Qc39oILCu1TRTDt7+fGUI8K4G1Fj125Hx/ru3azECWTyQ==}
     engines: {node: '>=6'}
     hasBin: true
+
+  '@huggingface/inference@4.0.0':
+    resolution: {integrity: sha512-NJD5qnYcOyG48qmqxIgmGZrgeR3+e/Sl+vGHTMvqgTK7vRXntLHzkgzSsHaP+qe7/etvVrr9yVy7vzSdA32dpg==}
+    engines: {node: '>=18'}
+
+  '@huggingface/jinja@0.5.0':
+    resolution: {integrity: sha512-Ptc03/jGRiYRoi0bUYKZ14MkDslsBRT24oxmsvUlfYrvQMldrxCevhPnT+hfX8awKTT8/f/0ZBBWldoeAcMHdQ==}
+    engines: {node: '>=18'}
+
+  '@huggingface/tasks@0.19.11':
+    resolution: {integrity: sha512-oBhSgVlg7Pp643MsH8BiI3OAXIMJNxdSiMtv4mApRZV8dmAz8oasKhg6CVKIplO7vAO7F6dkmMn4bYM64I2A9w==}
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -4279,6 +4293,15 @@ snapshots:
       long: 5.3.2
       protobufjs: 7.5.3
       yargs: 17.7.2
+
+  '@huggingface/inference@4.0.0':
+    dependencies:
+      '@huggingface/jinja': 0.5.0
+      '@huggingface/tasks': 0.19.11
+
+  '@huggingface/jinja@0.5.0': {}
+
+  '@huggingface/tasks@0.19.11': {}
 
   '@humanfs/core@0.19.1': {}
 
