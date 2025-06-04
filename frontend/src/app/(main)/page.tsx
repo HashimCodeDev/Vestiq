@@ -4,7 +4,7 @@ import WelcomeCard from '@/components/WelcomeCard';
 import WardrobeSection from '@/components/WardrobeSection';
 import TrendingSection from '@/components/TrendingSection';
 import ProtectedRoute from '@/components/ProtectedRoute';
-import PageSkeleton from '@/components/PageSkeleton';
+import PageSkeleton from '@/components/skeleton/HomePageSkeleton';
 
 export default function Home() {
   return (

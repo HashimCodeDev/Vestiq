@@ -2,7 +2,7 @@
 import { useEffect, useState, ReactNode } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import PageSkeleton from '@/components/PageSkeleton';
+import PageSkeleton from '@/components/skeleton/HomePageSkeleton';
 
 interface ProtectedRouteProps {
   children: ReactNode;

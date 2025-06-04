@@ -9,7 +9,7 @@ export default function MainLayout({
   return (
     <>
       <Header />
-      <div className="flex flex-col h-[85vh] px-4">{children}</div>
+      <div className="flex-1 px-4 overflow-y-auto">{children}</div>
       <Navbar />
     </>
   );
