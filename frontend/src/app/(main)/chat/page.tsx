@@ -17,6 +17,7 @@ import { Send, Bot, User, Loader2 } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import ReactMarkdown from 'react-markdown';
+import TypewriterMarkdown from '@/components/TypewriteMarkdown';
 
 interface Message {
   id: string;
@@ -155,9 +156,11 @@ export default function ChatPage() {
                         : 'bg-muted'
                     }`}
                   >
-                    <p className="text-sm whitespace-pre-wrap">
+                    {message.role === 'user' ? (
                       <ReactMarkdown>{message.content}</ReactMarkdown>
-                    </p>
+                    ) : (
+                      <TypewriterMarkdown text={message.content} />
+                    )}
                   </Card>
                 )}
               </div>
