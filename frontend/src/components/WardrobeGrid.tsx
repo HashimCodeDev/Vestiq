@@ -44,6 +44,7 @@ export default function WardrobeGrid({
           type="file"
           accept="image/*"
           ref={fileInputRef}
+          capture="environment"
           onChange={handleFileChange}
           className="hidden"
         />
