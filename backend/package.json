@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"description": "",
 	"main": "src/server.js",
+	"type": "module",
 	"scripts": {
 		"start": "node --trace-warnings src/server.js",
 		"dev": "nodemon --trace-warnings src/server.js",

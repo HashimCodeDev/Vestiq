@@ -212,7 +212,7 @@ const areColorsComplementary = (color1, color2) => {
 	);
 };
 
-module.exports = {
+export {
 	formatCurrency,
 	generateOutfitId,
 	isValidIndianPhone,

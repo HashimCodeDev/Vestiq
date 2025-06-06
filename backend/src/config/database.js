@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const winston = require("winston");
+import mongoose from "mongoose";
+import winston from "winston";
 
 // Setup winston logger
 const logger = winston.createLogger({
@@ -49,4 +49,4 @@ const connectDB = async () => {
 	});
 };
 
-module.exports = connectDB;
+export default connectDB;

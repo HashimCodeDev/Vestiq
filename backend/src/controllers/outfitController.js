@@ -1,6 +1,34 @@
-const Outfit = require("../models/Outfit");
-const aiService = require("../services/aiService");
-const logger = require("../utils/logger");
+import Outfit from "../models/Outfit.js";
+import * as aiService from "../services/aiService.js";
+import logger from "../utils/logger.js";
+
+const uploadOutfit = async (req, res) => {
+	try {
+		const { outfitData } = req.body;
+
+		// Save outfit data to database
+		const outfit = new Outfit({
+			userId: req.user._id,
+			...outfitData,
+		});
+
+		await outfit.save();
+
+		res.json({
+			success: true,
+			message: "Outfit uploaded successfully",
+			data: {
+				outfitId: outfit._id,
+			},
+		});
+	} catch (error) {
+		logger.error("Outfit upload error:", error);
+		res.status(500).json({
+			success: false,
+			message: "Failed to upload outfit",
+		});
+	}
+};
 
 const generateOutfit = async (req, res) => {
 	try {
@@ -115,7 +143,7 @@ const rateOutfit = async (req, res) => {
 	}
 };
 
-module.exports = {
+export {
 	generateOutfit,
 	getOutfitHistory,
 	rateOutfit,

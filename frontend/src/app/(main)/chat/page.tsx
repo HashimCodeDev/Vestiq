@@ -17,6 +17,7 @@ import { Send, Bot, User, Loader2 } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import ReactMarkdown from 'react-markdown';
+import TypewriterMarkdown from '@/components/TypewriteMarkdown';
 
 interface Message {
   id: string;
@@ -25,6 +26,18 @@ interface Message {
   timestamp: Date;
   isError?: boolean;
 }
+
+/**
+ * ChatPage component that provides a chat interface for users to interact with
+ * an AI assistant. It supports sending and receiving messages, handles loading
+ * states, and scrolls the chat to the bottom when new messages are added.
+ *
+ * The component manages user input, displays messages with appropriate styling
+ * based on their role (user or assistant), and handles errors in message
+ * delivery. It also prevents multiple submissions while a message is being sent.
+ *
+ * @returns A JSX element representing the chat interface.
+ */
 
 export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([
@@ -40,6 +53,13 @@ export default function ChatPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
+  /**
+   * Scrolls the chat to the bottom.
+   *
+   * This function ensures that the most recent messages are visible by
+   * smoothly scrolling to the end of the message list. It is typically
+   * called after new messages are added.
+   */
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -47,6 +67,19 @@ export default function ChatPage() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  /**
+   * Sends a message to the chat API and retrieves the AI's response.
+   *
+   * This function sends the user's message and previous chat messages (excluding
+   * any messages marked as errors) to the server, which processes the input and
+   * returns a response from the AI assistant. The function handles errors by
+   * logging them and throwing an error.
+   *
+   * @param content - The content of the message to send.
+   * @returns A promise that resolves to the AI's response message.
+   * @throws An error if the request to the chat API fails.
+   */
 
   const sendMessage = async (content: string) => {
     try {
@@ -67,6 +100,20 @@ export default function ChatPage() {
     }
   };
 
+  /**
+   * Handles form submission and sends the user's message to the chat API.
+   *
+   * This function is called when the user submits the chat form. It prevents the
+   * default form submission behavior, then checks if the input is empty or if the
+   * app is currently loading. If either condition is true, it does nothing.
+   *
+   * If the input is not empty and the app is not loading, it adds the user's
+   * message to the chat log and sends the message to the chat API. When the chat
+   * API responds, it adds the response to the chat log. If the chat API fails,
+   * it adds an error message to the chat log.
+   *
+   * @param e - The form submission event, if triggered by a form submission.
+   */
   const handleSubmit = async (e?: FormEvent) => {
     if (e) e.preventDefault();
     if (!input.trim() || isLoading) return;
@@ -109,6 +156,15 @@ export default function ChatPage() {
     }
   };
 
+  /**
+   * Handles the key press event on the chat input text area.
+   *
+   * When the user presses Enter without holding the Shift key, this function
+   * prevents the default form submission behavior and calls handleSubmit() to
+   * send the user's message to the AI.
+   *
+   * @param e - The KeyboardEvent object triggered by the key press.
+   */
   const handleKeyPress = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -155,9 +211,11 @@ export default function ChatPage() {
                         : 'bg-muted'
                     }`}
                   >
-                    <p className="text-sm whitespace-pre-wrap">
+                    {message.role === 'user' ? (
                       <ReactMarkdown>{message.content}</ReactMarkdown>
-                    </p>
+                    ) : (
+                      <TypewriterMarkdown text={message.content} />
+                    )}
                   </Card>
                 )}
               </div>

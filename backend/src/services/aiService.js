@@ -1,6 +1,6 @@
-const OpenAI = require("openai");
-const logger = require("../utils/logger");
-const axios = require("axios");
+import OpenAI from "openai";
+import logger from "../utils/logger.js";
+import axios from "axios";
 
 const ml_url = process.env.ML_URL || "http://localhost:5000/api/v1/ai";
 
@@ -26,4 +26,6 @@ class AIService {
 	}
 }
 
-module.exports = new AIService();
+const aiService = new AIService();
+export { aiService, AIService };
+export default aiService;

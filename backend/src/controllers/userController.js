@@ -1,5 +1,5 @@
-const User = require("../models/User");
-const logger = require("../utils/logger");
+import User from "../models/User.js";
+import logger from "../utils/logger.js";
 
 const getUserProfile = async (req, res) => {
 	try {
@@ -57,8 +57,4 @@ const deleteUserAccount = async (req, res) => {
 	}
 };
 
-module.exports = {
-	getUserProfile,
-	updateUserProfile,
-	deleteUserAccount,
-};
+export { getUserProfile, updateUserProfile, deleteUserAccount };

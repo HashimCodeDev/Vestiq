@@ -1,6 +1,17 @@
 // middleware/auth.js
-const { auth } = require("../config/firebase-admin");
+import { auth } from "../config/firebase-admin.js";
 
+/**
+ * Middleware to verify the Firebase ID token sent in the Authorization header.
+ *
+ * If the token is valid, it adds the user info to the request object and calls next().
+ * If the token is invalid or missing, it returns a 401 response with an appropriate error message.
+ *
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
+ * @throws {Error} - If the token is invalid or missing
+ */
 const authenticateToken = async (req, res, next) => {
 	try {
 		const authHeader = req.headers.authorization;
@@ -18,7 +29,7 @@ const authenticateToken = async (req, res, next) => {
 
 		// Add user info to request object
 		req.user = {
-			uid: decodedToken.uid,
+			userId: decodedToken.uid,
 			email: decodedToken.email,
 			name: decodedToken.name,
 			picture: decodedToken.picture,
@@ -50,32 +61,16 @@ const authenticateToken = async (req, res, next) => {
 		});
 	}
 };
-
-// Optional middleware - doesn't fail if no token provided
-const optionalAuth = async (req, res, next) => {
-	try {
-		const authHeader = req.headers.authorization;
-		const token = authHeader && authHeader.split(" ")[1];
-
-		if (token) {
-			const decodedToken = await auth.verifyIdToken(token);
-			req.user = {
-				uid: decodedToken.uid,
-				email: decodedToken.email,
-				name: decodedToken.name,
-				picture: decodedToken.picture,
-				email_verified: decodedToken.email_verified,
-				firebase: decodedToken,
-			};
-		}
-
-		next();
-	} catch (error) {
-		// Continue without user info if token is invalid
-		next();
-	}
-};
-
+/**
+ * Middleware to verify that the request has a valid user object.
+ *
+ * If the user object exists, it calls next(). Otherwise, it returns a 401 response with an appropriate error message.
+ *
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
+ * @throws {Error} - If the user object is missing
+ */
 const getUser = (req, res, next) => {
 	if (!req.user) {
 		return res.status(401).json({
@@ -86,4 +81,4 @@ const getUser = (req, res, next) => {
 	next();
 };
 
-module.exports = { authenticateToken, optionalAuth, getUser };
+export { authenticateToken, getUser };

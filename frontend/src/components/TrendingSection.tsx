@@ -1,3 +1,5 @@
+// Curated Styles Section of Home Page
+
 import { Card, CardContent } from '@/components/ui/card';
 import {
   Carousel,

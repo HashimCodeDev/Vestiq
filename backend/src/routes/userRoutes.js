@@ -1,13 +1,14 @@
-const express = require("express");
-const router = express.Router();
-const {
+import express from "express";
+import {
 	getUserProfile,
 	updateUserProfile,
 	deleteUserAccount,
-} = require("../controllers/userController.js");
+} from "../controllers/userController.js";
 
-const { authenticateToken, getUser } = require("../middleware/auth");
-const { validateProfileUpdate } = require("../middleware/validation");
+import { authenticateToken, getUser } from "../middleware/auth.js";
+import { validateProfileUpdate } from "../middleware/validation.js";
+
+const router = express.Router();
 
 /**
  * @route   GET /api/users/profile
@@ -36,4 +37,4 @@ router.put(
  */
 router.delete("/profile", authenticateToken, getUser, deleteUserAccount);
 
-module.exports = router;
+export default router;

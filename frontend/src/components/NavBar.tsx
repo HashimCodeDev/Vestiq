@@ -1,3 +1,5 @@
+// Navbar
+
 'use client';
 
 import Link from 'next/link';
@@ -11,11 +13,36 @@ import {
 } from '@phosphor-icons/react';
 
 const navItems = [
-  { href: '/', icon: HouseIcon, id: 'home' },
-  { href: '/wardrobe', icon: TShirtIcon, id: 'wardrobe' },
-  { href: '/suggestions', icon: LightbulbIcon, id: 'suggestions' },
-  { href: '/chat', icon: ChatDotsIcon, id: 'chat' },
-  { href: '/shopping', icon: ShoppingBagIcon, id: 'shopping' },
+  {
+    href: '/',
+    icon: HouseIcon,
+    id: 'home',
+    match: (path: string) => path === '/',
+  },
+  {
+    href: '/wardrobe',
+    icon: TShirtIcon,
+    id: 'wardrobe',
+    match: (path: string) => path.startsWith('/wardrobe'),
+  },
+  {
+    href: '/suggestions',
+    icon: LightbulbIcon,
+    id: 'suggestions',
+    match: (path: string) => path === '/suggestions',
+  },
+  {
+    href: '/chat',
+    icon: ChatDotsIcon,
+    id: 'chat',
+    match: (path: string) => path === '/chat',
+  },
+  {
+    href: '/shopping',
+    icon: ShoppingBagIcon,
+    id: 'shopping',
+    match: (path: string) => path === '/shopping',
+  },
 ];
 
 export default function Navbar() {
@@ -28,7 +55,7 @@ export default function Navbar() {
           <div className="flex justify-around items-center py-2">
             {navItems.map((item) => {
               const Icon = item.icon;
-              const isActive = pathname === item.href;
+              const isActive = item.match(pathname);
 
               return (
                 <Link

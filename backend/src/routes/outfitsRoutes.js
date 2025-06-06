@@ -1,17 +1,20 @@
-const express = require("express");
-const router = express.Router();
-const {
+import express from "express";
+import {
 	generateOutfit,
 	getOutfitHistory,
 	rateOutfit,
-} = require("../controllers/outfitController");
-const { authenticateToken, getUser } = require("../middleware/auth");
-const {
+} from "../controllers/outfitController.js";
+import { authenticateToken, getUser } from "../middleware/auth.js";
+import {
 	validateOutfitGeneration,
 	validateRating,
 	validateId,
-} = require("../middleware/validation");
-const { outfitGenerationLimiter } = require("../middleware/rateLimiter");
+} from "../middleware/validation.js";
+import { outfitGenerationLimiter } from "../middleware/rateLimiter.js";
+
+const router = express.Router();
+
+router.post("/upload", authenticateToken, getUser);
 
 // @route   POST /api/outfits/generate
 // @desc    Generate outfit recommendations
@@ -28,4 +31,4 @@ router.get("/history", authenticateToken, getUser, getOutfitHistory);
 // @access  Private
 router.put("/:id/rate", authenticateToken, getUser, rateOutfit);
 
-module.exports = router;
+export default router;

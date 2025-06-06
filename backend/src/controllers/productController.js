@@ -1,6 +1,6 @@
-const productService = require("../services/productService");
-const User = require("../models/User");
-const logger = require("../utils/logger");
+import productService from "../services/productService";
+import User from "../models/User";
+import logger from "../utils/logger";
 
 const searchProducts = async (req, res) => {
 	try {
@@ -111,7 +111,7 @@ const getWishlist = async (req, res) => {
 	}
 };
 
-module.exports = {
+export {
 	searchProducts,
 	getProductDetails,
 	addToWishlist,

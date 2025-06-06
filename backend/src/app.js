@@ -1,20 +1,20 @@
-const express = require("express");
-const cors = require("cors");
-const helmet = require("helmet");
-const morgan = require("morgan");
-const rateLimit = require("express-rate-limit");
-require("dotenv").config();
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import morgan from "morgan";
+import rateLimit from "express-rate-limit";
+import dotenv from "dotenv";
+dotenv.config();
 
 // Import routes
-const authRoutes = require("./routes/authRoutes");
-const userRoutes = require("./routes/userRoutes");
-const outfitRoutes = require("./routes/outfitsRoutes");
-//const recommendationRoutes = require("./routes/recommendations");
-//const regionalRoutes = require("./routes/regional");
+import authRoutes from "./routes/authRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import outfitRoutes from "./routes/outfitsRoutes.js";
+import wardrobeItemRoutes from "./routes/wardrobeItemRoutes.js";
 
 // Import middleware
-const errorHandler = require("./middleware/errorHandler");
-//const notFound = require("./middleware/notFound");
+import errorHandler from "./middleware/errorHandler.js";
+//import notFound from "./middleware/notFound.js";
 
 const app = express();
 
@@ -77,6 +77,7 @@ app.get("/health", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/outfits", outfitRoutes);
+app.use("/api/wardrobe", wardrobeItemRoutes);
 //app.use("/api/recommendations", recommendationRoutes);
 //app.use("/api/regional", regionalRoutes);
 
@@ -84,4 +85,4 @@ app.use("/api/outfits", outfitRoutes);
 //app.use(notFound);
 //app.use(errorHandler);
 
-module.exports = app;
+export default app;

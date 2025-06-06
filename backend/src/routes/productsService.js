@@ -1,4 +1,4 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 const {
 	searchProducts,
@@ -54,4 +54,4 @@ router.delete(
 // @access  Private
 router.get("/wishlist", verifyFirebaseToken, getUser, getWishlist);
 
-module.exports = router;
+export default router;

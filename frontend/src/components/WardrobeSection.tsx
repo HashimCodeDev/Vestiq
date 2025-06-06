@@ -1,5 +1,6 @@
+//Wardrobe Section of Home Page
+
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Carousel,
@@ -7,80 +8,79 @@ import {
   CarouselItem,
 } from '@/components/ui/carousel';
 import Image from 'next/image';
-import { useState } from 'react';
 import { ArrowRightIcon } from '@phosphor-icons/react';
 import { useRouter } from 'next/navigation';
+import FilterBadge from '@/components/FilterBadge';
+import { useAuth } from '@/context/AuthContext';
+import axios from '@/lib/axios';
+import { useEffect, useState } from 'react';
 
+interface WardrobeItem {
+  _id: string;
+  userId: string;
+  imageUrl: string;
+  createdAt: string;
+  __v: number;
+}
+
+/**
+ * Wardrobe section component for the Home page.
+ *
+ * Displays a carousel of outfit items fetched from the server.
+ * The component is protected by `useAuth` and will only fetch the outfit items
+ * if the user is authenticated.
+ *
+ * Also includes a filter badge and a button to explore the wardrobe.
+ */
 export default function WardrobeSection() {
   const router = useRouter();
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const { token } = useAuth();
+  const [wardrobeItems, setWardrobeItems] = useState<WardrobeItem[]>([]);
 
-  const carouselItems = [
-    {
-      src: 'https://i.pinimg.com/736x/92/f2/6e/92f26ef8411fdfb284e2b0fa773ee13e.jpg',
-      title: 'Item 1',
-    },
-    {
-      src: 'https://i.pinimg.com/736x/86/b2/ba/86b2ba24874a08a00ac0b01a518bd56b.jpg',
-      title: 'Item 2',
-    },
-    {
-      src: 'https://i.pinimg.com/736x/cf/64/ff/cf64ff0d45268609266ed17244f53c80.jpg',
-      title: 'Item 3',
-    },
-    {
-      src: 'https://i.pinimg.com/736x/85/98/69/859869086499cde08c6633d1d26b5a42.jpg',
-      title: 'Item 4',
-    },
-    {
-      src: 'https://i.pinimg.com/736x/09/de/98/09de9831f16476cafa75c3cc9ea5047b.jpg',
-      title: 'Item 5',
-    },
-  ];
+  useEffect(() => {
+    if (!token) return;
+    /**
+     * Fetches the next batch of outfit items from the server.
+     * @param {number} [limit=5] The number of items to fetch.
+     * @param {number} [skip=0] The number of items to skip.
+     * @returns {Promise<void>} A promise that resolves when the items are fetched.
+     */
+    const fetchWardrobeItems = async (
+      limit: number = 5,
+      skip: number = 0,
+    ): Promise<void> => {
+      try {
+        const response = await axios.get(
+          `/wardrobe?limit=${limit}&skip=${skip}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+
+        console.log('Outfit items fetched:', response.data.items);
+        setWardrobeItems(response.data.items);
+      } catch (error) {
+        console.error('Error fetching outfit items:', error);
+      }
+    };
+    fetchWardrobeItems();
+  }, [token]);
 
   return (
     <div className="max-w-md mx-auto mt-8 p-4">
       <h2 className="text-2xl font-bold mb-4">Outfit Gallery</h2>
-      <Carousel className="w-full max-w-sm mb-4">
-        <CarouselContent className="ml-5 mr-5 gap-10">
-          {['Top', 'Shirt', 'Pants', 'Bottom', 'Accessories'].map(
-            (item, index) => (
-              <CarouselItem
-                key={index}
-                className={`pl-1 basis-1/5 flex justify-center ${
-                  activeIndex === index ? 'scale-110' : 'opacity-70'
-                }`}
-                onClick={() =>
-                  setActiveIndex((prevIndex) =>
-                    prevIndex === index ? null : index,
-                  )
-                }
-              >
-                <Badge
-                  className={`w-20 font-light transition-all ${
-                    activeIndex === index
-                      ? 'bg-gray-200 text-black dark:bg-black dark:text-white'
-                      : 'bg-gray-50 text-black dark:bg-black/30 dark:text-white'
-                  }`}
-                  variant="default"
-                >
-                  {item}
-                </Badge>
-              </CarouselItem>
-            ),
-          )}
-        </CarouselContent>
-      </Carousel>
-
+      <FilterBadge />
       <Carousel className="w-full max-w-sm">
         <CarouselContent className="-ml-1">
-          {carouselItems.map((item, index) => (
+          {wardrobeItems.map((item, index) => (
             <CarouselItem key={index} className="pl-1 basis-1/3">
               <div className="p-1">
                 <Card>
                   <CardContent className="flex aspect-square items-center justify-center">
                     <Image
-                      src={item.src}
+                      src={item.imageUrl}
                       width={200}
                       height={400}
                       alt={`Wardrobe item ${index + 1}`}
@@ -88,9 +88,9 @@ export default function WardrobeSection() {
                     />
                   </CardContent>
                 </Card>
-                <div className="mt-2 text-center text-xs text-black dark:text-white font-jakarta font-thin">
+                {/* <div className="mt-2 text-center text-xs text-black dark:text-white font-jakarta font-thin">
                   {item.title}
-                </div>
+                </div> */}
               </div>
             </CarouselItem>
           ))}
