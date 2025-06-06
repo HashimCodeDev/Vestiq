@@ -9,12 +9,14 @@ import { useAuth } from '@/context/AuthContext';
 const WardrobeGrid = lazy(() => import('@/components/WardrobeGrid'));
 
 /**
- * Wardrobe component that displays a grid of outfit items fetched from the server.
- * Utilizes lazy loading and suspense for smooth loading experience.
+ * Wardrobe component that displays a grid of outfit items.
  *
- * - Fetches wardrobe items from the server using the user's token.
- * - Displays a button to add a new outfit.
- * - Uses `ProtectedRoute` to ensure authentication.
+ * This component is protected by the {@link ProtectedRoute} component,
+ * ensuring that it can only be accessed by authenticated users. It uses
+ * the {@link Suspense} component to handle loading states, displaying a
+ * skeleton page while the {@link WardrobeGrid} component is being lazy-loaded.
+ *
+ * @returns A JSX element representing the wardrobe page.
  */
 
 export default function Wardrobe() {

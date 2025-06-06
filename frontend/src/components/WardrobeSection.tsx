@@ -23,6 +23,15 @@ interface WardrobeItem {
   __v: number;
 }
 
+/**
+ * Wardrobe section component for the Home page.
+ *
+ * Displays a carousel of outfit items fetched from the server.
+ * The component is protected by `useAuth` and will only fetch the outfit items
+ * if the user is authenticated.
+ *
+ * Also includes a filter badge and a button to explore the wardrobe.
+ */
 export default function WardrobeSection() {
   const router = useRouter();
   const { token } = useAuth();

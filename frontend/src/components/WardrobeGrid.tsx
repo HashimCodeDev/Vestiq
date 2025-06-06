@@ -33,6 +33,15 @@ interface WardrobeItem {
   __v: number;
 }
 
+/**
+ * Wardrobe grid component for the Wardrobe page.
+ *
+ * Displays a grid of cards, each containing an image of an outfit item. The
+ * first card is a button to add a new outfit item. The component also includes
+ * a filter badge to filter the wardrobe items based on different criteria.
+ *
+ * @returns A JSX element representing the Wardrobe grid
+ */
 export default function WardrobeGrid() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { uploadImage, isUploading } = useUploadImage();
