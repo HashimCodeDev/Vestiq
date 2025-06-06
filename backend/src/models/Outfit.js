@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const OutfitSchema = new mongoose.Schema(
 	{
@@ -212,4 +212,5 @@ OutfitSchema.pre("save", function (next) {
 	next();
 });
 
-module.exports = mongoose.model("Outfit", OutfitSchema);
+const Outfit = mongoose.model("Outfit", OutfitSchema);
+export default Outfit;

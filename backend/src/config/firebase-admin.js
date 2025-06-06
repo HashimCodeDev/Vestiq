@@ -1,5 +1,10 @@
 // config/firebase-admin.js
-const admin = require("firebase-admin");
+import admin from "firebase-admin";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+import fs from "fs";
+import dotenv from "dotenv";
+dotenv.config();
 
 // For development, you can use a service account key file
 // For production, use environment variables or Cloud Run/Cloud Functions built-in auth
@@ -8,7 +13,10 @@ let serviceAccount;
 
 if (process.env.NODE_ENV === "development") {
 	// Download service account key from Firebase Console
-	serviceAccount = require("./serviceAccountKey.json");
+	const __filename = fileURLToPath(import.meta.url);
+	const __dirname = dirname(__filename);
+	const serviceAccountPath = join(__dirname, "./serviceAccountKey.json");
+	serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, "utf8"));
 } else {
 	// For production, use environment variables
 	serviceAccount = {
@@ -32,4 +40,4 @@ admin.initializeApp({
 
 const auth = admin.auth();
 
-module.exports = { admin, auth };
+export { admin, auth };

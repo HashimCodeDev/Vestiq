@@ -1,4 +1,4 @@
-const logger = require("../utils/logger");
+import logger from "../utils/logger.js";
 
 // 404 handler
 const notFound = (req, res, next) => {
@@ -44,7 +44,4 @@ const errorHandler = (err, req, res, next) => {
 	});
 };
 
-module.exports = {
-	notFound,
-	errorHandler,
-};
+export default { notFound, errorHandler };

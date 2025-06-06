@@ -11,6 +11,7 @@ import { PlusCircleIcon, PlusIcon } from '@phosphor-icons/react';
 import { useUploadImage } from '@/hooks/useUploadImage';
 import { useRef } from 'react';
 import { Input } from './ui/input';
+import axios from '@/lib/axios';
 
 export default function WardrobeGrid({
   outfitItems,
@@ -26,11 +27,20 @@ export default function WardrobeGrid({
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    let url = '';
     if (!file) return;
 
     try {
-      const url = await uploadImage(file);
+      url = await uploadImage(file);
       console.log('Uploaded outfit URL:', url);
+    } catch (err) {
+      console.error('Error uploading image:', err);
+    }
+
+    try {
+      const res = await axios.post('/wardrobe', {
+        url: url,
+      });
     } catch (err) {
       console.error('Error uploading image:', err);
     }

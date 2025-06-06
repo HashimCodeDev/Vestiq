@@ -1,6 +1,6 @@
-const { auth } = require("../config/firebase-admin");
-const User = require("../models/User");
-const logger = require("../utils/logger");
+import { auth } from "../config/firebase-admin.js";
+import User from "../models/User.js";
+import logger from "../utils/logger.js";
 
 const verifyUser = async (req, res) => {
 	try {
@@ -90,7 +90,7 @@ const deleteAccount = async (req, res) => {
 	}
 };
 
-module.exports = {
+export {
 	verifyUser,
 	getProfile,
 	updateProfile,

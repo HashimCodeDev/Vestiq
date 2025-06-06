@@ -1,5 +1,5 @@
 // middleware/auth.js
-const { auth } = require("../config/firebase-admin");
+import { auth } from "../config/firebase-admin.js";
 
 const authenticateToken = async (req, res, next) => {
 	try {
@@ -86,4 +86,4 @@ const getUser = (req, res, next) => {
 	next();
 };
 
-module.exports = { authenticateToken, optionalAuth, getUser };
+export { authenticateToken, optionalAuth, getUser };

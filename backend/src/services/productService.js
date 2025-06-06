@@ -1,5 +1,5 @@
-const axios = require("axios");
-const logger = require("../utils/logger");
+import axios from "axios";
+import logger from "../utils/logger.js";
 
 class ProductService {
 	constructor() {
@@ -102,4 +102,6 @@ class ProductService {
 	}
 }
 
-module.exports = new ProductService();
+const productService = new ProductService();
+export { productService, ProductService };
+export default productService;

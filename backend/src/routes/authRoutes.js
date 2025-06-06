@@ -1,12 +1,12 @@
 // routes/auth.js
-const express = require("express");
-const { authenticateToken } = require("../middleware/auth");
-const {
+import express from "express";
+import { authenticateToken } from "../middleware/auth.js";
+import {
 	verifyUser,
 	getProfile,
 	updateProfile,
 	deleteAccount,
-} = require("../controllers/authController");
+} from "../controllers/authController.js";
 
 const router = express.Router();
 
@@ -15,4 +15,4 @@ router.get("/profile", authenticateToken, getProfile);
 router.put("/profile", authenticateToken, updateProfile);
 router.delete("/account", authenticateToken, deleteAccount);
 
-module.exports = router;
+export default router;
