@@ -4,21 +4,54 @@ import { Suspense, useEffect, useState, lazy } from 'react';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import WardrobePageSkeleton from '@/components/skeleton/WardrobePageSkeleton';
 import { Button } from '@/components/ui/button';
+import axios from '@/lib/axios';
+import { useAuth } from '@/context/AuthContext';
 
 const WardrobeGrid = lazy(() => import('@/components/WardrobeGrid'));
 
+/**
+ * Wardrobe component that displays a grid of outfit items fetched from the server.
+ * Utilizes lazy loading and suspense for smooth loading experience.
+ *
+ * - Fetches wardrobe items from the server using the user's token.
+ * - Displays a button to add a new outfit.
+ * - Uses `ProtectedRoute` to ensure authentication.
+ */
+
+interface WardrobeItem {
+  _id: string;
+  userId: string;
+  imageUrl: string;
+  createdAt: string;
+  __v: number;
+}
+
 export default function Wardrobe() {
   const [outfitItems, setOutfitItems] = useState<string[]>([]);
+  const { token } = useAuth();
 
   useEffect(() => {
-    setOutfitItems([
-      'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=80',
-      'https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=400&q=80',
-      'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80',
-      'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=400&q=80',
-      'https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=400&q=80',
-    ]);
-  }, []);
+    const fetchWardrobeItems = async () => {
+      if (!token) return;
+      try {
+        const response = await axios.get('/wardrobe', {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = response.data as WardrobeItem[];
+        setOutfitItems(data.map((item) => item.imageUrl));
+      } catch (error) {
+        console.error('Error fetching wardrobe items:', error);
+      }
+    };
+    fetchWardrobeItems();
+  }, [token]);
+
+  useEffect(() => {
+    console.log('outfitItems:', outfitItems);
+  }, [outfitItems]);
 
   return (
     <ProtectedRoute>

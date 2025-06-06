@@ -14,6 +14,16 @@ import { Input } from './ui/input';
 import axios from '@/lib/axios';
 import { useAuth } from '@/context/AuthContext';
 
+/**
+ * Wardrobe grid component for the Wardrobe page.
+ *
+ * Displays a grid of cards, each containing an image of an outfit item. The
+ * first card is a button to add a new outfit item. The component also includes
+ * a filter badge to filter the wardrobe items based on different criteria.
+ *
+ * @param outfitItems List of URLs of the images of the outfit items to display
+ * @returns A JSX element representing the Wardrobe grid
+ */
 export default function WardrobeGrid({
   outfitItems,
 }: {
@@ -45,7 +55,7 @@ export default function WardrobeGrid({
         { imageUrl: url },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // 👈 Add token from useAuth
+            Authorization: `Bearer ${token}`,
           },
         },
       );
@@ -87,7 +97,7 @@ export default function WardrobeGrid({
                     src={item}
                     alt={`Wardrobe item ${index + 1}`}
                     width={400}
-                    height={400}
+                    height={600}
                     className="w-full h-full object-cover rounded-lg"
                   />
                 </CardContent>
@@ -95,20 +105,22 @@ export default function WardrobeGrid({
             </Link>
           </div>
         ))}
-        <div className="p-1">
-          <Card className="h-60 bg-card flex justify-center items-center">
-            <CardContent className="flex aspect-square items-center justify-center">
-              <Button
-                className="cursor-pointer size-15"
-                variant="ghost"
-                size="icon"
-                asChild
-              >
-                <PlusCircleIcon size={28} weight="fill" />
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
+        {outfitItems.length > 5 && (
+          <div className="p-1">
+            <Card className="h-60 bg-card flex justify-center items-center">
+              <CardContent className="flex aspect-square items-center justify-center">
+                <Button
+                  className="cursor-pointer size-15"
+                  variant="ghost"
+                  size="icon"
+                  asChild
+                >
+                  <PlusCircleIcon size={28} weight="fill" />
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        )}
       </div>
     </div>
   );
