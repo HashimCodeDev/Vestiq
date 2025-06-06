@@ -6,6 +6,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
 import FilterBadge from '@/components/FilterBadge';
 import Link from 'next/link';
+import { Button } from './ui/button';
+import { PlusCircleIcon, PlusIcon } from '@phosphor-icons/react';
 
 export default function WardrobeGrid({
   outfitItems,
@@ -13,9 +15,15 @@ export default function WardrobeGrid({
   outfitItems: string[];
 }) {
   return (
-    <div className="flex flex-col">
+    <div className="relative min-h-screen">
       <FilterBadge />
-      <div className="grid grid-cols-2 gap-4 py-10 mb-10">
+      <div className="w-full p-1">
+        <Button className="w-full">
+          <PlusIcon size={32} weight="fill" />
+          Add Outfit
+        </Button>
+      </div>
+      <div className="grid grid-cols-2 gap-4 py-5 mb-10">
         {outfitItems.map((item, index) => (
           <div key={index} className="p-1">
             <Link href={`/wardrobe/${index + 1}`}>
@@ -33,6 +41,20 @@ export default function WardrobeGrid({
             </Link>
           </div>
         ))}
+        <div className="p-1">
+          <Card className="h-60 bg-card flex justify-center items-center">
+            <CardContent className="flex aspect-square items-center justify-center">
+              <Button
+                className="cursor-pointer size-15"
+                variant="ghost"
+                size="icon"
+                asChild
+              >
+                <PlusCircleIcon size={28} weight="fill" />
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

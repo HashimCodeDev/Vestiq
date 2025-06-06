@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useState, lazy } from 'react';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import WardrobePageSkeleton from '@/components/skeleton/WardrobePageSkeleton';
+import { Button } from '@/components/ui/button';
 
 const WardrobeGrid = lazy(() => import('@/components/WardrobeGrid'));
 
@@ -23,6 +24,9 @@ export default function Wardrobe() {
     <ProtectedRoute>
       <div>
         <Suspense fallback={<WardrobePageSkeleton />}>
+          <div className="fixed right-0 bottom-0 z-40">
+            <Button>Add Outfit</Button>
+          </div>
           <WardrobeGrid outfitItems={outfitItems} />
         </Suspense>
       </div>
