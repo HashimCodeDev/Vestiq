@@ -8,19 +8,52 @@ import FilterBadge from '@/components/FilterBadge';
 import Link from 'next/link';
 import { Button } from './ui/button';
 import { PlusCircleIcon, PlusIcon } from '@phosphor-icons/react';
+import { useUploadImage } from '@/hooks/useUploadImage';
+import { useRef } from 'react';
+import { Input } from './ui/input';
 
 export default function WardrobeGrid({
   outfitItems,
 }: {
   outfitItems: string[];
 }) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { uploadImage, isUploading } = useUploadImage();
+
+  const handleButtonClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const url = await uploadImage(file);
+      console.log('Uploaded outfit URL:', url);
+    } catch (err) {
+      console.error('Error uploading image:', err);
+    }
+  };
+
   return (
     <div className="relative min-h-screen">
       <FilterBadge />
       <div className="w-full p-1">
-        <Button className="w-full">
+        <Input
+          type="file"
+          accept="image/*"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          className="hidden"
+        />
+        <Button
+          className="w-full"
+          onClick={handleButtonClick}
+          disabled={isUploading}
+        >
           <PlusIcon size={32} weight="fill" />
-          Add Outfit
+          {isUploading ? 'Uploading...' : 'Add Outfit'}
         </Button>
       </div>
       <div className="grid grid-cols-2 gap-4 py-5 mb-10">
