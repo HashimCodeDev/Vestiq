@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { Button } from './ui/button';
 import { PlusCircleIcon, PlusIcon } from '@phosphor-icons/react';
 import { useUploadImage } from '@/hooks/useUploadImage';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Input } from './ui/input';
 import axios from '@/lib/axios';
 import { useAuth } from '@/context/AuthContext';
@@ -59,7 +59,7 @@ export default function WardrobeGrid() {
    * @param {number} [skip=0] The number of items to skip.
    * @returns {Promise<void>} A promise that resolves when the items are fetched.
    */
-  const fetchWardrobeItems = async (
+  const fetchWardrobeItems = useCallback(async (
     limit: number = 5,
     skip: number = 0,
   ): Promise<void> => {
@@ -86,21 +86,7 @@ export default function WardrobeGrid() {
     } catch (error) {
       console.error('Error fetching outfit items:', error);
     }
-  };
-
-  /**
-   * Loads more wardrobe items.
-   *
-   * If there are more items (i.e. `hasMore` is true), fetches the next batch of
-   * items by calling `fetchWardrobeItems` with the current `limit` and `skip`
-   * values. Then, increments `skip` by `limit` to prepare for the next fetch.
-   */
-  const handleLoadMore = async () => {
-    if (hasMore) {
-      await fetchWardrobeItems(limit, skip);
-      setSkip((prevSkip) => prevSkip + limit);
-    }
-  };
+  }, [token]);
 
   // Fetch wardrobe items on mount
   useEffect(() => {
@@ -108,11 +94,18 @@ export default function WardrobeGrid() {
     fetchWardrobeItems(limit, skip);
     hasFetched.current = true;
     setSkip(limit);
-  }, [token, fetchWardrobeItems, limit, skip]);
+  }, [token, limit, skip, fetchWardrobeItems]);
 
   useEffect(() => {
     if (!loaderRef.current) return;
     console.log('Infinite Scroll loading');
+
+    const handleLoadMore = async () => {
+      if (hasMore) {
+        await fetchWardrobeItems(limit, skip);
+        setSkip((prevSkip) => prevSkip + limit);
+      }
+    };
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -126,7 +119,7 @@ export default function WardrobeGrid() {
     observer.observe(loaderRef.current);
 
     return () => observer.disconnect();
-  }, [handleLoadMore, hasMore]);
+  }, [hasMore, fetchWardrobeItems, limit, skip]);
 
   /**
    * Simulates a click event on the file input element.
@@ -160,6 +153,9 @@ export default function WardrobeGrid() {
           },
         },
       );
+      if (res.status === 201) {
+        console.log('Outfit added successfully');
+      }
     } catch (err) {
       console.error('Error uploading image:', err);
     }

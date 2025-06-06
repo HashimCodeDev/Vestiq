@@ -1,10 +1,8 @@
 'use client';
 
-import { Suspense, useEffect, useState, lazy, useRef } from 'react';
+import { Suspense, lazy } from 'react';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import WardrobePageSkeleton from '@/components/skeleton/WardrobePageSkeleton';
-import axios from '@/lib/axios';
-import { useAuth } from '@/context/AuthContext';
 
 const WardrobeGrid = lazy(() => import('@/components/WardrobeGrid'));
 
