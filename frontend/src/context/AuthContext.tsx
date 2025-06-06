@@ -67,7 +67,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
               Authorization: `Bearer ${idToken}`,
             },
             body: JSON.stringify({
-              uid: user.uid,
+              userId: user.uid,
               email: user.email,
               displayName: user.displayName,
               photoURL: user.photoURL,

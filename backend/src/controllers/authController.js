@@ -2,9 +2,17 @@ import { auth } from "../config/firebase-admin.js";
 import User from "../models/User.js";
 import logger from "../utils/logger.js";
 
+/**
+ * Verify a user by either creating a new user document if the user doesn't exist
+ * or updating an existing user document with the latest profile information.
+ *
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @returns {Promise<void>}
+ */
 const verifyUser = async (req, res) => {
 	try {
-		const { uid, email, displayName, photoURL } = req.body;
+		const { userId, email, displayName, photoURL } = req.body;
 
 		const userData = {
 			email,
@@ -14,11 +22,11 @@ const verifyUser = async (req, res) => {
 			updatedAt: new Date(),
 		};
 
-		let user = await User.findOne({ firebaseUid: uid });
+		let user = await User.findOne({ userId });
 
 		if (!user) {
 			user = await User.create({
-				firebaseUid: uid,
+				userId,
 				...userData,
 			});
 
@@ -28,8 +36,8 @@ const verifyUser = async (req, res) => {
 				isNewUser: true,
 			});
 		} else {
-			await User.updateOne({ firebaseUid: uid }, { $set: userData });
-			const updatedUser = await User.findOne({ firebaseUid: uid });
+			await User.updateOne({ userId }, { $set: userData });
+			const updatedUser = await User.findOne({ userId });
 
 			return res.status(200).json({
 				message: "User verified successfully",
@@ -46,9 +54,17 @@ const verifyUser = async (req, res) => {
 	}
 };
 
+/**
+ * Retrieve and respond with the user's profile based on the userId from the request object.
+ *
+ * @param {Object} req - Express request object, with userId in req.user.userId
+ * @param {Object} res - Express response object
+ * @returns {Promise<void>} - Sends a JSON response containing the user profile or an error message
+ */
+
 const getProfile = async (req, res) => {
 	try {
-		const user = await User.findOne({ firebaseUid: req.user.uid });
+		const user = await User.findOne({ userId: req.user.userId });
 		res.json(user);
 	} catch (error) {
 		logger.error("Error fetching user profile:", error);
@@ -59,6 +75,13 @@ const getProfile = async (req, res) => {
 	}
 };
 
+/**
+ * Updates the user's profile with new display name and/or photo URL.
+ *
+ * @param {Object} req - Express request object, with user data in req.user
+ * @param {Object} res - Express response object
+ * @returns {Promise<void>} - Sends a JSON response containing a success message or an error message
+ */
 const updateProfile = async (req, res) => {
 	try {
 		const { displayName, photoURL } = req.body;
@@ -76,6 +99,13 @@ const updateProfile = async (req, res) => {
 	}
 };
 
+/**
+ * Deletes the user account from the database and from Firebase Auth.
+ *
+ * @param {Object} req - Express request object, with user data in req.user
+ * @param {Object} res - Express response object
+ * @returns {Promise<void>} - Sends a JSON response containing a success message or an error message
+ */
 const deleteAccount = async (req, res) => {
 	try {
 		await auth.deleteUser(req.user.uid);
@@ -90,9 +120,4 @@ const deleteAccount = async (req, res) => {
 	}
 };
 
-export {
-	verifyUser,
-	getProfile,
-	updateProfile,
-	deleteAccount,
-};
+export { verifyUser, getProfile, updateProfile, deleteAccount };

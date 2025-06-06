@@ -12,6 +12,7 @@ import { useUploadImage } from '@/hooks/useUploadImage';
 import { useRef } from 'react';
 import { Input } from './ui/input';
 import axios from '@/lib/axios';
+import { useAuth } from '@/context/AuthContext';
 
 export default function WardrobeGrid({
   outfitItems,
@@ -20,6 +21,7 @@ export default function WardrobeGrid({
 }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { uploadImage, isUploading } = useUploadImage();
+  const { token } = useAuth();
 
   const handleButtonClick = () => {
     fileInputRef.current?.click();
@@ -38,9 +40,17 @@ export default function WardrobeGrid({
     }
 
     try {
-      const res = await axios.post('/wardrobe', {
-        url: url,
-      });
+      const res = await axios.post(
+        '/wardrobe',
+        { imageUrl: url },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // 👈 Add token from useAuth
+          },
+        },
+      );
+
+      console.log(res.data);
     } catch (err) {
       console.error('Error uploading image:', err);
     }

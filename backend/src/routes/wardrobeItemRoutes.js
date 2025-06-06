@@ -3,10 +3,11 @@ import {
 	createWardrobeItem,
 	getWardrobeItems,
 } from "../controllers/wardrobeItemController.js";
+import { authenticateToken, getUser } from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.post("/", createWardrobeItem);
-router.get("/", getWardrobeItems);
+router.post("/", authenticateToken, getUser, createWardrobeItem);
+router.get("/", authenticateToken, getUser, getWardrobeItems);
 
 export default router;

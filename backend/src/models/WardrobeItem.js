@@ -1,6 +1,15 @@
 import mongoose from "mongoose";
 
 const WardrobeItemSchema = new mongoose.Schema({
+	userId: {
+		type: String,
+		required: true,
+		index: true,
+	},
+	category: {
+		type: String,
+		enum: ["top", "bottom", "dress", "outerwear", "footwear", "accessories"],
+	},
 	imageUrl: {
 		type: String,
 		required: true,
