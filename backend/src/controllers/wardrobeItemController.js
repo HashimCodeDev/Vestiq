@@ -38,13 +38,22 @@ export const createWardrobeItem = async (req, res) => {
  */
 export const getWardrobeItems = async (req, res) => {
 	try {
+		const limit = parseInt(req.query.limit) || 10;
+		const skip = parseInt(req.query.skip) || 0;
+
 		const items = await WardrobeItem.find({ userId: req.user.userId })
 			.sort({
 				createdAt: -1,
 			})
+			.skip(skip)
+			.limit(limit)
 			.exec();
 
-		res.json(items);
+		const totalCount = await WardrobeItem.countDocuments({
+			userId: req.user.userId,
+		});
+
+		res.status(200).json({ items, totalCount });
 	} catch (error) {
 		console.error("Error fetching wardrobe items:", error);
 		res.status(500).json({ error: "Server error" });
