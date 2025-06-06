@@ -1,3 +1,5 @@
+//Typewriter of AI chat page
+
 'use client';
 
 import { useEffect, useRef, useState } from 'react';

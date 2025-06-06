@@ -1,4 +1,5 @@
-// components/WardrobeGrid.tsx
+// Wardrobe grid of Wardrobe page
+
 'use client';
 
 import { Card, CardContent } from '@/components/ui/card';

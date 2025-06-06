@@ -1,5 +1,6 @@
+//Wardrobe Section of Home Page
+
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Carousel,
@@ -7,13 +8,12 @@ import {
   CarouselItem,
 } from '@/components/ui/carousel';
 import Image from 'next/image';
-import { useState } from 'react';
 import { ArrowRightIcon } from '@phosphor-icons/react';
 import { useRouter } from 'next/navigation';
+import FilterBadge from '@/components/FilterBadge';
 
 export default function WardrobeSection() {
   const router = useRouter();
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const carouselItems = [
     {
@@ -41,37 +41,7 @@ export default function WardrobeSection() {
   return (
     <div className="max-w-md mx-auto mt-8 p-4">
       <h2 className="text-2xl font-bold mb-4">Outfit Gallery</h2>
-      <Carousel className="w-full max-w-sm mb-4">
-        <CarouselContent className="ml-5 mr-5 gap-10">
-          {['Top', 'Shirt', 'Pants', 'Bottom', 'Accessories'].map(
-            (item, index) => (
-              <CarouselItem
-                key={index}
-                className={`pl-1 basis-1/5 flex justify-center ${
-                  activeIndex === index ? 'scale-110' : 'opacity-70'
-                }`}
-                onClick={() =>
-                  setActiveIndex((prevIndex) =>
-                    prevIndex === index ? null : index,
-                  )
-                }
-              >
-                <Badge
-                  className={`w-20 font-light transition-all ${
-                    activeIndex === index
-                      ? 'bg-gray-200 text-black dark:bg-black dark:text-white'
-                      : 'bg-gray-50 text-black dark:bg-black/30 dark:text-white'
-                  }`}
-                  variant="default"
-                >
-                  {item}
-                </Badge>
-              </CarouselItem>
-            ),
-          )}
-        </CarouselContent>
-      </Carousel>
-
+      <FilterBadge />
       <Carousel className="w-full max-w-sm">
         <CarouselContent className="-ml-1">
           {carouselItems.map((item, index) => (
