@@ -20,6 +20,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { toast } from 'sonner';
 
 interface WardrobeItem {
   _id: string;
@@ -40,6 +41,15 @@ export default function WardrobeGrid() {
   const [hasMore, setHasMore] = useState(true);
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const hasFetched = useRef(false);
+
+  useEffect(() => {
+    if (isUploading) {
+      toast.loading('Uploading image...');
+    } else {
+      toast.dismiss();
+      toast.success('Image uploaded successfully!');
+    }
+  }, [isUploading]);
 
   const fetchWardrobeItems = useCallback(
     async (limit: number = 5, skip: number = 0): Promise<void> => {
@@ -142,10 +152,16 @@ export default function WardrobeGrid() {
     }
   };
 
+  /**
+   * Triggers the hidden camera file input to open the camera roll.
+   */
   const handleCameraClick = () => {
     cameraInputRef.current?.click();
   };
 
+  /**
+   * Triggers the hidden file input to open the gallery.
+   */
   const handleGalleryClick = () => {
     galleryInputRef.current?.click();
   };
@@ -181,7 +197,7 @@ export default function WardrobeGrid() {
                 disabled={isUploading}
               >
                 <PlusIcon size={32} weight="fill" />
-                {isUploading ? 'Uploading...' : 'Add Outfit'}
+                {'Add Outfit'}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="center" className="w-56">
