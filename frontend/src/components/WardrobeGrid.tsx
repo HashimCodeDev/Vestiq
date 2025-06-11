@@ -59,34 +59,34 @@ export default function WardrobeGrid() {
    * @param {number} [skip=0] The number of items to skip.
    * @returns {Promise<void>} A promise that resolves when the items are fetched.
    */
-  const fetchWardrobeItems = useCallback(async (
-    limit: number = 5,
-    skip: number = 0,
-  ): Promise<void> => {
-    try {
-      const response = await axios.get(
-        `/wardrobe?limit=${limit}&skip=${skip}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
+  const fetchWardrobeItems = useCallback(
+    async (limit: number = 5, skip: number = 0): Promise<void> => {
+      try {
+        const response = await axios.get(
+          `/wardrobe?limit=${limit}&skip=${skip}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
-        },
-      );
+        );
 
-      const newItems = response.data.items.map(
-        (item: WardrobeItem) => item.imageUrl,
-      );
-      const totalCount = response.data.totalCount;
+        const newItems = response.data.items.map(
+          (item: WardrobeItem) => item.imageUrl,
+        );
+        const totalCount = response.data.totalCount;
 
-      /** Append new items to existing */
-      setWardrobeItems((prev) => [...prev, ...newItems]);
+        /** Append new items to existing */
+        setWardrobeItems((prev) => [...prev, ...newItems]);
 
-      /** Check if there are more items */
-      setHasMore(skip + newItems.length < totalCount);
-    } catch (error) {
-      console.error('Error fetching outfit items:', error);
-    }
-  }, [token]);
+        /** Check if there are more items */
+        setHasMore(skip + newItems.length < totalCount);
+      } catch (error) {
+        console.error('Error fetching outfit items:', error);
+      }
+    },
+    [token],
+  );
 
   // Fetch wardrobe items on mount
   useEffect(() => {
@@ -169,7 +169,7 @@ export default function WardrobeGrid() {
           type="file"
           accept="image/*"
           ref={fileInputRef}
-          capture="environment"
+          capture
           onChange={handleFileChange}
           className="hidden"
         />
