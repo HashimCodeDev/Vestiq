@@ -40,14 +40,16 @@ export default function WardrobeGrid() {
   const [skip, setSkip] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const loaderRef = useRef<HTMLDivElement | null>(null);
+  const fileWasUploaded = useRef(false);
   const hasFetched = useRef(false);
 
   useEffect(() => {
     if (isUploading) {
       toast.loading('Uploading image...');
-    } else {
+    } else if (fileWasUploaded.current) {
       toast.dismiss();
       toast.success('Image uploaded successfully!');
+      fileWasUploaded.current = false;
     }
   }, [isUploading]);
 
@@ -143,12 +145,15 @@ export default function WardrobeGrid() {
       if (res.status === 201) {
         console.log('Outfit added successfully');
         // Refresh the wardrobe items to show the new item
+
         setWardrobeItems([]);
         setSkip(0);
         hasFetched.current = false;
+        fileWasUploaded.current = true;
       }
     } catch (err) {
       console.error('Error uploading image:', err);
+      toast.error('Upload failed. Please try again.');
     }
   };
 
