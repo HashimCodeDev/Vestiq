@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from '@/context/AuthContext';
-import { ThemeProvider } from '@/lib/ThemeProvider';
+import { ThemeProvider } from '@/components/ThemeProvider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -34,29 +34,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        {/*This script runs before anything else */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-(function() {
-  try {
-    const theme = localStorage.getItem('darkMode');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (theme === 'true' || (!theme && systemPrefersDark)) {
-      document.documentElement.classList.add('dark');
-    }
-  } catch(_) {}
-})();
-          `.trim(),
-          }}
-        />
-      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${jakarta.variable} antialiased`}
       >
         <AuthProvider>
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
         </AuthProvider>
       </body>
     </html>

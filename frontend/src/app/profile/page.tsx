@@ -1,6 +1,6 @@
 'use client';
 import { Switch } from '@/components/ui/switch';
-import { useTheme } from '@/lib/ThemeProvider';
+import { useTheme } from 'next-themes';
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -15,9 +15,32 @@ import {
 } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { useState } from 'react';
 
 export default function SettingsPage() {
-  const { darkMode, toggleDarkMode } = useTheme();
+  const { theme } = useTheme();
+  const { setTheme } = useTheme();
+
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const toggleTheme = (enabled: boolean) => {
+    if (isTransitioning) return; // Prevent spam clicking
+
+    setIsTransitioning(true);
+
+    // Create a smooth transition effect
+    document.documentElement.style.transition =
+      'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+
+    setTimeout(() => {
+      setTheme(enabled ? 'dark' : 'light');
+    }, 50);
+
+    setTimeout(() => {
+      setIsTransitioning(false);
+      document.documentElement.style.transition = '';
+    }, 350);
+  };
 
   return (
     <div className="w-full max-w-sm mx-auto h-screen bg-white dark:bg-[#121212] text-black dark:text-white flex flex-col">
@@ -62,11 +85,25 @@ export default function SettingsPage() {
         <SettingItem icon={InfoIcon} label="Subscription" />
         <SettingItem icon={BellIcon} label="Notifications" />
         <SettingItem icon={StarIcon} label="Favorites" />
-        <SettingSwitch
-          label="Dark mode"
-          enabled={darkMode}
-          setEnabled={toggleDarkMode}
-        />
+        <div className="relative">
+          {/* Loading overlay during transition */}
+          {isTransitioning && (
+            <div className="absolute inset-0 bg-transparent z-10 pointer-events-none" />
+          )}
+
+          <div
+            className={`
+        transition-all duration-300 ease-in-out
+        ${isTransitioning ? 'scale-[0.98] opacity-90' : 'scale-100 opacity-100'}
+      `}
+          >
+            <SettingSwitch
+              label="Dark mode"
+              enabled={theme === 'dark'}
+              setEnabled={toggleTheme}
+            />
+          </div>
+        </div>
         <SettingItem icon={InfoIcon} label="About application" />
         <SettingItem icon={QuestionIcon} label="Help/FAQ" />
       </div>
@@ -110,7 +147,7 @@ function SettingSwitch({
   setEnabled: (value: boolean) => void;
 }) {
   return (
-    <div className="flex items-center justify-between py-3 border-b px-2">
+    <div className="flex items-center justify-between py-3 border-b px-2 transition-all duration-300">
       <div className="flex items-center gap-3">
         <span className="text-sm font-medium">{label}</span>
       </div>
