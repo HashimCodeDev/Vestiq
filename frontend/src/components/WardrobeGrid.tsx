@@ -44,12 +44,19 @@ export default function WardrobeGrid() {
   const hasFetched = useRef(false);
 
   useEffect(() => {
+    // Show a toast when an image is uploaded
     if (isUploading) {
       toast.loading('Uploading image...');
-    } else if (fileWasUploaded.current) {
+    }
+    // Show toast when upload is complete
+    else if (fileWasUploaded.current) {
       toast.dismiss();
       toast.success('Image uploaded successfully!');
       fileWasUploaded.current = false;
+    }
+    // Hide toast when upload is complete
+    else {
+      toast.dismiss();
     }
   }, [isUploading]);
 
