@@ -76,6 +76,7 @@ export default function Navbar() {
       </nav>
 
       {/* Spacer to prevent content from being hidden behind navbar */}
+      <div className="h-[72px] safe-area-inset-bottom" />
     </>
   );
 }
