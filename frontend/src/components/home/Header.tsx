@@ -1,11 +1,29 @@
 import { BellIcon } from '@phosphor-icons/react';
+import axios from '@/lib/axios';
+import { useEffect, useState } from 'react';
 
 export default function Header() {
+  const [userName, setUserName] = useState<string | null>();
+
+  const fetchUserName = async () => {
+    try {
+      const response = await axios.get('/user/getUsername');
+      console.log('Username:', response.data.userName);
+      setUserName(response.data.userName);
+    } catch {
+      console.error('Error fetching user name');
+    }
+  };
+
+  useEffect(() => {
+    fetchUserName();
+  }, []);
+
   return (
     <div className="flex items-center justify-between">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">
-          Good Morning, Sarah! ☀️
+          Good Morning, {userName} ☀️
         </h1>
         <p className="text-gray-600">Level 3: Sartorial Sorcerer ✨</p>
       </div>

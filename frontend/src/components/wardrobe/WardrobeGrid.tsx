@@ -80,11 +80,6 @@ export default function WardrobeGrid(): JSX.Element {
       try {
         const response = await axios.get(
           `/wardrobe?limit=${limit}&skip=${skip}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
         );
 
         const newItems = response.data.items.map(
