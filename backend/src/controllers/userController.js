@@ -17,6 +17,33 @@ const getUserProfile = async (req, res) => {
 	}
 };
 
+const getUserName = async (req, res) => {
+	try {
+		const user = await User.findOne({ userId: req.user.userId }).select(
+			"displayName"
+		);
+		if (!user) {
+			return res.status(404).json({
+				success: false,
+				message: "User not found",
+			});
+		}
+
+		const userName = user.displayName || "User";
+
+		res.json({
+			success: true,
+			userName: userName,
+		});
+	} catch {
+		logger.error("Get user name error:", error);
+		res.status(500).json({
+			success: false,
+			message: "Failed to get user name",
+		});
+	}
+};
+
 const updateUserProfile = async (req, res) => {
 	try {
 		const { displayName, email, preferences } = req.body;
@@ -57,4 +84,4 @@ const deleteUserAccount = async (req, res) => {
 	}
 };
 
-export { getUserProfile, updateUserProfile, deleteUserAccount };
+export { getUserProfile, getUserName, updateUserProfile, deleteUserAccount };
