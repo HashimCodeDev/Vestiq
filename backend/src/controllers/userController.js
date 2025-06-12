@@ -3,10 +3,16 @@ import logger from "../utils/logger.js";
 
 const getUserProfile = async (req, res) => {
 	try {
-		const user = await User.findById(req.user._id);
+		const result = await User.findOne({ userId: req.user.userId });
+		const user = {
+			userName: result.displayName,
+			email: result.email,
+			profilePicture: result.profilePicture,
+			preferences: result.preferences,
+		};
 		res.json({
 			success: true,
-			data: user,
+			user: user,
 		});
 	} catch (error) {
 		logger.error("Get user profile error:", error);

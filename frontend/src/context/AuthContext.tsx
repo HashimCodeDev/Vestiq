@@ -15,7 +15,6 @@ import {
   signOut,
   GoogleAuthProvider,
   signInWithPopup,
-  signInWithRedirect,
 } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 import { useRouter } from 'next/navigation';
@@ -132,7 +131,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const provider = new GoogleAuthProvider();
       provider.addScope('email');
       provider.addScope('profile');
-      await signInWithRedirect(auth, provider);
+      await signInWithPopup(auth, provider);
     } finally {
       setLoading(false);
     }

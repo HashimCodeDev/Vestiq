@@ -1,15 +1,18 @@
 import { BellIcon } from '@phosphor-icons/react';
 import axios from '@/lib/axios';
 import { useEffect, useState } from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export default function Header() {
   const [userName, setUserName] = useState<string | null>();
+  const [profilePicture, setProfilePicture] = useState<string>('');
 
   const fetchUserName = async () => {
     try {
-      const response = await axios.get('/user/getUsername');
-      console.log('Username:', response.data.userName);
-      setUserName(response.data.userName);
+      const response = await axios.get('/user/profile');
+      console.log('Username:', response.data.user.userName);
+      setUserName(response.data.user.userName);
+      setProfilePicture(response.data.user.profilePicture);
     } catch {
       console.error('Error fetching user name');
     }
@@ -29,9 +32,10 @@ export default function Header() {
       </div>
       <div className="flex items-center space-x-2">
         <BellIcon className="w-6 h-6 text-gray-600" />
-        <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
-          <span className="text-white text-sm font-bold">S</span>
-        </div>
+        <Avatar>
+          <AvatarImage src={profilePicture} />
+          <AvatarFallback>SC</AvatarFallback>
+        </Avatar>
       </div>
     </div>
   );
