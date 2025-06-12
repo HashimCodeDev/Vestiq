@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from '@/context/AuthContext';
-import { ThemeProvider } from '@/components/ThemeProvider';
+import { ThemeProvider } from '@/components/tools/ThemeProvider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',

@@ -17,7 +17,7 @@ import { Send, Bot, User, Loader2 } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import ReactMarkdown from 'react-markdown';
-import TypewriterMarkdown from '@/components/TypewriteMarkdown';
+import TypewriterMarkdown from '@/components/tools/TypewriteMarkdown';
 
 interface Message {
   id: string;

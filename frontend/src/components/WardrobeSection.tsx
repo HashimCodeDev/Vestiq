@@ -10,7 +10,7 @@ import {
 import Image from 'next/image';
 import { ArrowRightIcon } from '@phosphor-icons/react';
 import { useRouter } from 'next/navigation';
-import FilterBadge from '@/components/FilterBadge';
+import FilterBadge from '@/components/wardrobe/FilterBadge';
 import { useAuth } from '@/context/AuthContext';
 import axios from '@/lib/axios';
 import { useEffect, useState } from 'react';

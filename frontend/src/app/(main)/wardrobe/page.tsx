@@ -1,10 +1,10 @@
 'use client';
 
 import { Suspense, lazy } from 'react';
-import ProtectedRoute from '@/components/ProtectedRoute';
+import ProtectedRoute from '@/components/authentication/ProtectedRoute';
 import WardrobePageSkeleton from '@/components/skeleton/WardrobePageSkeleton';
 
-const WardrobeGrid = lazy(() => import('@/components/WardrobeGrid'));
+const WardrobeGrid = lazy(() => import('@/components/wardrobe/WardrobeGrid'));
 
 /**
  * Wardrobe component that displays a grid of outfit items.

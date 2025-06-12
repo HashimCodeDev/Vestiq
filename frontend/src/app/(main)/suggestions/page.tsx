@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { ThumbsUpIcon, ThumbsDownIcon } from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
-import ProtectedRoute from '@/components/ProtectedRoute';
+import ProtectedRoute from '@/components/authentication/ProtectedRoute';
 
 interface OutfitItem {
   id: string;

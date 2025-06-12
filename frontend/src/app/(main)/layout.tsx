@@ -1,5 +1,5 @@
-import Header from '@/components/Header';
-import Navbar from '@/components/NavBar';
+import Header from '@/components/common/Header';
+import Navbar from '@/components/common/NavBar';
 import { Toaster } from '@/components/ui/sonner';
 
 export default function MainLayout({
@@ -9,8 +9,7 @@ export default function MainLayout({
 }) {
   return (
     <>
-      <Header />
-      <div className="flex-1 px-4 overflow-y-auto">{children}</div>
+      <div className="flex-1 overflow-y-auto">{children}</div>
       <Toaster richColors />
       <Navbar />
     </>

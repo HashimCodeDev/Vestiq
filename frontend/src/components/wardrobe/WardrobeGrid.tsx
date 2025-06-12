@@ -2,13 +2,13 @@
 
 import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
-import FilterBadge from '@/components/FilterBadge';
+import FilterBadge from '@/components/wardrobe/FilterBadge';
 import Link from 'next/link';
-import { Button } from './ui/button';
+import { Button } from '@/components/ui/button';
 import { PlusIcon } from '@phosphor-icons/react';
 import { useUploadImage } from '@/hooks/useUploadImage';
 import { JSX, useCallback, useEffect, useRef, useState } from 'react';
-import { Input } from './ui/input';
+import { Input } from '@/components/ui/input';
 import axios from '@/lib/axios';
 import { useAuth } from '@/context/AuthContext';
 import { Camera, Upload } from 'lucide-react';

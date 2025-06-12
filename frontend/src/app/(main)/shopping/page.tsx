@@ -2,7 +2,7 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { UserIcon } from '@phosphor-icons/react';
-import ProtectedRoute from '@/components/ProtectedRoute';
+import ProtectedRoute from '@/components/authentication/ProtectedRoute';
 
 interface ClothingItem {
   id: number;
