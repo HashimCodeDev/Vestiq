@@ -15,10 +15,7 @@ const logger = winston.createLogger({
 });
 
 const connectDB = async () => {
-	const mongoURI =
-		process.env.NODE_ENV === "production" ?
-			process.env.MONGODB_URI_PROD
-		:	process.env.MONGODB_URI;
+	const mongoURI = process.env.MONGODB_URI;
 
 	try {
 		await mongoose.connect(mongoURI, {
