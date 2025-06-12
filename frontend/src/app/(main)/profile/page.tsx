@@ -16,10 +16,12 @@ import {
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { useState } from 'react';
+import { useUserInfo } from '@/hooks/useUserInfo';
 
 export default function SettingsPage() {
   const { theme } = useTheme();
   const { setTheme } = useTheme();
+  const { displayName, photoURL, email, loading } = useUserInfo();
 
   const [isTransitioning, setIsTransitioning] = useState(false);
 
@@ -65,17 +67,15 @@ export default function SettingsPage() {
       <div className="flex flex-col items-center p-6">
         <div className="relative">
           <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarImage src={photoURL ? photoURL : ''} />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/50 text-white text-xs opacity-0 hover:opacity-100 transition">
             Edit profile
           </div>
         </div>
-        <h3 className="mt-3 font-semibold text-lg">Ethan Carter</h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          ethan.carter@email.com
-        </p>
+        <h3 className="mt-3 font-semibold text-lg">{displayName}</h3>
+        <p className="text-sm text-gray-500 dark:text-gray-400">{email}</p>
       </div>
 
       {/* Options */}
