@@ -43,12 +43,6 @@ const gracefulShutdown = (signal, error) => {
 // Handle termination signals
 process.on("SIGINT", () => gracefulShutdown("SIGINT")); // Ctrl+C
 process.on("SIGTERM", () => gracefulShutdown("SIGTERM")); // kill or system stop
-process.on("uncaughtException", (err) =>
-	gracefulShutdown("uncaughtException", err)
-);
-process.on("unhandledRejection", (err) =>
-	gracefulShutdown("unhandledRejection", err)
-);
 
 // Start the server
 startServer();
