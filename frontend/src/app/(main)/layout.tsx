@@ -11,7 +11,7 @@ export default function MainLayout({
     <>
       <Header />
       <div className="flex-1 px-4 overflow-y-auto">{children}</div>
-      <Toaster />
+      <Toaster richColors />
       <Navbar />
     </>
   );

@@ -75,16 +75,16 @@ export default function WardrobeSection() {
       <Carousel className="w-full max-w-sm">
         <CarouselContent className="-ml-1">
           {wardrobeItems.map((item, index) => (
-            <CarouselItem key={index} className="pl-1 basis-1/3">
-              <div className="p-1">
-                <Card>
-                  <CardContent className="flex aspect-square items-center justify-center">
+            <CarouselItem key={index} className="pl-1 basis-1/2 px-1">
+              <div>
+                <Card className="h-50">
+                  <CardContent className="flex aspect-auto items-center justify-center">
                     <Image
                       src={item.imageUrl}
                       width={200}
                       height={400}
                       alt={`Wardrobe item ${index + 1}`}
-                      className="w-full h-full object-cover rounded-lg"
+                      className="w-full h-40 object-cover rounded-lg"
                     />
                   </CardContent>
                 </Card>

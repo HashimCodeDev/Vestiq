@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { Button } from './ui/button';
 import { PlusIcon } from '@phosphor-icons/react';
 import { useUploadImage } from '@/hooks/useUploadImage';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { JSX, useCallback, useEffect, useRef, useState } from 'react';
 import { Input } from './ui/input';
 import axios from '@/lib/axios';
 import { useAuth } from '@/context/AuthContext';
@@ -30,7 +30,22 @@ interface WardrobeItem {
   __v: number;
 }
 
-export default function WardrobeGrid() {
+/**
+ * The WardrobeGrid component displays a grid of outfit items from the server and allows the user to upload new outfit items.
+ * The component fetches the outfit items from the server using the `/wardrobe` API and displays them in the grid.
+ *
+ * The component also renders a "Add Outfit" button that toggles a dropdown menu with options to either take a photo or upload from the gallery.
+ * When the user selects an option, the component will either prompt the camera to open or the file input to open.
+ * When the user selects an image from the gallery or takes a photo, the component will attempt to upload the image to the server using the `/api/upload` API.
+ * If the upload is successful, the component will update the server with the new image URL and refresh the wardrobe items to include the new item.
+ *
+ * The component also uses the `useAuth` hook to get the user's token and pass it to the backend API.
+ * The component also uses the `useUploadImage` hook to upload the image to the server.
+ * The component also uses the `useState` hook to keep track of the wardrobe items and the infinite scroll state.
+ *
+ * @return {JSX.Element} The component JSX.
+ */
+export default function WardrobeGrid(): JSX.Element {
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const galleryInputRef = useRef<HTMLInputElement>(null);
   const { uploadImage, isUploading } = useUploadImage();
@@ -236,16 +251,16 @@ export default function WardrobeGrid() {
 
       <div className="grid grid-cols-2 gap-4 py-5 mb-10">
         {wardrobeItems.map((item, index) => (
-          <div key={index} className="p-1">
+          <div key={index}>
             <Link href={`/wardrobe/${index + 1}`}>
               <Card className="h-60 justify-center mb-5 hover:shadow-md transition-shadow">
-                <CardContent className="flex aspect-square items-center justify-center">
+                <CardContent className="flex items-center justify-center">
                   <Image
                     src={item}
                     alt={`Wardrobe item ${index + 1}`}
                     width={400}
                     height={600}
-                    className="w-full h-full object-cover rounded-lg"
+                    className="w-full h-full object-fill rounded-lg"
                   />
                 </CardContent>
               </Card>

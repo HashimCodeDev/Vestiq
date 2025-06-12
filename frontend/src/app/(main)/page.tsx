@@ -1,10 +1,11 @@
 'use client';
-import { Suspense } from 'react';
+import { Suspense, lazy } from 'react';
 import WelcomeCard from '@/components/WelcomeCard';
-import WardrobeSection from '@/components/WardrobeSection';
 import TrendingSection from '@/components/TrendingSection';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import PageSkeleton from '@/components/skeleton/HomePageSkeleton';
+
+const WardrobeSection = lazy(() => import('@/components/WardrobeSection'));
 
 /**
  * The home page component.
