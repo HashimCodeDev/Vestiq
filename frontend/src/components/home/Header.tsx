@@ -28,10 +28,10 @@ export default function Header() {
         <p className="text-gray-600">Level 3: Sartorial Sorcerer ✨</p>
       </div>
       <div className="flex items-center space-x-2">
+        <BellIcon className="w-6 h-6 text-gray-600" />
         <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
           <span className="text-white text-sm font-bold">S</span>
         </div>
-        <BellIcon className="w-6 h-6 text-gray-600" />
       </div>
     </div>
   );
