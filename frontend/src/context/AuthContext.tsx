@@ -15,6 +15,7 @@ import {
   signOut,
   GoogleAuthProvider,
   signInWithPopup,
+  signInWithRedirect,
 } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 import { useRouter } from 'next/navigation';
@@ -73,6 +74,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
               photoURL: user.photoURL,
             }),
           });
+          router.push('/');
         } catch (error) {
           console.error('Error verifying user with backend:', error);
           router.push('/login');
@@ -130,7 +132,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const provider = new GoogleAuthProvider();
       provider.addScope('email');
       provider.addScope('profile');
-      await signInWithPopup(auth, provider);
+      await signInWithRedirect(auth, provider);
     } finally {
       setLoading(false);
     }
