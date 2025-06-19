@@ -173,57 +173,77 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-64px)] bg-background">
+    <div className="flex flex-col h-[calc(100vh-64px)] bg-gradient-to-br from-background via-background/95 to-muted/5 relative overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-32 h-32 bg-primary/3 rounded-full blur-3xl animate-float" />
+        <div className="absolute top-40 right-20 w-24 h-24 bg-secondary/3 rounded-full blur-2xl animate-float animation-delay-1000" />
+        <div className="absolute bottom-40 left-20 w-40 h-40 bg-accent/3 rounded-full blur-3xl animate-float animation-delay-2000" />
+      </div>
+
       {/* Chat Messages */}
-      <ScrollArea className="flex-1 p-4 pb-50">
-        <div className="max-w-4xl mx-auto space-y-4">
-          {messages.map((message) => (
+      <ScrollArea className="flex-1 p-4 pb-32 relative z-10">
+        <div className="max-w-4xl mx-auto space-y-6">
+          {messages.map((message, index) => (
             <div
               key={message.id}
-              className={`flex space-x-3 ${
+              className={`flex space-x-3 animate-fade-in-up ${
                 message.role === 'user' ? 'justify-end' : 'justify-start'
               }`}
+              style={{ animationDelay: `${index * 50}ms` }}
             >
               {message.role === 'assistant' && (
-                <Avatar className="h-8 w-8 mt-1">
+                <Avatar className="h-10 w-10 mt-1 ring-2 ring-primary/20 hover:ring-primary/40 transition-all duration-200">
                   <AvatarFallback
                     className={`${
-                      message.isError ? 'bg-destructive' : 'bg-primary'
-                    } text-primary-foreground`}
+                      message.isError
+                        ? 'bg-destructive'
+                        : 'bg-gradient-to-br from-primary to-primary/80'
+                    } text-primary-foreground shadow-lg`}
                   >
-                    <Bot className="h-4 w-4" />
+                    <Bot className="h-5 w-5" />
                   </AvatarFallback>
                 </Avatar>
               )}
 
               <div
-                className={`max-w-[70%] ${message.role === 'user' ? 'order-first' : ''}`}
+                className={`max-w-[75%] ${message.role === 'user' ? 'order-first' : ''}`}
               >
                 {message.isError ? (
-                  <Alert className="border-destructive">
-                    <AlertDescription>{message.content}</AlertDescription>
+                  <Alert className="border-destructive bg-destructive/5 backdrop-blur-sm animate-scale-in">
+                    <AlertDescription className="text-destructive font-medium">
+                      {message.content}
+                    </AlertDescription>
                   </Alert>
                 ) : (
                   <Card
-                    className={`p-3 ${
+                    className={`p-4 shadow-lg hover:shadow-xl transition-all duration-200 animate-scale-in border-0 ${
                       message.role === 'user'
-                        ? 'bg-primary text-primary-foreground ml-auto'
-                        : 'bg-muted'
+                        ? 'bg-gradient-to-br from-primary to-primary/90 text-primary-foreground ml-auto backdrop-blur-sm'
+                        : 'bg-white/60 dark:bg-black/40 backdrop-blur-sm border border-white/20 dark:border-white/10'
                     }`}
                   >
-                    {message.role === 'user' ? (
-                      <ReactMarkdown>{message.content}</ReactMarkdown>
-                    ) : (
-                      <TypewriterMarkdown text={message.content} />
-                    )}
+                    <div
+                      className={`prose prose-sm max-w-none ${
+                        message.role === 'user'
+                          ? 'prose-invert'
+                          : 'prose-gray dark:prose-invert'
+                      }`}
+                    >
+                      {message.role === 'user' ? (
+                        <ReactMarkdown>{message.content}</ReactMarkdown>
+                      ) : (
+                        <TypewriterMarkdown text={message.content} />
+                      )}
+                    </div>
                   </Card>
                 )}
               </div>
 
               {message.role === 'user' && (
-                <Avatar className="h-8 w-8 mt-1">
-                  <AvatarFallback className="bg-secondary text-secondary-foreground">
-                    <User className="h-4 w-4" />
+                <Avatar className="h-10 w-10 mt-1 ring-2 ring-secondary/20 hover:ring-secondary/40 transition-all duration-200">
+                  <AvatarFallback className="bg-gradient-to-br from-secondary to-secondary/80 text-secondary-foreground shadow-lg">
+                    <User className="h-5 w-5" />
                   </AvatarFallback>
                 </Avatar>
               )}
@@ -231,17 +251,21 @@ export default function ChatPage() {
           ))}
 
           {isLoading && (
-            <div className="flex space-x-3 justify-start">
-              <Avatar className="h-8 w-8 mt-1">
-                <AvatarFallback className="bg-primary text-primary-foreground">
-                  <Bot className="h-4 w-4" />
+            <div className="flex space-x-3 justify-start animate-fade-in">
+              <Avatar className="h-10 w-10 mt-1 ring-2 ring-primary/20">
+                <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-lg">
+                  <Bot className="h-5 w-5" />
                 </AvatarFallback>
               </Avatar>
-              <Card className="p-3 bg-muted">
-                <div className="flex items-center space-x-2">
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  <span className="text-sm text-muted-foreground">
-                    Thinking...
+              <Card className="p-4 bg-white/60 dark:bg-black/40 backdrop-blur-sm border border-white/20 dark:border-white/10 shadow-lg">
+                <div className="flex items-center space-x-3">
+                  <div className="flex space-x-1">
+                    <div className="w-2 h-2 bg-primary rounded-full animate-bounce" />
+                    <div className="w-2 h-2 bg-primary rounded-full animate-bounce animation-delay-200" />
+                    <div className="w-2 h-2 bg-primary rounded-full animate-bounce animation-delay-400" />
+                  </div>
+                  <span className="text-sm text-muted-foreground font-medium">
+                    AI is thinking...
                   </span>
                 </div>
               </Card>
@@ -253,34 +277,37 @@ export default function ChatPage() {
       </ScrollArea>
 
       {/* Input Form */}
-      <div className="fixed bottom-15 left-0 right-0 mx-4 p-4 bg-card rounded-2xl shadow-sm mb-5 border z-10">
+      <div className="fixed bottom-16 left-0 right-0 mx-4 p-4 bg-white/80 dark:bg-black/80 backdrop-blur-xl rounded-2xl shadow-2xl mb-5 border border-white/30 dark:border-white/10 z-10">
         <form
           onSubmit={handleSubmit}
-          className="flex items-end gap-3 max-w-4xl mx-auto"
+          className="flex items-end gap-4 max-w-4xl mx-auto"
         >
-          <Textarea
-            ref={textAreaRef}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyPress}
-            placeholder="Type your message…"
-            disabled={isLoading}
-            rows={1}
-            className={cn(
-              'flex-1 resize-none text-sm',
-              isLoading && 'opacity-70 cursor-not-allowed',
-            )}
-          />
+          <div className="flex-1 relative">
+            <Textarea
+              ref={textAreaRef}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyPress}
+              placeholder="Ask me anything about fashion, styling, or your wardrobe..."
+              disabled={isLoading}
+              rows={1}
+              className={cn(
+                'flex-1 resize-none text-sm bg-white/50 dark:bg-black/50 backdrop-blur-sm border border-white/30 dark:border-white/20 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all duration-200',
+                isLoading && 'opacity-70 cursor-not-allowed',
+              )}
+            />
+            {/* Character count or typing indicator could go here */}
+          </div>
           <Button
             type="submit"
             size="icon"
             disabled={!input.trim() || isLoading}
-            className="shrink-0"
+            className="shrink-0 h-12 w-12 rounded-xl bg-gradient-to-br from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105"
           >
             {isLoading ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
+              <Loader2 className="h-5 w-5 animate-spin" />
             ) : (
-              <Send className="h-4 w-4" />
+              <Send className="h-5 w-5" />
             )}
           </Button>
         </form>
