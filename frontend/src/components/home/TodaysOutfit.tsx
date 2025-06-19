@@ -44,12 +44,6 @@ const TodaysOutfit = memo(function TodaysOutfit() {
       aria-labelledby="todays-outfit-title"
       className="relative overflow-hidden border-0 bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 dark:from-purple-950/20 dark:via-pink-950/20 dark:to-orange-950/20 rounded-2xl shadow-lg hover-lift"
     >
-      {/* Decorative background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-4 right-4 w-20 h-20 bg-gradient-to-br from-purple-200/30 to-pink-200/30 dark:from-purple-800/20 dark:to-pink-800/20 rounded-full blur-xl animate-float" />
-        <div className="absolute bottom-4 left-4 w-16 h-16 bg-gradient-to-br from-orange-200/30 to-yellow-200/30 dark:from-orange-800/20 dark:to-yellow-800/20 rounded-full blur-lg animate-float animation-delay-1000" />
-      </div>
-
       <Card className="relative overflow-hidden border-0 bg-transparent">
         <CardHeader className="pb-4">
           <div className="flex items-center justify-between">
@@ -61,7 +55,7 @@ const TodaysOutfit = memo(function TodaysOutfit() {
                 >
                   Today's Perfect Match
                 </h2>
-                <span className="text-lg animate-bounce-gentle">✨</span>
+                <span className="text-lg">✨</span>
               </div>
               <Badge
                 variant="secondary"
@@ -73,10 +67,7 @@ const TodaysOutfit = memo(function TodaysOutfit() {
               </Badge>
             </div>
             <div className="flex items-center gap-2 text-sm text-muted-foreground bg-white/30 dark:bg-black/20 backdrop-blur-sm rounded-lg px-3 py-2 border border-white/20 dark:border-white/10">
-              <SunIcon
-                className="w-4 h-4 text-orange-500 animate-bounce-gentle"
-                aria-hidden="true"
-              />
+              <SunIcon className="w-4 h-4 text-orange-500" aria-hidden="true" />
               <span
                 className="font-medium"
                 aria-label={`Weather: ${todaysOutfit.weather}`}
@@ -105,20 +96,15 @@ const TodaysOutfit = memo(function TodaysOutfit() {
                   role="listitem"
                 >
                   <div
-                    className="relative w-18 h-18 sm:w-24 sm:h-24 bg-white/60 dark:bg-black/30 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-3 border border-white/40 dark:border-white/20 group-hover:border-primary/60 transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg mx-auto"
+                    className="relative w-18 h-18 sm:w-24 sm:h-24 bg-white/60 dark:bg-black/30 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-3 border border-white/40 dark:border-white/20 mx-auto"
                     role="img"
                     aria-label={`${item} clothing item`}
                   >
-                    <span
-                      className="text-3xl sm:text-4xl group-hover:scale-110 transition-transform duration-300"
-                      aria-hidden="true"
-                    >
+                    <span className="text-3xl sm:text-4xl" aria-hidden="true">
                       {getItemEmoji(item)}
                     </span>
-                    {/* Subtle glow effect on hover */}
-                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/10 to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>
-                  <p className="text-xs sm:text-sm text-muted-foreground font-medium leading-tight group-hover:text-foreground transition-colors duration-200">
+                  <p className="text-xs sm:text-sm text-muted-foreground font-medium leading-tight">
                     {item}
                   </p>
                 </div>

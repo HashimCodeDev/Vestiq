@@ -25,9 +25,9 @@ export const useUserInfo = (): UserInfo => {
       if (user) {
         setUserInfo({
           displayName:
-            user.displayName ?? user.providerData[0]?.displayName ?? null,
-          photoURL: user.photoURL ?? user.providerData[0]?.photoURL ?? null,
-          email: user.email ?? user.providerData[0]?.email ?? null,
+            user.displayName ?? user.providerData?.[0]?.displayName ?? null,
+          photoURL: user.photoURL ?? user.providerData?.[0]?.photoURL ?? null,
+          email: user.email ?? user.providerData?.[0]?.email ?? null,
           loading: false,
         });
       } else {
