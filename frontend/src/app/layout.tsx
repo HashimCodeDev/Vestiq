@@ -30,7 +30,12 @@ export const metadata = {
     'Your intelligent fashion companion for curating the perfect wardrobe and styling outfits',
   keywords: 'fashion, wardrobe, AI, styling, outfits, clothing',
   authors: [{ name: 'OutFitly Team' }],
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({
