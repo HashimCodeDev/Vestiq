@@ -1,15 +1,7 @@
 'use client';
-import { Suspense, lazy } from 'react';
+import { Suspense } from 'react';
 import ProtectedRoute from '@/components/authentication/ProtectedRoute';
 import PageSkeleton from '@/components/skeleton/HomePageSkeleton';
-import {
-  BellIcon,
-  CameraIcon,
-  PaletteIcon,
-  StarIcon,
-  ThermometerIcon,
-  TrophyIcon,
-} from '@phosphor-icons/react';
 import Header from '@/components/home/Header';
 import QuickActions from '@/components/home/QuickActions';
 import TodaysOutfit from '@/components/home/TodaysOutfit';
@@ -30,63 +22,20 @@ import ActiveChallenges from '@/components/home/ActiveChallenges';
  * @returns The home page component.
  */
 export default function Home() {
-  const wardrobeItems = [
-    {
-      id: 1,
-      name: 'Navy Blazer',
-      category: 'Outerwear',
-      worn: 12,
-      image: '🧥',
-      color: 'navy',
-    },
-    {
-      id: 2,
-      name: 'White Blouse',
-      category: 'Tops',
-      worn: 8,
-      image: '👔',
-      color: 'white',
-    },
-    {
-      id: 3,
-      name: 'Black Jeans',
-      category: 'Bottoms',
-      worn: 25,
-      image: '👖',
-      color: 'black',
-    },
-    {
-      id: 4,
-      name: 'Summer Dress',
-      category: 'Dresses',
-      worn: 3,
-      image: '👗',
-      color: 'floral',
-    },
-    {
-      id: 5,
-      name: 'Sneakers',
-      category: 'Shoes',
-      worn: 18,
-      image: '👟',
-      color: 'white',
-    },
-    {
-      id: 6,
-      name: 'Leather Boots',
-      category: 'Shoes',
-      worn: 7,
-      image: '🥾',
-      color: 'brown',
-    },
-  ];
-
   const Loader = () => {
     return (
-      <div className="flex-col gap-4 w-full flex items-center justify-center">
-        <div className="w-20 h-20 border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-blue-400 rounded-full">
-          <div className="w-16 h-16 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-red-400 rounded-full" />
+      <div className="flex-col gap-4 w-full flex items-center justify-center min-h-[50vh]">
+        <div className="relative">
+          <div className="w-16 h-16 border-4 border-primary/20 rounded-full animate-spin">
+            <div className="absolute top-0 left-0 w-16 h-16 border-4 border-transparent border-t-primary rounded-full animate-spin" />
+          </div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+          </div>
         </div>
+        <p className="text-sm text-muted-foreground animate-pulse">
+          Loading your style...
+        </p>
       </div>
     );
   };
@@ -94,18 +43,31 @@ export default function Home() {
   return (
     <ProtectedRoute>
       <Suspense fallback={<Loader />}>
-        <div className="p-6 space-y-6">
-          {/* Header */}
-          <Header />
+        <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+          {/* Main Content Container */}
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+            <div className="space-y-6 pb-safe">
+              {/* Header */}
+              <div className="pt-4 sm:pt-6">
+                <Header />
+              </div>
 
-          {/* Today's Outfit */}
-          <TodaysOutfit />
+              {/* Today's Outfit */}
+              <section className="space-y-4">
+                <TodaysOutfit />
+              </section>
 
-          {/* Quick Actions */}
-          <QuickActions />
+              {/* Quick Actions */}
+              <section className="space-y-4">
+                <QuickActions />
+              </section>
 
-          {/* Active Challenges */}
-          <ActiveChallenges />
+              {/* Active Challenges */}
+              <section className="space-y-4">
+                <ActiveChallenges />
+              </section>
+            </div>
+          </div>
         </div>
       </Suspense>
     </ProtectedRoute>

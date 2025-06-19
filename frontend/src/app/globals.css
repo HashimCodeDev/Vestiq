@@ -158,6 +158,31 @@ body {
   }
 }
 
+/* Enhanced mobile touch targets */
+@media (max-width: 768px) {
+  button,
+  [role='button'],
+  a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Improved focus visibility for accessibility */
+@media (prefers-reduced-motion: no-preference) {
+  .focus-enhanced:focus {
+    transform: scale(1.02);
+    transition: transform 0.2s ease-in-out;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .card-enhanced {
+    border-width: 2px;
+  }
+}
+
 @layer utilities {
   .text-shadow-sm {
     text-shadow: var(--shadow-sm);
