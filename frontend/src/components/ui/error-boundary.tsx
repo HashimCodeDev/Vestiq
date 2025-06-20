@@ -56,9 +56,10 @@ class ErrorBoundary extends Component<Props, State> {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-sm text-muted-foreground text-center">
-                We encountered an unexpected error. Don't worry, it's not your fault!
+                We encountered an unexpected error. Don&apos;t worry, it&apos;s
+                not your fault!
               </p>
-              
+
               {process.env.NODE_ENV === 'development' && this.state.error && (
                 <div className="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
                   <p className="text-xs font-mono text-red-800 dark:text-red-200 break-all">
@@ -75,7 +76,7 @@ class ErrorBoundary extends Component<Props, State> {
                   <RefreshCw className="w-4 h-4 mr-2" />
                   Try Again
                 </Button>
-                
+
                 <Button
                   onClick={this.handleGoHome}
                   variant="outline"

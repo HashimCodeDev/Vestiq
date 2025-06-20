@@ -93,7 +93,7 @@ export default function WardrobeGrid(): JSX.Element {
         console.error('Error fetching outfit items:', error);
       }
     },
-    [token],
+    [],
   );
 
   useEffect(() => {

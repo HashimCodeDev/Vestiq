@@ -1,6 +1,12 @@
 'use client';
 
-import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  ReactNode,
+} from 'react';
 import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -43,51 +49,68 @@ interface ToastProviderProps {
 export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
-  const addToast = useCallback((toast: Omit<Toast, 'id'>) => {
-    const id = Math.random().toString(36).substr(2, 9);
-    const newToast = { ...toast, id };
-    
-    setToasts(prev => [...prev, newToast]);
-
-    // Auto remove after duration
-    const duration = toast.duration ?? 5000;
-    if (duration > 0) {
-      setTimeout(() => {
-        removeToast(id);
-      }, duration);
-    }
-  }, []);
-
   const removeToast = useCallback((id: string) => {
-    setToasts(prev => prev.filter(toast => toast.id !== id));
+    setToasts((prev) => prev.filter((toast) => toast.id !== id));
   }, []);
 
-  const success = useCallback((message: string, options?: Partial<Toast>) => {
-    addToast({ ...options, message, type: 'success' });
-  }, [addToast]);
+  const addToast = useCallback(
+    (toast: Omit<Toast, 'id'>) => {
+      const id = Math.random().toString(36).substr(2, 9);
+      const newToast = { ...toast, id };
 
-  const error = useCallback((message: string, options?: Partial<Toast>) => {
-    addToast({ ...options, message, type: 'error' });
-  }, [addToast]);
+      setToasts((prev) => [...prev, newToast]);
 
-  const warning = useCallback((message: string, options?: Partial<Toast>) => {
-    addToast({ ...options, message, type: 'warning' });
-  }, [addToast]);
+      // Auto remove after duration
+      const duration = toast.duration ?? 5000;
+      if (duration > 0) {
+        setTimeout(() => {
+          removeToast(id);
+        }, duration);
+      }
+    },
+    [removeToast],
+  );
 
-  const info = useCallback((message: string, options?: Partial<Toast>) => {
-    addToast({ ...options, message, type: 'info' });
-  }, [addToast]);
+  const success = useCallback(
+    (message: string, options?: Partial<Toast>) => {
+      addToast({ ...options, message, type: 'success' });
+    },
+    [addToast],
+  );
+
+  const error = useCallback(
+    (message: string, options?: Partial<Toast>) => {
+      addToast({ ...options, message, type: 'error' });
+    },
+    [addToast],
+  );
+
+  const warning = useCallback(
+    (message: string, options?: Partial<Toast>) => {
+      addToast({ ...options, message, type: 'warning' });
+    },
+    [addToast],
+  );
+
+  const info = useCallback(
+    (message: string, options?: Partial<Toast>) => {
+      addToast({ ...options, message, type: 'info' });
+    },
+    [addToast],
+  );
 
   return (
-    <ToastContext.Provider value={{
-      toasts,
-      addToast,
-      removeToast,
-      success,
-      error,
-      warning,
-      info,
-    }}>
+    <ToastContext.Provider
+      value={{
+        toasts,
+        addToast,
+        removeToast,
+        success,
+        error,
+        warning,
+        info,
+      }}
+    >
       {children}
       <ToastContainer toasts={toasts} onRemove={removeToast} />
     </ToastContext.Provider>
@@ -99,7 +122,10 @@ interface ToastContainerProps {
   onRemove: (id: string) => void;
 }
 
-const ToastContainer: React.FC<ToastContainerProps> = ({ toasts, onRemove }) => {
+const ToastContainer: React.FC<ToastContainerProps> = ({
+  toasts,
+  onRemove,
+}) => {
   if (toasts.length === 0) return null;
 
   return (
@@ -144,10 +170,12 @@ const ToastItem: React.FC<ToastItemProps> = ({ toast, onRemove }) => {
   };
 
   return (
-    <div className={cn(
-      'p-4 rounded-xl border shadow-lg backdrop-blur-sm animate-fade-in-up',
-      getStyles()
-    )}>
+    <div
+      className={cn(
+        'p-4 rounded-xl border shadow-lg backdrop-blur-sm animate-fade-in-up',
+        getStyles(),
+      )}
+    >
       <div className="flex items-start gap-3">
         {getIcon()}
         <div className="flex-1 min-w-0">
@@ -156,9 +184,7 @@ const ToastItem: React.FC<ToastItemProps> = ({ toast, onRemove }) => {
               {toast.title}
             </p>
           )}
-          <p className="text-sm text-foreground/80">
-            {toast.message}
-          </p>
+          <p className="text-sm text-foreground/80">{toast.message}</p>
           {toast.action && (
             <button
               onClick={toast.action.onClick}

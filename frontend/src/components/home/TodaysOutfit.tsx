@@ -1,6 +1,5 @@
 import {
   StarIcon,
-  ThermometerIcon,
   ShuffleIcon,
   HeartIcon,
   SunIcon,
@@ -53,7 +52,7 @@ const TodaysOutfit = memo(function TodaysOutfit() {
                   id="todays-outfit-title"
                   className="text-xl font-bold text-foreground"
                 >
-                  Today's Perfect Match
+                  Today&apos;s Perfect Match
                 </h2>
                 <span className="text-lg">✨</span>
               </div>
@@ -86,7 +85,7 @@ const TodaysOutfit = memo(function TodaysOutfit() {
             aria-labelledby="outfit-items-title"
           >
             <h3 id="outfit-items-title" className="sr-only">
-              Today's outfit items
+              Today&apos;s outfit items
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6" role="list">
               {todaysOutfit.items.map((item, index) => (

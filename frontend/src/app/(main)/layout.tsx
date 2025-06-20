@@ -1,4 +1,3 @@
-import Header from '@/components/common/Header';
 import Navbar from '@/components/common/NavBar';
 import { Toaster } from '@/components/ui/sonner';
 

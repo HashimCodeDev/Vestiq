@@ -7,7 +7,7 @@ import { useUserInfo } from '@/hooks/useUserInfo';
 import { memo, useMemo } from 'react';
 
 const Header = memo(function Header() {
-  const { displayName, photoURL, email, loading } = useUserInfo();
+  const { displayName, photoURL } = useUserInfo();
 
   // Memoize greeting to avoid recalculating on every render
   const { greeting, greetingEmoji } = useMemo(() => {

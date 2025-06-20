@@ -9,7 +9,9 @@
     "lint": "next lint",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "check": "pnpm lint && pnpm test",
+    "check:fix": "next lint --fix && pnpm test"
   },
   "dependencies": {
     "@huggingface/inference": "^4.0.4",
@@ -45,11 +47,17 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
     "@tailwindcss/postcss": "^4.1.8",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20.19.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "eslint": "^9.28.0",
     "eslint-config-next": "15.3.2",
+    "jest": "^30.0.2",
+    "jest-environment-jsdom": "^30.0.2",
     "prettier": "^3.5.3",
     "tailwindcss": "^4.1.8",
     "tailwindcss-animate": "^1.0.7",

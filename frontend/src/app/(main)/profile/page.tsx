@@ -21,7 +21,7 @@ import { useUserInfo } from '@/hooks/useUserInfo';
 export default function SettingsPage() {
   const { theme } = useTheme();
   const { setTheme } = useTheme();
-  const { displayName, photoURL, email, loading } = useUserInfo();
+  const { displayName, photoURL, email } = useUserInfo();
 
   const [isTransitioning, setIsTransitioning] = useState(false);
 
