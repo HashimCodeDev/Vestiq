@@ -3,16 +3,49 @@ import logger from "../utils/logger.js";
 
 const getUserProfile = async (req, res) => {
 	try {
-		const user = await User.findById(req.user._id);
+		const result = await User.findOne({ userId: req.user.userId });
+		const user = {
+			userName: result.displayName,
+			email: result.email,
+			profilePicture: result.profilePicture,
+			preferences: result.preferences,
+		};
 		res.json({
 			success: true,
-			data: user,
+			user: user,
 		});
 	} catch (error) {
 		logger.error("Get user profile error:", error);
 		res.status(500).json({
 			success: false,
 			message: "Failed to get user profile",
+		});
+	}
+};
+
+const getUserName = async (req, res) => {
+	try {
+		const user = await User.findOne({ userId: req.user.userId }).select(
+			"displayName"
+		);
+		if (!user) {
+			return res.status(404).json({
+				success: false,
+				message: "User not found",
+			});
+		}
+
+		const userName = user.displayName || "User";
+
+		res.json({
+			success: true,
+			userName: userName,
+		});
+	} catch {
+		logger.error("Get user name error:", error);
+		res.status(500).json({
+			success: false,
+			message: "Failed to get user name",
 		});
 	}
 };
@@ -57,4 +90,4 @@ const deleteUserAccount = async (req, res) => {
 	}
 };
 
-export { getUserProfile, updateUserProfile, deleteUserAccount };
+export { getUserProfile, getUserName, updateUserProfile, deleteUserAccount };

@@ -1,7 +1,7 @@
 // components/AuthGuard.tsx
 import { useEffect, ReactNode } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { useSafeRouter } from '../hooks/useSafeRouter';
+import { useAuth } from '@/context/AuthContext';
+import { useSafeRouter } from '@/hooks/useSafeRouter';
 
 interface AuthGuardProps {
   children: ReactNode;

@@ -73,6 +73,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
               photoURL: user.photoURL,
             }),
           });
+          router.push('/');
         } catch (error) {
           console.error('Error verifying user with backend:', error);
           router.push('/login');

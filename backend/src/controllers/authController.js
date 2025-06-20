@@ -13,11 +13,12 @@ import logger from "../utils/logger.js";
 const verifyUser = async (req, res) => {
 	try {
 		const { userId, email, displayName, photoURL } = req.body;
+		console.log("Received user data:", req.body);
 
 		const userData = {
 			email,
 			displayName: displayName || null,
-			photoURL: photoURL || null,
+			profilePicture: photoURL || null,
 			lastLogin: new Date(),
 			updatedAt: new Date(),
 		};

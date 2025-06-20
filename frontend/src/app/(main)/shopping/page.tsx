@@ -2,7 +2,7 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { UserIcon } from '@phosphor-icons/react';
-import ProtectedRoute from '@/components/ProtectedRoute';
+import ProtectedRoute from '@/components/authentication/ProtectedRoute';
 
 interface ClothingItem {
   id: number;
@@ -94,57 +94,89 @@ const clothingItems: ClothingItem[] = [
 
 const ClothingCard: React.FC<{ item: ClothingItem }> = ({ item }) => {
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
+    <Card className="group overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] border-0 bg-white/60 dark:bg-black/40 backdrop-blur-sm rounded-2xl">
       <CardContent className="p-0">
-        <div className="relative">
+        <div className="relative overflow-hidden">
           <div
-            className={`w-full h-48 flex items-center justify-center ${
+            className={`w-full h-52 flex items-center justify-center relative ${
               item.color === 'white'
-                ? 'bg-gray-100'
+                ? 'bg-gradient-to-br from-gray-100 to-gray-200'
                 : item.color === 'blue'
-                  ? 'bg-blue-500'
+                  ? 'bg-gradient-to-br from-blue-400 to-blue-600'
                   : item.color === 'black'
-                    ? 'bg-gray-900'
+                    ? 'bg-gradient-to-br from-gray-800 to-gray-900'
                     : item.color === 'grey'
-                      ? 'bg-gray-400'
+                      ? 'bg-gradient-to-br from-gray-300 to-gray-500'
                       : item.color === 'green'
-                        ? 'bg-green-600'
-                        : 'bg-red-500'
+                        ? 'bg-gradient-to-br from-green-500 to-green-700'
+                        : 'bg-gradient-to-br from-red-400 to-red-600'
             }`}
           >
-            {/* Placeholder for model image */}
-            <div className="w-20 h-32 bg-white/20 rounded-lg flex items-center justify-center">
-              <UserIcon className="w-8 h-8 text-white/70" />
+            {/* Enhanced placeholder for model image */}
+            <div className="w-24 h-36 bg-white/30 dark:bg-black/30 rounded-xl flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300 shadow-lg">
+              <UserIcon className="w-10 h-10 text-white/80" />
             </div>
+
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </div>
+
+          {/* Discount badge */}
           <Badge
             variant="destructive"
-            className="absolute top-2 left-2 bg-red-500 text-white font-semibold"
+            className="absolute top-3 left-3 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold px-2 py-1 rounded-lg shadow-lg animate-pulse"
           >
             {item.discount}
           </Badge>
+
+          {/* Favorite button */}
+          <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="w-8 h-8 bg-white/90 dark:bg-black/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform cursor-pointer">
+              <span className="text-sm">❤️</span>
+            </div>
+          </div>
         </div>
 
-        <div className="p-4">
-          <h3 className="font-semibold text-sm text-foreground mb-1">
-            {item.name}
-          </h3>
-          <p className="text-xs text-foreground mb-2">{item.brand}</p>
+        <div className="p-4 space-y-3">
+          <div>
+            <h3 className="font-bold text-sm text-foreground mb-1 group-hover:text-primary transition-colors">
+              {item.name}
+            </h3>
+            <p className="text-xs text-muted-foreground font-medium">
+              {item.brand}
+            </p>
+          </div>
 
-          <div className="flex items-center gap-1 mb-2">
-            <span className="text-yellow-400">★</span>
-            <span className="text-xs text-gray-600">
-              {item.rating} ★ ({item.reviews})
+          {/* Rating */}
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
+              {[...Array(5)].map((_, i) => (
+                <span
+                  key={i}
+                  className={`text-xs ${i < Math.floor(item.rating) ? 'text-yellow-400' : 'text-gray-300'}`}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+            <span className="text-xs text-muted-foreground">
+              {item.rating} ({item.reviews})
             </span>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-bold text-foreground">
-              ${item.salePrice.toFixed(2)}
-            </span>
-            <span className="text-xs text-gray-500 line-through">
-              ${item.originalPrice.toFixed(2)}
-            </span>
+          {/* Pricing */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="text-lg font-bold text-foreground">
+                ${item.salePrice.toFixed(2)}
+              </span>
+              <span className="text-xs text-muted-foreground line-through">
+                ${item.originalPrice.toFixed(2)}
+              </span>
+            </div>
+            <div className="text-xs font-medium text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/20 px-2 py-1 rounded-md">
+              Save ${(item.originalPrice - item.salePrice).toFixed(2)}
+            </div>
           </div>
         </div>
       </CardContent>
@@ -155,12 +187,40 @@ const ClothingCard: React.FC<{ item: ClothingItem }> = ({ item }) => {
 export default function ShoppingPage() {
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-muted/10 relative overflow-hidden">
+        {/* Decorative background elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-10 w-32 h-32 bg-primary/3 rounded-full blur-3xl animate-float" />
+          <div className="absolute top-40 right-20 w-24 h-24 bg-secondary/3 rounded-full blur-2xl animate-float animation-delay-1000" />
+          <div className="absolute bottom-40 left-20 w-40 h-40 bg-accent/3 rounded-full blur-3xl animate-float animation-delay-2000" />
+        </div>
+
+        {/* Header */}
+        <div className="relative z-10 pt-6 pb-4 px-4">
+          <div className="max-w-md mx-auto">
+            <div className="text-center space-y-2 animate-fade-in-up">
+              <h1 className="text-2xl font-bold text-foreground flex items-center justify-center gap-2">
+                <span>🛍️</span>
+                Shopping
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                Discover trending fashion pieces
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* Clothing Grid */}
-        <div className="max-w-md mx-auto px-4 pb-20">
+        <div className="relative z-10 max-w-md mx-auto px-4 pb-20">
           <div className="grid grid-cols-2 gap-4">
-            {clothingItems.map((item) => (
-              <ClothingCard key={item.id} item={item} />
+            {clothingItems.map((item, index) => (
+              <div
+                key={item.id}
+                className="animate-fade-in-up"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <ClothingCard item={item} />
+              </div>
             ))}
           </div>
         </div>

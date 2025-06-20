@@ -1,7 +1,9 @@
 import { Geist, Geist_Mono, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from '@/context/AuthContext';
-import { ThemeProvider } from '@/components/ThemeProvider';
+import { ThemeProvider } from '@/components/tools/ThemeProvider';
+import ErrorBoundary from '@/components/ui/error-boundary';
+import { ToastProvider } from '@/components/ui/toast-provider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -23,8 +25,17 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata = {
-  title: 'Wearzy',
-  description: 'AI Wardrobe Assistant',
+  title: 'OutFitly - AI Wardrobe Assistant',
+  description:
+    'Your intelligent fashion companion for curating the perfect wardrobe and styling outfits',
+  keywords: 'fashion, wardrobe, AI, styling, outfits, clothing',
+  authors: [{ name: 'OutFitly Team' }],
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({
@@ -35,18 +46,20 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${jakarta.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${jakarta.variable} antialiased font-sans`}
       >
-        <AuthProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
-        </AuthProvider>
+        <ErrorBoundary>
+          <AuthProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <ToastProvider>{children}</ToastProvider>
+            </ThemeProvider>
+          </AuthProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

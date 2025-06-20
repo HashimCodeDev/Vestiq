@@ -75,7 +75,7 @@ app.get("/health", (req, res) => {
 
 // API routes
 app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes);
+app.use("/api/user", userRoutes);
 app.use("/api/outfits", outfitRoutes);
 app.use("/api/wardrobe", wardrobeItemRoutes);
 //app.use("/api/recommendations", recommendationRoutes);
