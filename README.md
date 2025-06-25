@@ -292,7 +292,7 @@ For experienced developers who want to get up and running quickly:
 
 ```bash
 # Clone and setup
-git clone <repository-url> && cd Vestiq
+git clone https://github.com/HashimCodeDev/Vestiq.git && cd Vestiq
 
 # Install dependencies
 cd backend && pnpm install && cd ../frontend && pnpm install
