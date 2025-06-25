@@ -17,31 +17,31 @@ const ActiveChallenges = memo(function ActiveChallenges() {
         id: 1,
         title: 'Monochrome Monday',
         progress: 75,
-        reward: '50 pts',
+        reward: '🏆 50 XP',
         description: 'Wear a single color outfit',
-        daysLeft: 2,
+        daysLeft: 4,
         difficulty: 'Easy',
-        icon: '🖤',
+        icon: '✨',
       },
       {
         id: 2,
-        title: 'Sustainable Style',
+        title: 'Color Pop Week',
         progress: 40,
-        reward: '100 pts',
-        description: 'Use eco-friendly fashion choices',
+        reward: '🎨 75 XP',
+        description: 'Add vibrant colors to your outfits',
         daysLeft: 5,
         difficulty: 'Medium',
-        icon: '🌱',
+        icon: '🌈',
       },
       {
         id: 3,
-        title: 'Color Pop Week',
+        title: 'Sustainable Style',
         progress: 20,
-        reward: '75 pts',
-        description: 'Add vibrant colors to your outfits',
-        daysLeft: 7,
+        reward: '⭐ 100 XP',
+        description: 'Use eco-friendly fashion choices',
+        daysLeft: 14,
         difficulty: 'Hard',
-        icon: '🌈',
+        icon: '👗',
       },
     ],
     [],
@@ -66,7 +66,7 @@ const ActiveChallenges = memo(function ActiveChallenges() {
   }, []);
 
   return (
-    <div className="space-y-6">
+    <section role="region" aria-label="Active challenges" className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <h3 className="text-lg font-semibold text-foreground">
@@ -92,6 +92,7 @@ const ActiveChallenges = memo(function ActiveChallenges() {
         {challenges.map((challenge, index) => (
           <Card
             key={challenge.id}
+            role="article"
             className={`relative border-0 bg-white/40 dark:bg-black/20 backdrop-blur-sm hover:bg-white/60 dark:hover:bg-black/30 transition-all duration-300 group cursor-pointer hover:scale-[1.02] hover:shadow-lg overflow-hidden animate-fade-in-up`}
             style={{ animationDelay: `${index * 100}ms` }}
           >
@@ -153,7 +154,7 @@ const ActiveChallenges = memo(function ActiveChallenges() {
                       {challenge.progress}%
                     </span>
                   </div>
-                  <div className="relative">
+                  <div id="progress" className="relative">
                     <Progress
                       value={challenge.progress}
                       className="h-3 bg-muted/50"
@@ -186,7 +187,7 @@ const ActiveChallenges = memo(function ActiveChallenges() {
           </Card>
         ))}
       </div>
-    </div>
+    </section>
   );
 });
 
