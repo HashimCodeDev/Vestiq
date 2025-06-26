@@ -67,8 +67,11 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "@firebase/util",
+      "@tailwindcss/oxide",
       "msw",
-      "protobufjs"
+      "protobufjs",
+      "sharp",
+      "unrs-resolver"
     ]
   }
 }
