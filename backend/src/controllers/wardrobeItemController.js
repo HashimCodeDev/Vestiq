@@ -1,3 +1,4 @@
+import axios from "axios";
 import WardrobeItem from "../models/WardrobeItem.js";
 
 /**
@@ -9,15 +10,34 @@ import WardrobeItem from "../models/WardrobeItem.js";
  */
 export const createWardrobeItem = async (req, res) => {
 	try {
-		const { imageUrl, description } = req.body;
+		let features, description;
+		const { imageUrl } = req.body;
+		const url = process.env.FEATURE_EXTRACTION_URL || "http://localhost:8000";
 		console.log("Received image URL:", req.body);
 		if (!imageUrl) {
 			return res.status(400).json({ error: "Image URL is required" });
 		}
 
+		const response = await axios.post(url, { imageUrl });
+
+		if (response.data.error) {
+			return res.status(400).json({ error: response.data.error });
+		}
+
+		if (response.data?.analysis_data) {
+			features = response.data.analysis_data.dress_item;
+			description = response.data.analysis_data.description;
+
+			console.log("🧵 Features:", features);
+			console.log("📜 Description:", description);
+		} else {
+			console.error("❌ Invalid response format:", response.data);
+		}
+
 		const newItem = new WardrobeItem({
 			userId: req.user.userId,
 			imageUrl,
+			features,
 			description,
 		});
 		await newItem.save();
