@@ -1,5 +1,6 @@
 import app from "./app.js";
 import connectDB from "./config/database.js";
+import { startImageProcessingJob } from "./services/imageProcessingJob.js";
 
 const PORT = process.env.PORT || 5000;
 let server;
@@ -18,6 +19,9 @@ const startServer = async () => {
 🕐 Started at: ${new Date().toISOString()}
       `);
 		});
+
+		// Start background jobs
+		startImageProcessingJob();
 	} catch (error) {
 		console.error("❌ Failed to start server:", error);
 		process.exit(1);
