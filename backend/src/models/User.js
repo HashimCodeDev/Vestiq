@@ -38,6 +38,10 @@ const UserSchema = new mongoose.Schema(
 			type: Date,
 			default: Date.now,
 		},
+		lastUploaded: {
+			type: Date,
+			default: null,
+		},
 		isNewUser: {
 			type: Boolean,
 			default: true,
