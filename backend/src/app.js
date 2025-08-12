@@ -30,11 +30,13 @@ app.use(
 
 // CORS configuration for domains
 const corsOptions = {
-	origin: process.env.CLIENT_URL,
+	
+	origin: process.env.CLIENT_URL|| "http://localhost:3000",
 	credentials: true,
 	optionsSuccessStatus: 200,
 };
-app.use(cors(corsOptions));
+//app.use(cors(corsOptions));
+app.use(cors());
 
 // Rate limiting
 const limiter = rateLimit({

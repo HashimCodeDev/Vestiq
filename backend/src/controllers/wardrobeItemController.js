@@ -24,15 +24,19 @@ export const createWardrobeItem = async (req, res) => {
 			return res.status(400).json({ error: response.data.error });
 		}
 
-		if (response.data?.analysis_data) {
-			features = response.data.analysis_data.dress_item;
-			description = response.data.analysis_data.description;
+		if (response.data?.dressItem && response.data?.description) {
+
+			features = response.data.dressItem;
+			description = response.data.description;
 
 			console.log("🧵 Features:", features);
 			console.log("📜 Description:", description);
 		} else {
 			console.error("❌ Invalid response format:", response.data);
-		}
+            return res.status(400).json({ 
+            error: "Invalid response from feature extraction service" 
+        });
+}
 
 		const newItem = new WardrobeItem({
 			userId: req.user.userId,
@@ -76,6 +80,37 @@ export const getWardrobeItems = async (req, res) => {
 		res.status(200).json({ items, totalCount });
 	} catch (error) {
 		console.error("Error fetching wardrobe items:", error);
+		res.status(500).json({ error: "Server error" });
+	}
+};
+/**
+ * Deletes a wardrobe item by its ID.
+ *
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @returns {Promise<void>} - Sends a JSON response containing a success message or an error message
+ */
+export const deleteWardrobeItem = async (req, res) => {
+	try {
+		const userId = req.params.userId;
+		const itemId = req.params.itemId;	
+		
+		const deletedItem = await WardrobeItem.findOneAndDelete({
+			_id: itemId,
+			userId: userId
+		});
+		
+		
+		if (!deletedItem) {
+			return res.status(404).json({ error: "Wardrobe item not found" });
+		}
+		
+		res.status(200).json({ 
+			message: "Wardrobe item deleted successfully",
+			deletedItemId: deletedItem._id
+		});
+	} catch (error) {
+		console.error("Error deleting wardrobe item:", error);
 		res.status(500).json({ error: "Server error" });
 	}
 };
