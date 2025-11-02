@@ -94,11 +94,11 @@ const clothingItems: ClothingItem[] = [
 
 const ClothingCard: React.FC<{ item: ClothingItem }> = ({ item }) => {
   return (
-    <Card className="group overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] border-0 bg-white/60 dark:bg-black/40 backdrop-blur-sm rounded-2xl">
+    <Card className="group overflow-hidden hover:shadow-2xl transition-all duration-500 hover:scale-[1.05] border-0 bg-white/60 dark:bg-black/40 backdrop-blur-md rounded-2xl shadow-lg">
       <CardContent className="p-0">
         <div className="relative overflow-hidden">
           <div
-            className={`w-full h-52 flex items-center justify-center relative ${
+            className={`w-full h-56 flex items-center justify-center relative transition-all duration-500 ${
               item.color === 'white'
                 ? 'bg-gradient-to-br from-gray-100 to-gray-200'
                 : item.color === 'blue'
@@ -113,68 +113,77 @@ const ClothingCard: React.FC<{ item: ClothingItem }> = ({ item }) => {
             }`}
           >
             {/* Enhanced placeholder for model image */}
-            <div className="w-24 h-36 bg-white/30 dark:bg-black/30 rounded-xl flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300 shadow-lg">
-              <UserIcon className="w-10 h-10 text-white/80" />
+            <div className="w-28 h-40 bg-white/30 dark:bg-black/30 rounded-2xl flex items-center justify-center backdrop-blur-md group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-xl">
+              <UserIcon
+                className="w-12 h-12 text-white/80 group-hover:scale-110 transition-transform duration-500"
+                weight="duotone"
+              />
             </div>
 
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            {/* Enhanced gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+            {/* Shimmer effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-shimmer" />
           </div>
 
-          {/* Discount badge */}
+          {/* Enhanced discount badge */}
           <Badge
             variant="destructive"
-            className="absolute top-3 left-3 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold px-2 py-1 rounded-lg shadow-lg animate-pulse"
+            className="absolute top-3 left-3 bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold px-3 py-1.5 rounded-xl shadow-xl animate-pulse border-2 border-white/30"
           >
             {item.discount}
           </Badge>
 
-          {/* Favorite button */}
-          <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <div className="w-8 h-8 bg-white/90 dark:bg-black/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform cursor-pointer">
-              <span className="text-sm">❤️</span>
+          {/* Enhanced favorite button */}
+          <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
+            <div className="w-9 h-9 bg-white/95 dark:bg-black/95 backdrop-blur-md rounded-full flex items-center justify-center shadow-xl hover:scale-125 transition-all duration-300 cursor-pointer border border-white/30">
+              <span className="text-base hover:scale-110 transition-transform">
+                ❤️
+              </span>
             </div>
           </div>
         </div>
 
-        <div className="p-4 space-y-3">
+        <div className="p-5 space-y-3">
           <div>
-            <h3 className="font-bold text-sm text-foreground mb-1 group-hover:text-primary transition-colors">
+            <h3 className="font-bold text-base text-foreground mb-1.5 group-hover:text-primary transition-colors duration-300">
               {item.name}
             </h3>
-            <p className="text-xs text-muted-foreground font-medium">
+            <p className="text-xs text-muted-foreground font-semibold">
               {item.brand}
             </p>
           </div>
 
-          {/* Rating */}
+          {/* Enhanced Rating */}
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-0.5">
               {[...Array(5)].map((_, i) => (
                 <span
                   key={i}
-                  className={`text-xs ${i < Math.floor(item.rating) ? 'text-yellow-400' : 'text-gray-300'}`}
+                  className={`text-sm transition-all duration-300 ${i < Math.floor(item.rating) ? 'text-yellow-400 drop-shadow-sm' : 'text-gray-300 dark:text-gray-600'}`}
                 >
                   ★
                 </span>
               ))}
             </div>
-            <span className="text-xs text-muted-foreground">
-              {item.rating} ({item.reviews})
+            <span className="text-xs text-muted-foreground font-medium">
+              {item.rating}{' '}
+              <span className="text-[10px]">({item.reviews})</span>
             </span>
           </div>
 
-          {/* Pricing */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="text-lg font-bold text-foreground">
+          {/* Enhanced Pricing */}
+          <div className="flex items-center justify-between pt-1">
+            <div className="flex flex-col gap-1">
+              <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 ${item.salePrice.toFixed(2)}
               </span>
               <span className="text-xs text-muted-foreground line-through">
                 ${item.originalPrice.toFixed(2)}
               </span>
             </div>
-            <div className="text-xs font-medium text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950/20 px-2 py-1 rounded-md">
+            <div className="text-[10px] font-bold text-green-600 dark:text-green-400 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950/30 dark:to-green-900/30 px-2.5 py-1.5 rounded-lg shadow-md border border-green-200/50 dark:border-green-800/50">
               Save ${(item.originalPrice - item.salePrice).toFixed(2)}
             </div>
           </div>
@@ -195,29 +204,29 @@ export default function ShoppingPage() {
           <div className="absolute bottom-40 left-20 w-40 h-40 bg-accent/3 rounded-full blur-3xl animate-float animation-delay-2000" />
         </div>
 
-        {/* Header */}
-        <div className="relative z-10 pt-6 pb-4 px-4">
+        {/* Enhanced Header */}
+        <div className="relative z-10 pt-8 pb-6 px-4">
           <div className="max-w-md mx-auto">
-            <div className="text-center space-y-2 animate-fade-in-up">
-              <h1 className="text-2xl font-bold text-foreground flex items-center justify-center gap-2">
-                <span>🛍️</span>
-                Shopping
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                Discover trending fashion pieces
+            <div className="text-center space-y-3 animate-fade-in-up">
+              <div className="flex items-center justify-center gap-3 mb-2">
+                <span className="text-4xl animate-bounce-gentle">🛍️</span>
+                <h1 className="text-3xl font-bold text-gradient">Shopping</h1>
+              </div>
+              <p className="text-base text-muted-foreground font-medium">
+                Discover trending fashion pieces curated for you
               </p>
             </div>
           </div>
         </div>
 
-        {/* Clothing Grid */}
-        <div className="relative z-10 max-w-md mx-auto px-4 pb-20">
-          <div className="grid grid-cols-2 gap-4">
+        {/* Enhanced Clothing Grid */}
+        <div className="relative z-10 max-w-md mx-auto px-4 pb-24">
+          <div className="grid grid-cols-2 gap-5">
             {clothingItems.map((item, index) => (
               <div
                 key={item.id}
                 className="animate-fade-in-up"
-                style={{ animationDelay: `${index * 100}ms` }}
+                style={{ animationDelay: `${index * 80}ms` }}
               >
                 <ClothingCard item={item} />
               </div>

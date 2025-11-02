@@ -53,63 +53,79 @@ export default function SettingsPage() {
         <div className="absolute bottom-40 left-20 w-40 h-40 bg-accent/3 rounded-full blur-3xl animate-float animation-delay-2000" />
       </div>
 
-      {/* Header */}
+      {/* Enhanced Header */}
       <div className="relative z-10 flex items-center justify-between p-6 animate-fade-in-up">
         <Button
-          className="cursor-pointer w-10 h-10 bg-white/50 dark:bg-black/50 backdrop-blur-sm hover:bg-white/70 dark:hover:bg-black/70 transition-all duration-200"
+          className="cursor-pointer w-11 h-11 bg-white/60 dark:bg-black/60 backdrop-blur-md hover:bg-white/80 dark:hover:bg-black/80 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110 group"
           variant="ghost"
           size="icon"
           onClick={() => {
             window.history.back();
           }}
         >
-          <ArrowLeftIcon size={20} />
+          <ArrowLeftIcon
+            size={22}
+            className="group-hover:-translate-x-1 transition-transform duration-300"
+            weight="bold"
+          />
         </Button>
-        <h2 className="text-xl font-bold">Profile & Settings</h2>
-        <div className="w-10" /> {/* spacer for symmetry */}
+        <h2 className="text-2xl font-bold text-gradient">Profile & Settings</h2>
+        <div className="w-11" /> {/* spacer for symmetry */}
       </div>
 
-      {/* Profile */}
+      {/* Enhanced Profile */}
       <div className="relative z-10 flex flex-col items-center p-8 animate-fade-in-up animation-delay-200">
         <div className="relative group">
-          <div className="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-full blur opacity-25 group-hover:opacity-75 transition duration-300"></div>
-          <Avatar className="relative w-24 h-24 ring-4 ring-white/20 dark:ring-black/20 shadow-2xl">
+          <div className="absolute -inset-2 bg-gradient-to-r from-primary via-accent to-secondary rounded-full blur-lg opacity-30 group-hover:opacity-100 transition-all duration-500 animate-pulse-slow"></div>
+          <Avatar className="relative w-28 h-28 ring-4 ring-white/30 dark:ring-black/30 shadow-2xl group-hover:ring-primary/50 transition-all duration-500 group-hover:scale-105">
             <AvatarImage
               src={photoURL ? photoURL : ''}
               className="object-cover"
             />
-            <AvatarFallback className="bg-gradient-to-br from-primary to-secondary text-primary-foreground text-2xl font-bold">
+            <AvatarFallback className="bg-gradient-to-br from-primary via-accent to-secondary text-primary-foreground text-3xl font-bold">
               {displayName ? displayName.charAt(0).toUpperCase() : 'U'}
             </AvatarFallback>
           </Avatar>
-          <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/60 text-white text-xs opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer backdrop-blur-sm">
+          <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/70 text-white text-xs opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer backdrop-blur-md">
             <div className="text-center">
-              <div className="text-sm font-medium">✏️</div>
-              <div className="text-xs">Edit</div>
+              <div className="text-xl font-medium mb-1">✏️</div>
+              <div className="text-sm font-semibold">Edit Photo</div>
             </div>
           </div>
         </div>
-        <div className="text-center mt-6 space-y-2">
-          <h3 className="text-2xl font-bold text-foreground">
+        <div className="text-center mt-6 space-y-3">
+          <h3 className="text-3xl font-bold text-gradient">
             {displayName || 'User'}
           </h3>
-          <p className="text-sm text-muted-foreground bg-white/30 dark:bg-black/30 backdrop-blur-sm px-3 py-1 rounded-full">
+          <p className="text-sm text-muted-foreground bg-white/40 dark:bg-black/40 backdrop-blur-md px-4 py-2 rounded-full shadow-md border border-white/20">
             {email}
           </p>
-          <div className="flex items-center justify-center gap-4 mt-4">
-            <div className="text-center">
-              <div className="text-lg font-bold text-foreground">42</div>
-              <div className="text-xs text-muted-foreground">Items</div>
+          <div className="flex items-center justify-center gap-6 mt-6 bg-white/40 dark:bg-black/40 backdrop-blur-md rounded-2xl p-5 shadow-xl border border-white/20">
+            <div className="text-center group cursor-pointer hover:scale-110 transition-transform duration-300">
+              <div className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                42
+              </div>
+              <div className="text-xs text-muted-foreground font-semibold mt-1">
+                Items
+              </div>
             </div>
-            <div className="w-px h-8 bg-border"></div>
-            <div className="text-center">
-              <div className="text-lg font-bold text-foreground">18</div>
-              <div className="text-xs text-muted-foreground">Outfits</div>
+            <div className="w-px h-12 bg-gradient-to-b from-transparent via-border to-transparent"></div>
+            <div className="text-center group cursor-pointer hover:scale-110 transition-transform duration-300">
+              <div className="text-2xl font-bold bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent">
+                18
+              </div>
+              <div className="text-xs text-muted-foreground font-semibold mt-1">
+                Outfits
+              </div>
             </div>
-            <div className="w-px h-8 bg-border"></div>
-            <div className="text-center">
-              <div className="text-lg font-bold text-foreground">Level 3</div>
-              <div className="text-xs text-muted-foreground">Style</div>
+            <div className="w-px h-12 bg-gradient-to-b from-transparent via-border to-transparent"></div>
+            <div className="text-center group cursor-pointer hover:scale-110 transition-transform duration-300">
+              <div className="text-2xl font-bold bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">
+                Level 3
+              </div>
+              <div className="text-xs text-muted-foreground font-semibold mt-1">
+                Style
+              </div>
             </div>
           </div>
         </div>
@@ -168,19 +184,27 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      {/* Logout */}
+      {/* Enhanced Logout */}
       <div className="relative z-10 p-6 animate-fade-in-up animation-delay-600">
         <Button
           variant="ghost"
-          className="w-full h-12 text-red-600 dark:text-red-400 justify-between px-4 hover:bg-red-50 dark:hover:bg-red-950/20 bg-white/50 dark:bg-black/50 backdrop-blur-sm border border-red-200 dark:border-red-800 rounded-xl transition-all duration-200 hover:scale-[1.02]"
+          className="w-full h-14 text-red-600 dark:text-red-400 justify-between px-5 hover:bg-red-50 dark:hover:bg-red-950/30 bg-white/60 dark:bg-black/60 backdrop-blur-md border-2 border-red-200 dark:border-red-800 rounded-xl transition-all duration-300 hover:scale-[1.03] shadow-lg hover:shadow-xl group"
         >
-          <span className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center">
-              <SignOutIcon size={18} />
+          <span className="flex items-center gap-4">
+            <div className="w-10 h-10 bg-gradient-to-br from-red-100 to-red-200 dark:from-red-900/40 dark:to-red-800/40 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md">
+              <SignOutIcon
+                size={20}
+                weight="bold"
+                className="group-hover:rotate-12 transition-transform duration-300"
+              />
             </div>
-            <span className="font-medium">Logout</span>
+            <span className="font-semibold text-base">Logout</span>
           </span>
-          <ArrowRightIcon size={16} />
+          <ArrowRightIcon
+            size={18}
+            className="group-hover:translate-x-1 transition-transform duration-300"
+            weight="bold"
+          />
         </Button>
       </div>
     </div>
@@ -189,16 +213,21 @@ export default function SettingsPage() {
 
 function SettingItem({ icon: Icon, label }: { icon: Icon; label: string }) {
   return (
-    <div className="flex items-center justify-between py-4 px-4 cursor-pointer hover:bg-white/50 dark:hover:bg-black/50 bg-white/30 dark:bg-black/30 backdrop-blur-sm rounded-xl transition-all duration-200 hover:scale-[1.01] group border border-white/20 dark:border-white/10">
+    <div className="flex items-center justify-between py-4 px-5 cursor-pointer hover:bg-white/60 dark:hover:bg-black/60 bg-white/40 dark:bg-black/40 backdrop-blur-md rounded-xl transition-all duration-300 hover:scale-[1.02] group border border-white/30 dark:border-white/20 shadow-md hover:shadow-lg">
       <div className="flex items-center gap-4">
-        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-200">
-          <Icon size={20} className="text-primary" />
+        <div className="w-11 h-11 bg-gradient-to-br from-primary/15 to-accent/15 rounded-xl flex items-center justify-center group-hover:from-primary/25 group-hover:to-accent/25 transition-all duration-300 shadow-sm group-hover:scale-110">
+          <Icon
+            size={22}
+            className="text-primary group-hover:rotate-12 transition-transform duration-300"
+            weight="duotone"
+          />
         </div>
-        <span className="text-sm font-medium text-foreground">{label}</span>
+        <span className="text-sm font-semibold text-foreground">{label}</span>
       </div>
       <ArrowRightIcon
-        size={16}
-        className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-200"
+        size={18}
+        className="text-muted-foreground group-hover:text-primary group-hover:translate-x-2 transition-all duration-300"
+        weight="bold"
       />
     </div>
   );
@@ -214,12 +243,14 @@ function SettingSwitch({
   setEnabled: (value: boolean) => void;
 }) {
   return (
-    <div className="flex items-center justify-between py-4 px-4 bg-white/30 dark:bg-black/30 backdrop-blur-sm rounded-xl transition-all duration-300 border border-white/20 dark:border-white/10">
+    <div className="flex items-center justify-between py-4 px-5 bg-white/40 dark:bg-black/40 backdrop-blur-md rounded-xl transition-all duration-300 border border-white/30 dark:border-white/20 shadow-md hover:shadow-lg hover:scale-[1.02] group">
       <div className="flex items-center gap-4">
-        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-          <span className="text-lg">{enabled ? '🌙' : '☀️'}</span>
+        <div className="w-11 h-11 bg-gradient-to-br from-primary/15 to-accent/15 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+          <span className="text-2xl group-hover:scale-110 transition-transform duration-300">
+            {enabled ? '🌙' : '☀️'}
+          </span>
         </div>
-        <span className="text-sm font-medium text-foreground">{label}</span>
+        <span className="text-sm font-semibold text-foreground">{label}</span>
       </div>
       <Switch checked={enabled} onCheckedChange={setEnabled} />
     </div>

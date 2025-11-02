@@ -66,25 +66,29 @@ const ActiveChallenges = memo(function ActiveChallenges() {
   }, []);
 
   return (
-    <section role="region" aria-label="Active challenges" className="space-y-6">
+    <section
+      role="region"
+      aria-label="Active challenges"
+      className="space-y-6 animate-fade-in-up animation-delay-300"
+    >
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <h3 className="text-lg font-semibold text-foreground">
+        <div className="flex items-center gap-3">
+          <h3 className="text-2xl font-bold text-gradient">
             Active Challenges
           </h3>
           <TrophyIcon
-            className="w-5 h-5 text-yellow-500 animate-bounce-gentle"
+            className="w-6 h-6 text-yellow-500 fill-yellow-500 animate-bounce-gentle"
             weight="duotone"
           />
         </div>
         <Button
           variant="ghost"
           size="sm"
-          className="text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-black/20 backdrop-blur-sm transition-all duration-200"
+          className="text-sm text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-black/20 backdrop-blur-sm transition-all duration-300 group hover:scale-105"
           onClick={handleViewAll}
         >
           View All
-          <ArrowRightIcon className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-200" />
+          <ArrowRightIcon className="w-4 h-4 ml-1 group-hover:translate-x-2 transition-transform duration-300" />
         </Button>
       </div>
 
@@ -93,12 +97,12 @@ const ActiveChallenges = memo(function ActiveChallenges() {
           <Card
             key={challenge.id}
             role="article"
-            className={`relative border-0 bg-white/40 dark:bg-black/20 backdrop-blur-sm hover:bg-white/60 dark:hover:bg-black/30 transition-all duration-300 group cursor-pointer hover:scale-[1.02] hover:shadow-lg overflow-hidden animate-fade-in-up`}
+            className={`relative border-0 bg-white/50 dark:bg-black/30 backdrop-blur-md hover:bg-white/70 dark:hover:bg-black/40 transition-all duration-500 group cursor-pointer hover:scale-[1.03] hover:shadow-2xl overflow-hidden animate-fade-in-up shadow-lg`}
             style={{ animationDelay: `${index * 100}ms` }}
           >
-            {/* Subtle gradient overlay based on difficulty */}
+            {/* Enhanced gradient overlay based on difficulty */}
             <div
-              className={`absolute inset-0 opacity-0 group-hover:opacity-5 transition-opacity duration-300 ${
+              className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 ${
                 challenge.difficulty === 'Easy'
                   ? 'bg-gradient-to-br from-green-400 to-emerald-500'
                   : challenge.difficulty === 'Medium'
@@ -106,6 +110,18 @@ const ActiveChallenges = memo(function ActiveChallenges() {
                     : 'bg-gradient-to-br from-red-400 to-pink-500'
               }`}
             />
+            {/* Animated background particles */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              <div
+                className={`absolute top-2 right-2 w-20 h-20 rounded-full blur-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 ${
+                  challenge.difficulty === 'Easy'
+                    ? 'bg-green-400'
+                    : challenge.difficulty === 'Medium'
+                      ? 'bg-yellow-400'
+                      : 'bg-red-400'
+                }`}
+              />
+            </div>
 
             <CardContent className="relative p-5">
               <div className="space-y-4">

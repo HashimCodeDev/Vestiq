@@ -1,8 +1,18 @@
 'use client';
 import { useState } from 'react';
 import Image from 'next/image';
-import { ThumbsUpIcon, ThumbsDownIcon } from '@phosphor-icons/react';
+import {
+  ThumbsUpIcon,
+  ThumbsDownIcon,
+  SparkleIcon,
+  TrendUpIcon,
+  HeartIcon,
+  ShareIcon,
+  BookmarkIcon,
+  ShuffleIcon,
+} from '@phosphor-icons/react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import ProtectedRoute from '@/components/authentication/ProtectedRoute';
 
 interface OutfitItem {
@@ -19,6 +29,9 @@ interface StyleSuggestion {
   items: OutfitItem[];
   likes: number;
   dislikes: number;
+  category: string;
+  tags: string[];
+  trending?: boolean;
 }
 
 const SuggestionsPage = () => {
@@ -28,6 +41,10 @@ const SuggestionsPage = () => {
   const [dislikedSuggestions, setDislikedSuggestions] = useState<{
     [key: string]: boolean;
   }>({});
+  const [savedSuggestions, setSavedSuggestions] = useState<{
+    [key: string]: boolean;
+  }>({});
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   const handleLike = (id: string) => {
     setLikedSuggestions((prev) => ({
@@ -50,8 +67,13 @@ const SuggestionsPage = () => {
       ...prev,
       [id]: false,
     }));
+  };
 
-    // Optional: update backend or local dislike count here
+  const handleSave = (id: string) => {
+    setSavedSuggestions((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
   };
 
   const suggestions: StyleSuggestion[] = [
@@ -59,6 +81,9 @@ const SuggestionsPage = () => {
       id: '1',
       title: 'Casual Weekend',
       subtitle: 'Effortless Comfort',
+      category: 'casual',
+      tags: ['Relaxed', 'Everyday', 'Comfortable'],
+      trending: true,
       items: [
         {
           id: '1b',
@@ -96,6 +121,9 @@ const SuggestionsPage = () => {
       id: '2',
       title: 'Business Casual',
       subtitle: 'Smart Sophistication',
+      category: 'business',
+      tags: ['Professional', 'Polished', 'Office'],
+      trending: false,
       items: [
         {
           id: '2a',
@@ -133,6 +161,9 @@ const SuggestionsPage = () => {
       id: '3',
       title: 'Smart Casual',
       subtitle: 'Versatile Elegance',
+      category: 'smart-casual',
+      tags: ['Versatile', 'Chic', 'Modern'],
+      trending: true,
       items: [
         {
           id: '3a',
@@ -161,6 +192,18 @@ const SuggestionsPage = () => {
     },
   ];
 
+  const categories = [
+    { id: 'all', label: 'All Styles', icon: '✨' },
+    { id: 'casual', label: 'Casual', icon: '👕' },
+    { id: 'business', label: 'Business', icon: '💼' },
+    { id: 'smart-casual', label: 'Smart Casual', icon: '👔' },
+  ];
+
+  const filteredSuggestions =
+    selectedCategory === 'all'
+      ? suggestions
+      : suggestions.filter((s) => s.category === selectedCategory);
+
   return (
     <ProtectedRoute>
       <div className="min-h-screen bg-gradient-to-br from-background via-background/95 to-muted/10 relative overflow-hidden">
@@ -173,130 +216,224 @@ const SuggestionsPage = () => {
 
         {/* Header */}
         <div className="relative z-10 bg-white/50 dark:bg-black/50 backdrop-blur-xl border-b border-white/20 dark:border-white/10 shadow-lg">
-          <div className="max-w-md mx-auto px-6 py-6">
+          <div className="max-w-md mx-auto px-6 py-6 space-y-4">
             <div className="flex items-center justify-between animate-fade-in-up">
               <div className="space-y-1">
-                <h1 className="text-xl font-bold text-foreground flex items-center gap-2">
-                  <span>✨</span>
+                <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
+                  <SparkleIcon className="w-6 h-6 text-primary" weight="fill" />
                   Style Suggestions
                 </h1>
                 <p className="text-sm text-muted-foreground">
                   Curated looks just for you
                 </p>
               </div>
-              <div className="relative">
-                <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg ring-4 ring-orange-100 dark:ring-orange-900/30">
-                  <span className="text-white text-lg font-bold">O</span>
-                </div>
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-black animate-pulse" />
-              </div>
+              <Button
+                variant="outline"
+                size="icon"
+                className="rounded-full hover:scale-105 transition-transform duration-200"
+                onClick={() => {
+                  /* Shuffle suggestions */
+                }}
+              >
+                <ShuffleIcon className="w-5 h-5" />
+              </Button>
+            </div>
+
+            {/* Category Filter */}
+            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide animate-fade-in-up animation-delay-200">
+              {categories.map((category) => (
+                <Button
+                  key={category.id}
+                  variant={
+                    selectedCategory === category.id ? 'default' : 'outline'
+                  }
+                  size="sm"
+                  className={`rounded-full whitespace-nowrap transition-all duration-200 ${
+                    selectedCategory === category.id
+                      ? 'shadow-lg scale-105'
+                      : 'hover:scale-105'
+                  }`}
+                  onClick={() => setSelectedCategory(category.id)}
+                >
+                  <span className="mr-1.5">{category.icon}</span>
+                  {category.label}
+                </Button>
+              ))}
             </div>
           </div>
         </div>
 
         {/* Suggestions */}
-        <div className="relative z-10 max-w-md mx-auto px-6 py-8 space-y-8">
-          {suggestions.map((suggestion, index) => (
-            <div
-              key={suggestion.id}
-              className="bg-white/60 dark:bg-black/40 backdrop-blur-sm rounded-3xl shadow-xl overflow-hidden border border-white/30 dark:border-white/10 hover:shadow-2xl transition-all duration-300 hover:scale-[1.01] animate-fade-in-up"
-              style={{ animationDelay: `${index * 200}ms` }}
-            >
-              {/* Outfit Grid */}
-              <div className="p-8">
-                <div className="grid grid-cols-3 gap-4 mb-6">
-                  {suggestion.items.map((item, itemIndex) => (
-                    <div
-                      key={item.id}
-                      className="group aspect-square bg-white/50 dark:bg-black/50 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-                      style={{
-                        animationDelay: `${index * 200 + itemIndex * 100}ms`,
-                      }}
-                    >
-                      <div className="relative w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center overflow-hidden">
-                        <Image
-                          src={item.image}
-                          alt={item.alt}
-                          width={120}
-                          height={120}
-                          className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-300"
+        <div className="relative z-10 max-w-md mx-auto px-6 py-8 space-y-6">
+          {filteredSuggestions.length === 0 ? (
+            <div className="text-center py-12 animate-fade-in-up">
+              <p className="text-muted-foreground text-lg">
+                No suggestions found for this category
+              </p>
+            </div>
+          ) : (
+            filteredSuggestions.map((suggestion, index) => (
+              <div
+                key={suggestion.id}
+                className="group bg-white/70 dark:bg-black/50 backdrop-blur-md rounded-3xl shadow-xl overflow-hidden border border-white/40 dark:border-white/10 hover:shadow-2xl transition-all duration-300 hover:scale-[1.01] animate-fade-in-up relative"
+                style={{ animationDelay: `${index * 150}ms` }}
+              >
+                {/* Trending Badge */}
+                {suggestion.trending && (
+                  <div className="absolute top-4 right-4 z-10">
+                    <Badge className="bg-gradient-to-r from-orange-500 to-pink-500 text-white border-0 shadow-lg flex items-center gap-1 px-3 py-1.5">
+                      <TrendUpIcon className="w-3.5 h-3.5" weight="bold" />
+                      <span className="text-xs font-semibold">Trending</span>
+                    </Badge>
+                  </div>
+                )}
+
+                {/* Outfit Grid */}
+                <div className="p-6">
+                  {/* Title and Tags */}
+                  <div className="mb-5 space-y-3">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1">
+                        <h3 className="text-2xl font-bold text-foreground mb-1.5">
+                          {suggestion.title}
+                        </h3>
+                        <p className="text-muted-foreground text-sm">
+                          {suggestion.subtitle}
+                        </p>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className={`rounded-full transition-all duration-200 ${
+                          savedSuggestions[suggestion.id]
+                            ? 'text-pink-600 hover:text-pink-700 scale-110'
+                            : 'text-muted-foreground hover:text-pink-600'
+                        }`}
+                        onClick={() => handleSave(suggestion.id)}
+                      >
+                        <BookmarkIcon
+                          className="w-5 h-5"
+                          weight={
+                            savedSuggestions[suggestion.id] ? 'fill' : 'regular'
+                          }
                         />
-                        {/* Overlay on hover */}
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-                        {/* Item type badge */}
-                        <div className="absolute bottom-2 left-2 bg-white/90 dark:bg-black/90 backdrop-blur-sm px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          <span className="text-xs font-medium text-foreground capitalize">
-                            {item.type}
-                          </span>
+                      </Button>
+                    </div>
+
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-2">
+                      {suggestion.tags.map((tag, tagIndex) => (
+                        <Badge
+                          key={tagIndex}
+                          variant="secondary"
+                          className="text-xs px-2.5 py-0.5 rounded-full bg-primary/10 text-primary border-0"
+                        >
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Items Grid */}
+                  <div className="grid grid-cols-4 gap-3 mb-5">
+                    {suggestion.items.map((item, itemIndex) => (
+                      <div
+                        key={item.id}
+                        className="group/item aspect-square bg-gradient-to-br from-white/60 to-white/40 dark:from-black/60 dark:to-black/40 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 border border-white/50 dark:border-white/5"
+                        style={{
+                          animationDelay: `${index * 150 + itemIndex * 80}ms`,
+                        }}
+                      >
+                        <div className="relative w-full h-full overflow-hidden">
+                          <Image
+                            src={item.image}
+                            alt={item.alt}
+                            width={100}
+                            height={100}
+                            className="object-cover w-full h-full group-hover/item:scale-110 transition-transform duration-500"
+                          />
+                          {/* Gradient overlay */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-300" />
+                          {/* Item type badge */}
+                          <div className="absolute bottom-1.5 left-1.5 right-1.5">
+                            <div className="bg-white/95 dark:bg-black/95 backdrop-blur-sm px-2 py-1 rounded-lg opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 shadow-lg">
+                              <span className="text-[10px] font-semibold text-foreground capitalize block truncate">
+                                {item.type}
+                              </span>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
+
+                  {/* Action Button */}
+                  <Button className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground font-semibold py-6 rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:shadow-xl shadow-lg">
+                    <span className="flex items-center justify-center gap-2">
+                      <SparkleIcon className="w-5 h-5" weight="fill" />
+                      <span>Try This Look</span>
+                    </span>
+                  </Button>
                 </div>
 
-                {/* Title and Subtitle */}
-                <div className="mb-6 text-center">
-                  <h3 className="text-2xl font-bold text-foreground mb-2">
-                    {suggestion.title}
-                  </h3>
-                  <p className="text-muted-foreground text-sm bg-white/30 dark:bg-black/30 backdrop-blur-sm px-4 py-2 rounded-full inline-block">
-                    {suggestion.subtitle}
-                  </p>
+                {/* Interaction Bar */}
+                <div className="flex items-center justify-between gap-3 px-6 py-4 bg-gradient-to-r from-white/40 to-white/30 dark:from-black/40 dark:to-black/30 backdrop-blur-sm border-t border-white/30 dark:border-white/10">
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105 ${
+                        likedSuggestions[suggestion.id]
+                          ? 'text-green-600 bg-green-50 dark:bg-green-950/30 shadow-md'
+                          : 'text-muted-foreground hover:text-green-600 hover:bg-green-50/50 dark:hover:bg-green-950/20'
+                      }`}
+                      onClick={() => handleLike(suggestion.id)}
+                    >
+                      <HeartIcon
+                        className="w-4 h-4"
+                        weight={
+                          likedSuggestions[suggestion.id] ? 'fill' : 'regular'
+                        }
+                      />
+                      <span className="font-semibold text-sm">
+                        {suggestion.likes +
+                          (likedSuggestions[suggestion.id] ? 1 : 0)}
+                      </span>
+                    </Button>
+
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105 ${
+                        dislikedSuggestions[suggestion.id]
+                          ? 'text-red-600 bg-red-50 dark:bg-red-950/30 shadow-md'
+                          : 'text-muted-foreground hover:text-red-600 hover:bg-red-50/50 dark:hover:bg-red-950/20'
+                      }`}
+                      onClick={() => handleDislike(suggestion.id)}
+                    >
+                      <ThumbsDownIcon
+                        className="w-4 h-4"
+                        weight={
+                          dislikedSuggestions[suggestion.id]
+                            ? 'fill'
+                            : 'regular'
+                        }
+                      />
+                    </Button>
+                  </div>
+
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all duration-300 hover:scale-105"
+                  >
+                    <ShareIcon className="w-4 h-4" />
+                    <span className="text-sm font-medium">Share</span>
+                  </Button>
                 </div>
-
-                {/* View Button */}
-                <button className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-4 px-6 rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
-                  <span className="flex items-center justify-center gap-2">
-                    <span>Try This Look</span>
-                    <span>👗</span>
-                  </span>
-                </button>
               </div>
-
-              {/* Interaction Bar */}
-              <div className="flex items-center justify-center gap-4 px-8 py-6 bg-white/30 dark:bg-black/30 backdrop-blur-sm border-t border-white/20 dark:border-white/10">
-                <Button
-                  variant="ghost"
-                  className={`flex items-center gap-3 px-6 py-3 rounded-2xl transition-all duration-300 hover:scale-105 ${
-                    likedSuggestions[suggestion.id]
-                      ? 'text-green-600 bg-green-50 dark:bg-green-950/20 shadow-lg'
-                      : 'text-muted-foreground hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-950/20'
-                  }`}
-                  onClick={() => handleLike(suggestion.id)}
-                >
-                  <ThumbsUpIcon
-                    className="w-5 h-5"
-                    weight={
-                      likedSuggestions[suggestion.id] ? 'fill' : 'regular'
-                    }
-                  />
-                  <span className="font-medium">{suggestion.likes}</span>
-                  <span className="text-xs">Love it</span>
-                </Button>
-
-                <div className="w-px h-8 bg-border" />
-
-                <Button
-                  variant="ghost"
-                  className={`flex items-center gap-3 px-6 py-3 rounded-2xl transition-all duration-300 hover:scale-105 ${
-                    dislikedSuggestions[suggestion.id]
-                      ? 'text-red-600 bg-red-50 dark:bg-red-950/20 shadow-lg'
-                      : 'text-muted-foreground hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20'
-                  }`}
-                  onClick={() => handleDislike(suggestion.id)}
-                >
-                  <ThumbsDownIcon
-                    className="w-5 h-5"
-                    weight={
-                      dislikedSuggestions[suggestion.id] ? 'fill' : 'regular'
-                    }
-                  />
-                  <span className="font-medium">{suggestion.dislikes}</span>
-                  <span className="text-xs">Not for me</span>
-                </Button>
-              </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </ProtectedRoute>

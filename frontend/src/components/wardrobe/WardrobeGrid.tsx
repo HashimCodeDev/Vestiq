@@ -192,7 +192,7 @@ export default function WardrobeGrid(): JSX.Element {
       <div className="container mx-auto px-4 max-w-7xl">
         <FilterBadge />
 
-        <div className="w-full mb-8">
+        <div className="w-full mb-8 animate-fade-in-up">
           <div className="max-w-sm mx-auto lg:max-w-md">
             {/* Hidden file inputs */}
             <Input
@@ -212,61 +212,72 @@ export default function WardrobeGrid(): JSX.Element {
             />
 
             {/* Enhanced Upload Section */}
-            <div>
+            <div className="relative">
+              {/* Decorative background */}
+              <div className="absolute -inset-4 bg-gradient-to-r from-primary/10 via-accent/5 to-secondary/10 rounded-2xl blur-xl opacity-50" />
+
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
-                    className="w-full h-12 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors rounded-lg"
+                    className="relative w-full h-14 bg-gradient-to-r from-primary to-accent text-primary-foreground hover:from-primary/90 hover:to-accent/90 transition-all duration-300 rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] group"
                     disabled={isUploading}
                   >
                     {isUploading ? (
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        <span>Uploading...</span>
+                      <div className="flex items-center gap-3">
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        <span className="font-semibold">Uploading...</span>
                       </div>
                     ) : (
-                      <div className="flex items-center gap-2">
-                        <PlusIcon size={20} weight="fill" />
-                        <span>Add New Item</span>
+                      <div className="flex items-center gap-3">
+                        <PlusIcon
+                          size={22}
+                          weight="bold"
+                          className="group-hover:rotate-90 transition-transform duration-300"
+                        />
+                        <span className="font-semibold text-base">
+                          Add New Item
+                        </span>
                       </div>
                     )}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   align="center"
-                  className="w-64 bg-card border rounded-lg shadow-lg"
+                  className="w-72 bg-card/95 backdrop-blur-md border border-border/50 rounded-xl shadow-2xl animate-fade-in-up"
                 >
-                  <DropdownMenuLabel className="text-center py-2">
+                  <DropdownMenuLabel className="text-center py-3 text-base font-semibold">
                     Choose upload method
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     onClick={handleCameraClick}
                     disabled={isUploading}
-                    className="flex items-center gap-3 p-3 hover:bg-accent cursor-pointer"
+                    className="flex items-center gap-4 p-4 hover:bg-accent cursor-pointer rounded-lg m-1 transition-all duration-300 group"
                   >
-                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                      <Camera className="h-5 w-5 text-primary" />
+                    <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-accent/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md">
+                      <Camera className="h-6 w-6 text-primary" />
                     </div>
-                    <div>
-                      <span className="font-medium">Take Photo</span>
-                      <p className="text-xs text-muted-foreground">
-                        Use camera
+                    <div className="flex-1">
+                      <span className="font-semibold block">Take Photo</span>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        Use your camera
                       </p>
                     </div>
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={handleGalleryClick}
                     disabled={isUploading}
-                    className="flex items-center gap-3 p-3 hover:bg-accent cursor-pointer"
+                    className="flex items-center gap-4 p-4 hover:bg-accent cursor-pointer rounded-lg m-1 transition-all duration-300 group"
                   >
-                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                      <Upload className="h-5 w-5 text-primary" />
+                    <div className="w-12 h-12 bg-gradient-to-br from-secondary/20 to-primary/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md">
+                      <Upload className="h-6 w-6 text-secondary" />
                     </div>
-                    <div>
-                      <span className="font-medium">Upload from Gallery</span>
-                      <p className="text-xs text-muted-foreground">
-                        Choose photos
+                    <div className="flex-1">
+                      <span className="font-semibold block">
+                        Upload from Gallery
+                      </span>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        Choose from photos
                       </p>
                     </div>
                   </DropdownMenuItem>
@@ -279,37 +290,54 @@ export default function WardrobeGrid(): JSX.Element {
         {/* Wardrobe Items Grid */}
         <div className="pb-24 lg:pb-8">
           {wardrobeItems.length === 0 && !isUploading ? (
-            <div className="text-center py-16">
-              <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-4xl">👗</span>
+            <div className="text-center py-20 animate-fade-in-up animation-delay-200">
+              <div className="relative w-32 h-32 mx-auto mb-6">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-xl animate-pulse" />
+                <div className="relative w-32 h-32 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full flex items-center justify-center backdrop-blur-sm border border-primary/20 shadow-xl">
+                  <span className="text-6xl animate-bounce-gentle">👗</span>
+                </div>
               </div>
-              <h3 className="text-xl font-semibold mb-2">
+              <h3 className="text-2xl font-bold text-gradient mb-3">
                 Your wardrobe is empty
               </h3>
-              <p className="text-muted-foreground mb-6">
-                Add your first item to get started
+              <p className="text-muted-foreground mb-8 text-lg">
+                Add your first item to get started on your style journey
               </p>
               <Button
                 onClick={() => galleryInputRef.current?.click()}
-                className="bg-primary text-primary-foreground hover:bg-primary/90"
+                className="bg-gradient-to-r from-primary to-accent text-primary-foreground hover:from-primary/90 hover:to-accent/90 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 px-8 py-6 text-base font-semibold rounded-xl"
               >
+                <PlusIcon size={20} weight="bold" className="mr-2" />
                 Add Your First Item
               </Button>
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-5 animate-fade-in-up animation-delay-200">
               {wardrobeItems.map((item, index) => (
-                <Link key={index} href={`/wardrobe/${index + 1}`} className="group">
-                  <Card className="relative aspect-[3/4] overflow-hidden hover:shadow-md transition-shadow">
-                    <CardContent className="p-0 h-full">
+                <Link
+                  key={index}
+                  href={`/wardrobe/${index + 1}`}
+                  className="group animate-fade-in-up"
+                  style={{ animationDelay: `${index * 50}ms` }}
+                >
+                  <Card className="relative aspect-[3/4] overflow-hidden hover:shadow-2xl transition-all duration-500 border-0 bg-white/50 dark:bg-black/30 backdrop-blur-sm hover:scale-[1.05] shadow-lg">
+                    <CardContent className="p-0 h-full relative">
                       <Image
                         src={item}
                         alt={`Item ${index + 1}`}
                         fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-200"
+                        className="object-cover group-hover:scale-110 transition-transform duration-500"
                         sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, (max-width: 1280px) 20vw, 16vw"
                       />
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      <div className="absolute inset-0 ring-2 ring-transparent group-hover:ring-primary/50 transition-all duration-500 rounded-lg" />
+
+                      {/* Item number badge */}
+                      <div className="absolute top-2 right-2 w-8 h-8 bg-white/90 dark:bg-black/90 backdrop-blur-md rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-lg">
+                        <span className="text-xs font-bold text-primary">
+                          {index + 1}
+                        </span>
+                      </div>
                     </CardContent>
                   </Card>
                 </Link>
