@@ -30,14 +30,17 @@ const Header = memo(function Header() {
   }, []); // Empty dependency array since we only want to calculate once per component mount
 
   return (
-    <header className="flex items-start justify-between gap-4" role="banner">
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 mb-1">
-          <h1 className="text-2xl sm:text-3xl font-bold text-foreground truncate">
+    <header className="flex items-start justify-between gap-6 relative" role="banner">
+      {/* Decorative background element */}
+      <div className="absolute -inset-4 bg-gradient-to-r from-primary/5 via-transparent to-accent/5 rounded-3xl blur-xl opacity-50" />
+      
+      <div className="flex-1 min-w-0 relative z-10">
+        <div className="flex items-center gap-3 mb-2">
+          <h1 className="text-2xl sm:text-4xl font-bold text-gradient truncate">
             {greeting}, {displayName || 'Fashionista'}
           </h1>
           <span
-            className="text-2xl sm:text-3xl flex-shrink-0"
+            className="text-3xl sm:text-4xl flex-shrink-0 animate-bounce-gentle"
             aria-hidden="true"
             role="img"
             aria-label={`${greeting} emoji`}
@@ -45,50 +48,53 @@ const Header = memo(function Header() {
             {greetingEmoji}
           </span>
         </div>
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-3 flex-wrap">
           <Badge
             variant="secondary"
-            className="flex items-center gap-1"
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary/10 to-accent/10 backdrop-blur-sm border border-primary/20 hover:border-primary/40 transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg"
             role="status"
             aria-label="User level: Level 3 Sartorial Sorcerer"
           >
-            <SparkleIcon className="w-3 h-3" aria-hidden="true" />
-            Level 3: Sartorial Sorcerer
+            <SparkleIcon className="w-4 h-4 text-primary" aria-hidden="true" />
+            <span className="font-medium text-sm">Level 3: Sartorial Sorcerer</span>
           </Badge>
         </div>
       </div>
 
       <nav
-        className="flex items-center gap-3 flex-shrink-0"
+        className="flex items-center gap-4 flex-shrink-0 relative z-10"
         role="navigation"
         aria-label="User actions"
       >
         <Button
-          variant="ghost"
-          size="icon"
-          className="relative hover:bg-accent transition-colors focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          variant="glass"
+          size="icon-lg"
+          className="relative hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-xl"
           aria-label="View notifications (1 unread)"
           aria-describedby="notification-count"
         >
-          <BellIcon className="w-5 h-5" aria-hidden="true" />
+          <BellIcon className="w-6 h-6" aria-hidden="true" />
           <span
             id="notification-count"
-            className="absolute -top-1 -right-1 w-3 h-3 bg-destructive rounded-full border-2 border-background"
+            className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-red-500 to-pink-500 rounded-full border-2 border-background shadow-glow"
             aria-label="1 unread notification"
-          />
+          >
+            <span className="sr-only">1</span>
+          </span>
         </Button>
 
         <Link
           href="/profile"
-          className="flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-full"
+          className="flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 rounded-full transition-all duration-300 hover:scale-110"
           aria-label={`Go to ${displayName || 'user'} profile`}
         >
-          <Avatar className="w-10 h-10 ring-2 ring-primary/20 hover:ring-primary/40 transition-all cursor-pointer">
+          <Avatar className="w-12 h-12 ring-2 ring-primary/30 hover:ring-primary/60 transition-all duration-300 cursor-pointer shadow-lg hover:shadow-xl">
             <AvatarImage
               src={photoURL || ''}
               alt={`${displayName || 'User'} profile picture`}
+              className="object-cover"
             />
-            <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+            <AvatarFallback className="bg-gradient-to-br from-primary/20 to-accent/20 text-primary font-bold text-lg backdrop-blur-sm">
               {displayName ? displayName.charAt(0).toUpperCase() : 'U'}
             </AvatarFallback>
           </Avatar>

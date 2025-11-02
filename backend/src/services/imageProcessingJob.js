@@ -2,6 +2,7 @@ import cron from "node-cron";
 import axios from "axios";
 import User from "../models/User.js";
 import WardrobeItem from "../models/WardrobeItem.js";
+import Outfit from "../models/Outfit.js";
 import logger from "../utils/logger.js";
 
 const getPendingItems = async (userId) => {
@@ -21,10 +22,10 @@ const updateItemFeatures = async (imageUrl, features) => {
 
 const processStaleUsers = async () => {
 	try {
-		const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
+		const oneMinuteAgo = new Date(Date.now() - 1 * 60 * 1000);
 
 		const staleUsers = await User.find({
-			lastUploaded: { $lt: tenMinutesAgo, $ne: null },
+			lastUploaded: { $lt: oneMinuteAgo, $ne: null },
 		}).select("userId lastUploaded");
 
 		logger.info(`Found ${staleUsers.length} users with stale uploads`);
@@ -52,7 +53,47 @@ const processStaleUsers = async () => {
 				// Update items with extracted features
 				if (response.data && response.data.results) {
 					for (const result of response.data.results) {
-						await updateItemFeatures(result.image_url, result.analysis_data.dress_item);
+						await updateItemFeatures(
+							result.image_url,
+							result.analysis_data.dress_item
+						);
+					}
+
+					// Analyze fashion match for complete wardrobe
+					const allItems = await WardrobeItem.find({ userId: user.userId, features: { $exists: true } }).select('features _id');
+					
+					if (allItems.length >= 2) {
+						const wardrobeItems = allItems.map(item => ({
+							id: item._id.toString(),
+							...item.features
+						}));
+
+						const matchResponse = await axios.post(
+							`${process.env.FEATURE_EXTRACTION_URL || "http://localhost:8000"}/analyze-fashion-match`,
+							{
+								wardrobeItems,
+								context: {
+									mood: "confident",
+									weather: "sunny",
+									occasion: "casual"
+								}
+							},
+							{ timeout: 30000, headers: { "Content-Type": "application/json" } }
+						);
+
+						if (matchResponse.data) {
+							const outfitData = {
+								userId: user.userId,
+								occasion: "casual",
+								weather: "sunny",
+								budget: { total: 0 },
+								aiScore: 0.8,
+								region: "north",
+								items: [],
+								fashionMatches: matchResponse.data
+							};
+							await new Outfit(outfitData).save();
+						}
 					}
 				}
 

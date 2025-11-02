@@ -18,23 +18,26 @@ export default function FilterBadge() {
   ];
 
   return (
-    <div className="w-full mb-6 px-4 animate-fade-in-up animation-delay-200">
-      <div className="max-w-md mx-auto">
-        <h3 className="text-sm font-medium text-muted-foreground mb-3 text-center">
-          Filter by Category
-        </h3>
+    <div className="w-full mb-6 px-4">
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center mb-4 lg:hidden">
+          <h3 className="text-base font-semibold mb-1">
+            Filter by Category
+          </h3>
+        </div>
+        
         <Carousel className="w-full">
-          <CarouselContent className="ml-2 mr-2">
+          <CarouselContent className="ml-1 mr-1">
             {categories.map((category, index) => (
               <CarouselItem
                 key={index}
                 className="pl-2 basis-1/3 sm:basis-1/4 flex justify-center"
               >
                 <Badge
-                  className={`w-full min-w-[80px] h-12 flex flex-col items-center justify-center gap-1 cursor-pointer transition-all duration-300 hover:scale-105 ${
+                  className={`w-full min-w-[80px] h-12 flex flex-col items-center justify-center gap-1 cursor-pointer transition-colors ${
                     activeIndex === index
-                      ? 'bg-primary text-primary-foreground shadow-lg scale-105'
-                      : 'bg-white/60 dark:bg-black/40 text-foreground hover:bg-white/80 dark:hover:bg-black/60 backdrop-blur-sm border border-white/30 dark:border-white/20'
+                      ? 'bg-primary text-primary-foreground'
+                      : 'bg-card hover:bg-accent'
                   }`}
                   variant="default"
                   onClick={() =>
