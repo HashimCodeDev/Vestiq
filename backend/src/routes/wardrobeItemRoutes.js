@@ -8,6 +8,6 @@ import { authenticateToken, getUser } from "../middleware/auth.js";
 const router = express.Router();
 
 router.post("/", authenticateToken, getUser, createWardrobeItem);
-router.get("/", authenticateToken, getUser, getWardrobeItems);
+// router.get("/", authenticateToken, getUser, getWardrobeItems);
 
 export default router;
