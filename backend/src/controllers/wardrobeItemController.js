@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "axios";    
 import WardrobeItem from "../models/WardrobeItem.js";
 import FeatureExtractionAI from '../services/featureExtractionAi.js';
 import logger from '../utils/logger.js';
@@ -22,6 +22,7 @@ const featureExtractionAI = new FeatureExtractionAI(process.env.GEMINI_API_KEY);
 export async function createWardrobeItem(req, res) {
   try {
     const { imageUrls } = req.body;
+    const userId = req.user.userId;
 
     // Validate request body
     if (!imageUrls) {
@@ -31,7 +32,14 @@ export async function createWardrobeItem(req, res) {
       });
     }
 
-    logger.info(`Creating wardrobe items from ${Array.isArray(imageUrls) ? imageUrls.length : 0} images`);
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        error: 'User authentication required'
+      });
+    }
+
+    logger.info(`Creating wardrobe items for user ${userId} from ${Array.isArray(imageUrls) ? imageUrls.length : 0} images`);
 
     // Extract features from images using AI service
     const extractedItems = await featureExtractionAI.extractFeatures(imageUrls);
@@ -46,11 +54,21 @@ export async function createWardrobeItem(req, res) {
 
     logger.info(`Successfully extracted ${extractedItems.length} wardrobe items`);
 
-    // Return extracted items (model layer will handle DB operations)
+    // Add userId to each item and save to database
+    const itemsToSave = extractedItems.map(item => ({
+      ...item,
+      userId
+    }));
+
+    const savedItems = await WardrobeItem.bulkCreate(itemsToSave);
+
+    logger.info(`Successfully saved ${savedItems.length} wardrobe items to database`);
+
+    // Return saved items with database IDs
     return res.status(201).json({
       success: true,
-      count: extractedItems.length,
-      items: extractedItems
+      count: savedItems.length,
+      items: savedItems.map(item => item.toJSON())
     });
 
   } catch (error) {
@@ -100,12 +118,9 @@ export async function createWardrobeItem(req, res) {
   }
 }
 
-/**
- * Handler wrapper for Express routes
- */
-export const wardrobeController = {
-  createWardrobeItem
-};
+
+
+
 /**
  * Returns a list of all wardrobe items for the current user, sorted by creation time in descending order (newest first).
  *
@@ -113,26 +128,48 @@ export const wardrobeController = {
  * @param {Object} res - Express response object
  * @returns {Promise<void>} - Sends a JSON response containing a list of wardrobe items
  */
-export const getWardrobeItems = async (req, res) => {
-	try {
-		const limit = parseInt(req.query.limit) || 10;
-		const skip = parseInt(req.query.skip) || 0;
+export async function getWardrobeItems(req, res) {
+  try {
+    const userId = req.user.userId;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = parseInt(req.query.skip) || 0;
 
-		const items = await WardrobeItem.find({ userId: req.user.userId })
-			.sort({
-				createdAt: -1,
-			})
-			.skip(skip)
-			.limit(limit)
-			.exec();
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        error: 'User authentication required'
+      });
+    }
 
-		const totalCount = await WardrobeItem.countDocuments({
-			userId: req.user.userId,
-		});
+    const items = await WardrobeItem.findAll({
+      where: { userId },
+      order: [['createdAt', 'DESC']],
+      limit,
+      offset: skip
+    });
 
-		res.status(200).json({ items, totalCount });
-	} catch (error) {
-		console.error("Error fetching wardrobe items:", error);
-		res.status(500).json({ error: "Server error" });
-	}
+    const totalCount = await WardrobeItem.count({
+      where: { userId }
+    });
+
+    return res.status(200).json({
+      success: true,
+      items: items.map(item => item.toJSON()),
+      totalCount,
+      limit,
+      skip
+    });
+
+  } catch (error) {
+    logger.error(`Get wardrobe items error: ${error.message}`);
+    return res.status(500).json({
+      success: false,
+      error: 'Failed to fetch wardrobe items'
+    });
+  }
+}
+
+export const wardrobeController = {
+  createWardrobeItem,
+  getWardrobeItems
 };

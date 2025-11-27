@@ -1,51 +1,129 @@
-import mongoose from "mongoose";
 
-const FeaturesSchema = new mongoose.Schema(
-	{
-		image_id: { type: String, required: true },
-		class_type: {
-			type: String,
-			enum: ["upper", "lower", "full"],
-			required: true,
-		},
-		type: { type: String, default: null },
-		color: { type: String, default: null },
-		texture: { type: String, default: null },
-		collar: { type: String, default: null },
-		sleeves: { type: String, default: null },
-		pattern: { type: String, default: null },
-		fit: { type: String, default: null },
-		size: { type: String, default: null },
-	},
-	{ _id: false }
-); // Disable _id for subdocument
 
-const WardrobeItemSchema = new mongoose.Schema({
-	userId: {
-		type: String,
-		required: true,
-		index: true,
-	},
-	category: {
-		type: String,
-		enum: ["top", "bottom", "dress", "outerwear", "footwear", "accessories"],
-	},
-	imageUrl: {
-		type: String,
-		required: true,
-	},
+import { sequelize} from '../config/neondb.js';
+import { DataTypes } from 'sequelize';
 
-	features: FeaturesSchema,
 
-	description: String,
-	createdAt: {
-		type: Date,
-		default: Date.now,
-	},
-});
-
-const WardrobeItem =
-	mongoose.models.WardrobeItem ||
-	mongoose.model("WardrobeItem", WardrobeItemSchema);
+const WardrobeItem = sequelize.define(
+  'WardrobeItem',
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    userId: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      index: true,
+    },
+    category: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    imageUrl: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    
+    class_type: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    type: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    subtype: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    color_primary: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    color_secondary: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    pattern: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    fabric_guess: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    texture: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    neck_style: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    sleeves: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    fit: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    length: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    style_category: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    occasion: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    season: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    ethnic_vs_western: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    confidence: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+      validate: {
+        min: 0,
+        max: 1,
+      },
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
+  },
+  {
+    tableName: 'wardrobe_items',
+    timestamps: true,
+    indexes: [
+      {
+        fields: ['userId'],
+      },
+      {
+        fields: ['createdAt'],
+      },
+    ],
+  }
+);
 
 export default WardrobeItem;
+
